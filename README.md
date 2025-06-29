@@ -1,69 +1,90 @@
+# 📊 surveyhub — Django-based Survey Management System
+
+A Django application to manage surveys, collect answers, and generate insightful reports. Includes full API support with Swagger, admin access, and dynamic question handling.
+
+---
+## 🚀 Features
+
+- Create surveys with customizable questions
+- Manage survey lifecycle (draft, submitted, expired)
+- Collect responses from users (invited or anonymous)
+- Generate reports with popular/unpopular answers
+- Swagger API documentation
+
+---
+
+## 🛠️ Getting Started
+
 #### Clone project repo
-```
- $ git clone https://github.com/Bkumar28/django_survey_app.git
+```bash
+git clone https://github.com/Bkumar28/surveyhub.git
 ```
  
 #### Use Python Version
  - Python 3.8
 
 #### Create virtual environment
-```
-$ virtualenv venv -p python3
+
+```bash
+virtualenv venv -p python3
 ```
 
 #### Activate virtual environment
 
-```
-$ source venv/bin/activate
+```bash
+source venv/bin/activate
 ```
 #### Go to the project directory
 
-```
-$ cd django_survey_app/
+```bash
+cd surveyhub/
 ```
 
 #### Install dependency
 
-```
-$ pip3 install -r requirements.txt
+```bash
+pip3 install -r requirements.txt
 ```
 
 #### Migration command
 
-```
-$ python manage.py makemigrations
-$ python manage.py migrate
+```bash
+python manage.py makemigrations
+python manage.py migrate
 ```
 
 #### Create super admin user
 
-```
-$  python manage.py createsuperuser
+```bash
+python manage.py createsuperuser
 >>>  username : super_admin
 >>>  email_address : kumar.bhart28@gmail.com
 >>>  password : admin@1234
 >>>  password (again): admin@1234
 ```
 
-#### Run django server
-```
-$ python3 manage.py runserver
+#### Start Django Server
+```bash
+python3 manage.py runserver
 ```
 
-#### Open swagger in browser
+Open your browser at:
 ```
 http://127.0.0.1:8000/swagger/
 ```
 
-#### Survey List API
-- API Endpoint - http://127.0.0.1:8000/api/v1/surveys
-- Request Method - GET
+####  API Endpoints
+All API base URLs begin with:
 
-#### Survey Post API
-- API Endpoint - http://127.0.0.1:8000/api/v1/surveys
-- Request Method - POST
-- Request Payload
-```
+ - `http://127.0.0.1:8000/api/v1/`
+
+#### Survey List
+ - GET `/surveys` – List all surveys
+ - POST `/surveys` – Create a new survey
+
+**Example Payload (POST)**
+
+```json
 {
   "title": "Survey Questions",
   "description": "Survey Questions",
@@ -125,15 +146,14 @@ http://127.0.0.1:8000/swagger/
 }
 ```
 
-#### Single Survey Get API
-- API Endpoint - http://127.0.0.1:8000/api/v1/surveys/1
-- Request Method - GET
+####  Single Survey
+ - GET `/surveys/<id>` – Retrieve a survey
+ - PUT `/surveys/<id>` – Update a survey
+ - DELETE `/surveys/<id>` – Delete a survey
 
-#### Single Survey Update API
-- API Endpoint - http://127.0.0.1:8000/api/v1/surveys/1
-- Request Method - PUT
-- Request Payload
-```
+**Example Update Payload (PUT)**
+
+```json
 {
   "status": "S",
   "questions": [
@@ -156,31 +176,22 @@ http://127.0.0.1:8000/swagger/
 }
 ```
 
-#### Single Survey Delete API
-- API Endpoint - http://127.0.0.1:8000/api/v1/surveys/1
-- Request Method - DELETE
-
-
-#### Send survey to other user
-- API Endpoint - http://127.0.0.1:8000/api/v1/surveys/1/send
-- Request Method - POST
-- Request Payload
-
-```
+#### Send Survey to User
+ - POST `/surveys/<id>/send`
+**Payload**
+```json
 {
   "email": "user@example.com" 
 }
 ```
 
-#### Survey answer list
-- API Endpoint - http://127.0.0.1:8000/api/v1/surveys/1/answers
-- Request Method - GET
+####  Survey Answers
+ - GET `/surveys/<id>/answers` – List all answers
+ - POST `/surveys/<id>/answers` – Submit a new set of answers
+ - GET `/surveys/<id>/answers/<user_token>` – Get submitted answers for a user
 
-#### Post survey answer 
-- API Endpoint - http://127.0.0.1:8000/api/v1/surveys/1/answers
-- Request Method - POST
-- Request Payload
-```
+**Example Payload (POST)**
+```json
 {
   "answers": [
     {
@@ -227,11 +238,11 @@ http://127.0.0.1:8000/swagger/
 }
 ```
 
-#### Survey reports
-- API Endpoint - http://127.0.0.1:8000/api/v1/surveys/1/report
-- Request Method - GET
-- sample response
-```buildoutcfg
+#### Survey Report
+ - GET `/surveys/<id>/report`
+
+**Sample Response**
+```json
 {
   "data": {
     "id": 5,
@@ -261,7 +272,11 @@ http://127.0.0.1:8000/swagger/
 }
 ```
 
+---
 
-#### Get my submitted survey answers
-- API Endpoint - http://127.0.0.1:8000/api/v1/surveys/1/answers/asop2323zdds34sdsd
-- Request Method - GET
+## 👨‍💻 Maintainer
+
+**Bharat Kumar**  
+_Senior Software Engineer | Cloud & Backend Systems_  
+📧 kumar.bhart28@gmail.com  
+🔗 [LinkedIn](https://www.linkedin.com/in/bharat-kumar28)
