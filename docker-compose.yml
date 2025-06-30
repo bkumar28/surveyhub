@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: surveyhub
+      POSTGRES_USER: surveyhub
+      POSTGRES_PASSWORD: surveyhub123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=1
+      - DATABASE_URL=postgresql://surveyhub:surveyhub123@postgres:5432/surveyhub
+      - REDIS_URL=redis://redis:6379/0
+      - DJANGO_SETTINGS_MODULE=surveyhub.settings.production
+    depends_on:
+      - postgres
+      - redis
+
+  celery:
+    build: .
+    command: celery -A surveyhub worker -l info
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=1
+      - DATABASE_URL=postgresql://surveyhub:surveyhub123@postgres:5432/surveyhub
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+      - postgres
+
+volumes:
+  postgres_data:
+  redis_data:
