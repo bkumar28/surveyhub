@@ -1,53 +1,67 @@
-version: '3.8'
-
 services:
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    command: redis-server --appendonly yes
-    volumes:
-      - redis_data:/data
-
-  postgres:
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_DB: surveyhub
-      POSTGRES_USER: surveyhub
-      POSTGRES_PASSWORD: surveyhub123
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
   web:
     build: .
+    command: >
+      sh -c "poetry run python manage.py migrate &&
+             poetry run python manage.py collectstatic --noinput &&
+             poetry run gunicorn wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - ./src:/surveyhub
+      - static_volume:/vol/web/static
     ports:
       - "8000:8000"
-    volumes:
-      - .:/app
-    environment:
-      - DEBUG=1
-      - DATABASE_URL=postgresql://surveyhub:surveyhub123@postgres:5432/surveyhub
-      - REDIS_URL=redis://redis:6379/0
-      - DJANGO_SETTINGS_MODULE=surveyhub.settings.production
+    env_file:
+      - .env
     depends_on:
-      - postgres
+      - db
       - redis
 
   celery:
     build: .
-    command: celery -A surveyhub worker -l info
+    command: poetry run celery -A wsgi worker --loglevel=info
     volumes:
-      - .:/app
-    environment:
-      - DEBUG=1
-      - DATABASE_URL=postgresql://surveyhub:surveyhub123@postgres:5432/surveyhub
-      - REDIS_URL=redis://redis:6379/0
+      - ./src:/surveyhub
+    env_file:
+      - .env
     depends_on:
+      - web
       - redis
-      - postgres
+
+  celery-beat:
+    build: .
+    command: poetry run celery -A wsgi beat --loglevel=info
+    volumes:
+      - ./src:/surveyhub
+    env_file:
+      - .env
+    depends_on:
+      - web
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-surveyhub}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - static_volume:/vol/web/static
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
 
 volumes:
   postgres_data:
-  redis_data:
+  static_volume:
