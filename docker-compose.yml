@@ -1,10 +1,7 @@
 services:
   web:
     build: .
-    command: >
-      sh -c "poetry run python src/manage.py migrate &&
-             poetry run python src/manage.py collectstatic --noinput &&
-             poetry run gunicorn src.wsgi:application --bind 0.0.0.0:8000"
+    command: sh /app/docker_run_server.sh
     volumes:
       - ./src:/app/src
       - static_volume:/vol/web/static
@@ -18,7 +15,7 @@ services:
 
   celery:
     build: .
-    command: poetry run celery -A src worker --loglevel=info
+    command: poetry run celery -A src.celery_app worker --loglevel=info
     volumes:
       - ./src:/app/src
     env_file:
@@ -29,7 +26,7 @@ services:
 
   celery-beat:
     build: .
-    command: poetry run celery -A src beat --loglevel=info
+    command: poetry run celery -A src.celery_app beat --loglevel=info
     volumes:
       - ./src:/app/src
     env_file:
@@ -49,9 +46,10 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-surveyhub}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-surveyhub}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+
 
   nginx:
     image: nginx:alpine
@@ -66,3 +64,7 @@ services:
 volumes:
   postgres_data:
   static_volume:
+
+networks:
+  default:
+    name: surveyhub-network

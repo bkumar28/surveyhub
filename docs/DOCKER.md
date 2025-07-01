@@ -130,4 +130,3 @@ docker compose exec web poetry install
 ```
 
 ---
-

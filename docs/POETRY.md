@@ -79,3 +79,16 @@ which poetry
 poetry lock
 poetry install --with dev
 ```
+
+##  Check what’s outdated
+
+Run this before and after to verify:
+```bash
+poetry show --outdated
+```
+
+## Update bulk outdated packages
+
+```bash
+poetry show --outdated --top-level | awk '{print $1}' | xargs -n1 -I{} poetry add "{}@latest"
+```

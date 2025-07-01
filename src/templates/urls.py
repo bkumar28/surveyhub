@@ -1,16 +1,17 @@
-from django.urls import path, include
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
+
 from .views import (
-    TemplateCategoryViewSet,
-    SurveyTemplateViewSet,
     QuestionTemplateViewSet,
+    SurveyTemplateViewSet,
+    TemplateCategoryViewSet,
 )
 
 router = DefaultRouter()
-router.register(r'categories', TemplateCategoryViewSet)
-router.register(r'surveys', SurveyTemplateViewSet)
-router.register(r'questions', QuestionTemplateViewSet)
+router.register(r"categories", TemplateCategoryViewSet)
+router.register(r"surveys", SurveyTemplateViewSet)
+router.register(r"questions", QuestionTemplateViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path("", include(router.urls)),
 ]

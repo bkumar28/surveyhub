@@ -1,25 +1,29 @@
 import uuid
-from django.db import models
+
 from django.contrib.auth import get_user_model
+from django.db import models
 from django.utils import timezone
 
 # Use get_user_model for better custom user model support
 User = get_user_model()
 
+
 class SurveyStatus(models.TextChoices):
     """Enumerates the various statuses a survey can be in."""
-    DRAFT = 'D', 'Draft'
-    ACTIVE = 'A', 'Active'
-    PAUSED = 'P', 'Paused'
-    COMPLETED = 'C', 'Completed'
-    EXPIRED = 'E', 'Expired'
+
+    DRAFT = "D", "Draft"
+    ACTIVE = "A", "Active"
+    PAUSED = "P", "Paused"
+    COMPLETED = "C", "Completed"
+    EXPIRED = "E", "Expired"
 
 
 class SurveyVisibility(models.TextChoices):
     """Defines the visibility level of a survey."""
-    PUBLIC = 'PU', 'Public'
-    PRIVATE = 'PR', 'Private'
-    INVITE_ONLY = 'IN', 'Invite Only'
+
+    PUBLIC = "PU", "Public"
+    PRIVATE = "PR", "Private"
+    INVITE_ONLY = "IN", "Invite Only"
 
 
 class Survey(models.Model):
@@ -30,9 +34,7 @@ class Survey(models.Model):
     description = models.TextField(blank=True)
 
     created_by = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='surveys'
+        User, on_delete=models.CASCADE, related_name="surveys"
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -41,14 +43,10 @@ class Survey(models.Model):
     end_date = models.DateTimeField(null=True, blank=True)
 
     status = models.CharField(
-        max_length=1,
-        choices=SurveyStatus.choices,
-        default=SurveyStatus.DRAFT
+        max_length=1, choices=SurveyStatus.choices, default=SurveyStatus.DRAFT
     )
     visibility = models.CharField(
-        max_length=2,
-        choices=SurveyVisibility.choices,
-        default=SurveyVisibility.PUBLIC
+        max_length=2, choices=SurveyVisibility.choices, default=SurveyVisibility.PUBLIC
     )
 
     # Survey options
@@ -61,8 +59,8 @@ class Survey(models.Model):
     thank_you_message = models.TextField(default="Thank you for your response!")
 
     # Branding
-    theme_color = models.CharField(max_length=7, default='#007bff')
-    logo = models.ImageField(upload_to='survey_logos/', null=True, blank=True)
+    theme_color = models.CharField(max_length=7, default="#007bff")
+    logo = models.ImageField(upload_to="survey_logos/", null=True, blank=True)
     custom_css = models.TextField(blank=True)
 
     # Analytics
@@ -71,10 +69,10 @@ class Survey(models.Model):
     average_time = models.DurationField(null=True, blank=True)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
         indexes = [
-            models.Index(fields=['status', 'created_at']),
-            models.Index(fields=['created_by', 'status']),
+            models.Index(fields=["status", "created_at"]),
+            models.Index(fields=["created_by", "status"]),
         ]
 
     def __str__(self):
@@ -82,36 +80,30 @@ class Survey(models.Model):
 
     @property
     def is_active(self):
-        """Determines whether the survey is currently active and within the time window."""
+        """
+        Determines whether the survey is currently active
+        and within the time window.
+        """
         now = timezone.now()
         return (
-            self.status == SurveyStatus.ACTIVE and
-            self.start_date <= now and
-            (self.end_date is None or self.end_date >= now)
+            self.status == SurveyStatus.ACTIVE
+            and self.start_date <= now
+            and (self.end_date is None or self.end_date >= now)
         )
 
     @property
     def response_limit_reached(self):
         """Checks if the survey has reached the maximum allowed responses."""
         return (
-            self.max_responses is not None and
-            self.response_count >= self.max_responses
+            self.max_responses is not None and self.response_count >= self.max_responses
         )
-
 
 
 class SurveyResponse(models.Model):
     survey = models.ForeignKey(
-        "surveys.Survey",
-        on_delete=models.CASCADE,
-        related_name='responses'
+        "surveys.Survey", on_delete=models.CASCADE, related_name="responses"
     )
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     session_key = models.CharField(max_length=40, null=True, blank=True)
     user_token = models.UUIDField(default=uuid.uuid4, editable=False)
 
@@ -134,10 +126,10 @@ class SurveyResponse(models.Model):
     city = models.CharField(max_length=100, blank=True)
 
     class Meta:
-        unique_together = ['survey', 'user_token']
+        unique_together = ["survey", "user_token"]
         indexes = [
-            models.Index(fields=['survey', 'is_complete']),
-            models.Index(fields=['completed_at']),
+            models.Index(fields=["survey", "is_complete"]),
+            models.Index(fields=["completed_at"]),
         ]
 
     def __str__(self):

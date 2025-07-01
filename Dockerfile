@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -29,10 +29,14 @@ COPY pyproject.toml poetry.lock ./
 # Configure poetry and install dependencies
 RUN poetry config virtualenvs.create false && \
     poetry config installer.max-workers 1
-RUN for i in 1 2 3; do poetry install --no-root --only main && break || sleep 5; done
+RUN for i in 1 2 3; do poetry install --no-root && break || sleep 5; done
 
 # Copy source code into src subdir
 COPY src/ src/
+
+# Copy docker run server bash
+COPY scripts/docker_run_server.sh /app/docker_run_server.sh
+RUN chmod +x /app/docker_run_server.sh
 
 # Expose port
 EXPOSE 8000
