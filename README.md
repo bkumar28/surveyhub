@@ -13,13 +13,22 @@ A Django application to manage surveys, collect answers, and generate insightful
 
 ---
 
+###  Initialize Pre-commit
+```bash
+poetry run pre-commit install
+```
+###  (Optional) Test It
+```bash
+pre-commit run --all-files
+```
+
 ## 🛠️ Getting Started
 
 #### Clone project repo
 ```bash
 git clone https://github.com/Bkumar28/surveyhub.git
 ```
- 
+
 #### Use Python Version
  - Python 3.8
 
@@ -181,7 +190,7 @@ All API base URLs begin with:
 **Payload**
 ```json
 {
-  "email": "user@example.com" 
+  "email": "user@example.com"
 }
 ```
 
@@ -276,7 +285,7 @@ All API base URLs begin with:
 
 ## 👨‍💻 Maintainer
 
-**Bharat Kumar**  
-_Senior Software Engineer | Cloud & Backend Systems_  
-📧 kumar.bhart28@gmail.com  
+**Bharat Kumar**
+_Senior Software Engineer | Cloud & Backend Systems_
+📧 kumar.bhart28@gmail.com
 🔗 [LinkedIn](https://www.linkedin.com/in/bharat-kumar28)

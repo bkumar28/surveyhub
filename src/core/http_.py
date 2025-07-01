@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.exceptions import APIException
 
-from common_config.api_message import RESOURCE_NOT_FOUND_ERROR, BAD_REQUEST_ERROR
+from .api_message import BAD_REQUEST_ERROR, RESOURCE_NOT_FOUND_ERROR
 
 
 class Http404(APIException):
@@ -14,7 +14,7 @@ class Http404(APIException):
         if error_code is None:
             error_code = self.status_code
 
-        self.detail = {'status': "Failed", 'code': error_code, 'message': message}
+        self.detail = {"status": "Failed", "code": error_code, "message": message}
 
 
 class HttpError(APIException):
@@ -27,4 +27,4 @@ class HttpError(APIException):
         if error_code is None:
             error_code = self.status_code
 
-        self.detail = {'status': "Failed", 'code': error_code, 'message': message}
+        self.detail = {"status": "Failed", "code": error_code, "message": message}

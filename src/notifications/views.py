@@ -1,7 +1,9 @@
-from rest_framework import viewsets, permissions
+from rest_framework import permissions, viewsets
+
+from src.core.permissions import IsStaffOrReadOnly
+
 from .models import NotificationTemplate, SurveyInvitation
 from .serializers import NotificationTemplateSerializer, SurveyInvitationSerializer
-from src.core.permissions import IsStaffOrReadOnly
 
 
 class NotificationTemplateViewSet(viewsets.ModelViewSet):
@@ -11,6 +13,6 @@ class NotificationTemplateViewSet(viewsets.ModelViewSet):
 
 
 class SurveyInvitationViewSet(viewsets.ModelViewSet):
-    queryset = SurveyInvitation.objects.select_related('survey').all()
+    queryset = SurveyInvitation.objects.select_related("survey").all()
     serializer_class = SurveyInvitationSerializer
     permission_classes = [permissions.IsAuthenticated]

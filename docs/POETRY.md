@@ -45,6 +45,11 @@ poetry run pytest
 ```bash
 poetry add package-name
 ```
+**Example:**
+```bash
+poetry add djangorestframework-simplejwt@^4.8.0
+```
+
 **Add a development-only dependency:**
 ```bash
 poetry add --group dev package-name
@@ -73,4 +78,17 @@ which poetry
 ```bash
 poetry lock
 poetry install --with dev
+```
+
+##  Check what’s outdated
+
+Run this before and after to verify:
+```bash
+poetry show --outdated
+```
+
+## Update bulk outdated packages
+
+```bash
+poetry show --outdated --top-level | awk '{print $1}' | xargs -n1 -I{} poetry add "{}@latest"
 ```
