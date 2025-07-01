@@ -1,0 +1,39 @@
+name: ActionLint
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+
+jobs:
+  actionlint:
+    name: Lint GitHub Workflows
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.1
+
+      - name: Download actionlint
+        id: get_actionlint
+        shell: bash
+        run: |
+          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+          echo "executable=./actionlint" >> "$GITHUB_OUTPUT"
+
+      - name: Check workflow files
+        shell: bash
+        run: |
+          ${{ steps.get_actionlint.outputs.executable }} \
+            -color \
+            -ignore "SC2086" \
+            -ignore "SC2155" \
+            -ignore "SC2002" \
+            -ignore "SC2129" \
+            -ignore "SC2046" \
+            -ignore "SC2016" \
+            -ignore "SC2034" \
+            -ignore "SC2005"
+        continue-on-error: false  # explicit and preferred for clarity

@@ -1,0 +1,41 @@
+name: 011 Pull Request Analysis
+
+on:
+  pull_request:
+  push:
+    branches:
+      - develop
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  consolidated-unit-tests:
+    name: Consolidated Unit Tests
+    uses: ./.github/workflows/pra-backend-tests.yaml
+    with:
+      full-crypto-flag: false
+    secrets: inherit
+    concurrency:
+      group: other-unit-tests-${{ github.event.pull_request.number || github.sha }}
+      cancel-in-progress: true
+
+  check-migrations:
+    name: Check Migrations
+    uses: ./.github/workflows/migrations.yaml
+    secrets: inherit
+
+  python-linting:
+    name: Black and Flake8
+    uses: ./.github/workflows/python-linting-formatting.yml
+    secrets: inherit
+
+  codecov-validation:
+    name: Codecov Validation
+    uses: ./.github/workflows/codecov-validation.yml
+
+  pre-commit-checks:
+    name: Pre-commit Hooks
+    uses: ./.github/workflows/pra-pre-commit.yml
+    secrets: inherit

@@ -1,0 +1,28 @@
+name: Validate Codecov Configuration
+
+on:
+  workflow_call:
+
+jobs:
+  validate:
+    name: Validate .codecov.yml
+    runs-on:
+      - self-hosted
+      - oracle-linux-8
+      - small
+    permissions: read-all
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.1
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            codecov:
+              - '.codecov.yml'
+
+      - name: Validate codecov.yml
+        if: steps.filter.outputs.codecov == 'true'
+        run: |
+          curl --fail --data-binary @.codecov.yml https://codecov.io/validate || echo "Codecov config validation failed!"

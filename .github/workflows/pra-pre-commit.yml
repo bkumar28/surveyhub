@@ -1,0 +1,24 @@
+name: PRA - Pre-Commit
+
+on: pull_request
+
+jobs:
+  pra-precommit:
+    name: PRA
+
+    runs-on:
+      - self-hosted
+      - ubuntu
+      - m7a-medium
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: Check for pre-commit config
+        run: test -f .pre-commit-config.yaml || (echo "Missing pre-commit config" && exit 1)
+
+      - uses: pre-commit/action@v3.0.1

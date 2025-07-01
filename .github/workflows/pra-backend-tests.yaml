@@ -1,0 +1,68 @@
+name: Consolidated Unit Tests
+
+on:
+  workflow_call:
+    inputs:
+      full-crypto-flag:
+        description: 'Run all unit tests with full crypto enabled'
+        type: boolean
+        default: false
+        required: false
+
+defaults:
+  run:
+    shell: bash -eo pipefail {0}
+
+jobs:
+  pytest-pra:
+    name: Consolidated Unit Tests
+    runs-on:
+      - self-hosted
+      - oracle-linux-8
+      - m7a-2xlarge
+
+    steps:
+      - uses: actions/checkout@v4.1.1
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.sha }}
+
+      - name: Add Poetry to PATH
+        run: |
+          echo "/opt/poetry/bin" >> $GITHUB_PATH
+          echo "/usr/local/bin/" >> $GITHUB_PATH
+
+      - name: Get Poetry cache dir
+        id: poetry-cache
+        run: echo "dir=$(poetry config cache-dir)" >> $GITHUB_OUTPUT
+
+      - name: Poetry cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.poetry-cache.outputs.dir }}
+          key: ${{ runner.os }}-el8-poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-el8-poetry-
+
+      - name: Install system packages (if needed)
+        run: |
+          sudo dnf install -y curl-devel openldap-devel libxml2-devel
+
+      - name: Poetry install
+        run: |
+          poetry config virtualenvs.create false
+          poetry config virtualenvs.options.system-site-packages true
+          poetry install --with=dev
+          poetry run pip install keyring pytest-xdist pytest-rerunfailures rerun
+
+      - name: Run Unit Tests with Coverage
+        run: >
+          poetry run pytest
+          --cov='src/'
+          --cov-config='src/.coveragerc'
+          --cov-branch
+          --cov-report=xml
+          --cov-report=term
+          --showlocals
+          -W ignore::DeprecationWarning
+          ${{ (inputs.full-crypto-flag == true) && '--full-crypto' || '--no-full-crypto' }}
+          ./src --dist loadgroup --numprocesses auto -v --tb=long --reruns 3 --reruns-delay 2 | tee /tmp/pytest.log

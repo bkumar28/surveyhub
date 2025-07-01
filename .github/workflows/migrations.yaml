@@ -1,0 +1,52 @@
+name: Check Migrations
+
+on:
+  workflow_call:
+
+jobs:
+  check-migrations:
+    name: Django Migration Check
+    runs-on:
+      - self-hosted
+      - oracle-linux-8
+      - small
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.1
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.sha }}
+
+      - name: Add Poetry to PATH
+        run: echo "/opt/poetry/bin" >> $GITHUB_PATH
+
+      - name: Get Poetry cache dir
+        id: poetry-cache
+        run: echo "dir=$(poetry config cache-dir)" >> $GITHUB_OUTPUT
+
+      - name: Poetry cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.poetry-cache.outputs.dir }}
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
+
+      - name: Install system dependencies
+        run: |
+          sudo dnf install -y curl-devel openldap-devel libxml2-devel
+
+      - name: Poetry install
+        run: |
+          poetry config virtualenvs.create false
+          poetry install --with=dev
+
+      - name: Verify Django install
+        run: poetry run python -m django --version
+
+      - name: Run makemigrations check
+        working-directory: ./src
+        env:
+          DJANGO_SETTINGS_MODULE: settings.development
+        run: |
+          poetry run python manage.py makemigrations --check --dry-run --noinput
