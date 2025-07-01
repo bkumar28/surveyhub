@@ -45,6 +45,11 @@ poetry run pytest
 ```bash
 poetry add package-name
 ```
+**Example:**
+```bash
+poetry add djangorestframework-simplejwt@^4.8.0
+```
+
 **Add a development-only dependency:**
 ```bash
 poetry add --group dev package-name

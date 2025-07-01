@@ -2,11 +2,11 @@ services:
   web:
     build: .
     command: >
-      sh -c "poetry run python manage.py migrate &&
-             poetry run python manage.py collectstatic --noinput &&
-             poetry run gunicorn wsgi:application --bind 0.0.0.0:8000"
+      sh -c "poetry run python src/manage.py migrate &&
+             poetry run python src/manage.py collectstatic --noinput &&
+             poetry run gunicorn src.wsgi:application --bind 0.0.0.0:8000"
     volumes:
-      - ./src:/surveyhub
+      - ./src:/app/src
       - static_volume:/vol/web/static
     ports:
       - "8000:8000"
@@ -18,9 +18,9 @@ services:
 
   celery:
     build: .
-    command: poetry run celery -A wsgi worker --loglevel=info
+    command: poetry run celery -A src worker --loglevel=info
     volumes:
-      - ./src:/surveyhub
+      - ./src:/app/src
     env_file:
       - .env
     depends_on:
@@ -29,14 +29,15 @@ services:
 
   celery-beat:
     build: .
-    command: poetry run celery -A wsgi beat --loglevel=info
+    command: poetry run celery -A src beat --loglevel=info
     volumes:
-      - ./src:/surveyhub
+      - ./src:/app/src
     env_file:
       - .env
     depends_on:
       - web
       - redis
+
 
   redis:
     image: redis:7-alpine
