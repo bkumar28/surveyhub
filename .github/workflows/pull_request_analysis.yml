@@ -11,6 +11,38 @@ permissions:
   pull-requests: write
 
 jobs:
+  pre-commit-checks:
+    name: Pre-commit Hooks
+    uses: ./.github/workflows/pra-pre-commit.yml
+    secrets: inherit
+    concurrency:
+      group: migrations-${{ github.event.pull_request.number || github.sha }}
+      cancel-in-progress: true
+
+  python-linting:
+    name: Python Linting
+    uses: ./.github/workflows/python-linting-formatting.yml
+    secrets: inherit
+    concurrency:
+      group: linting-${{ github.event.pull_request.number || github.sha }}
+      cancel-in-progress: true
+
+  codecov-validation:
+    name: Codecov Validation
+    uses: ./.github/workflows/codecov-validation.yml
+    secrets: inherit
+    concurrency:
+      group: migrations-${{ github.event.pull_request.number || github.sha }}
+      cancel-in-progress: true
+
+  check-migrations:
+    name: Check Migrations
+    uses: ./.github/workflows/migrations.yaml
+    secrets: inherit
+    concurrency:
+      group: migrations-${{ github.event.pull_request.number || github.sha }}
+      cancel-in-progress: true
+
   consolidated-unit-tests:
     name: Consolidated Unit Tests
     uses: ./.github/workflows/pra-backend-tests.yaml
@@ -18,24 +50,5 @@ jobs:
       full-crypto-flag: false
     secrets: inherit
     concurrency:
-      group: other-unit-tests-${{ github.event.pull_request.number || github.sha }}
+      group: unit-tests-${{ github.event.pull_request.number || github.sha }}
       cancel-in-progress: true
-
-  check-migrations:
-    name: Check Migrations
-    uses: ./.github/workflows/migrations.yaml
-    secrets: inherit
-
-  python-linting:
-    name: Black and Flake8
-    uses: ./.github/workflows/python-linting-formatting.yml
-    secrets: inherit
-
-  codecov-validation:
-    name: Codecov Validation
-    uses: ./.github/workflows/codecov-validation.yml
-
-  pre-commit-checks:
-    name: Pre-commit Hooks
-    uses: ./.github/workflows/pra-pre-commit.yml
-    secrets: inherit

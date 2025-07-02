@@ -55,14 +55,29 @@ jobs:
           poetry run pip install keyring pytest-xdist pytest-rerunfailures rerun
 
       - name: Run Unit Tests with Coverage
-        run: >
-          poetry run pytest
-          --cov='src/'
-          --cov-config='src/.coveragerc'
-          --cov-branch
-          --cov-report=xml
-          --cov-report=term
-          --showlocals
-          -W ignore::DeprecationWarning
-          ${{ (inputs.full-crypto-flag == true) && '--full-crypto' || '--no-full-crypto' }}
-          ./src --dist loadgroup --numprocesses auto -v --tb=long --reruns 3 --reruns-delay 2 | tee /tmp/pytest.log
+        timeout-minutes: 30  # Add timeout protection
+        run: |
+          poetry run pytest \
+            --cov='src/' \
+            --cov-config='src/.coveragerc' \
+            --cov-branch \
+            --cov-report=xml \
+            --cov-report=term \
+            --showlocals \
+            -W ignore::DeprecationWarning \
+            ${{ (inputs.full-crypto-flag == true) && '--full-crypto' || '--no-full-crypto' }} \
+            ./src \
+            --dist loadgroup \
+            --numprocesses auto \
+            -v \
+            --tb=long \
+            --reruns 3 \
+            --reruns-delay 2 \
+            | tee /tmp/pytest.log
+
+      - name: Upload Coverage Reports
+        if: always()
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: true

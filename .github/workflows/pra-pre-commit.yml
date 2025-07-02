@@ -1,24 +1,35 @@
 name: PRA - Pre-Commit
 
-on: pull_request
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   pra-precommit:
-    name: PRA
-
+    name: Pre-commit Hooks
     runs-on:
       - self-hosted
       - ubuntu
       - m7a-medium
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.1
 
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.12
+          python-version: '3.12'
+
+      - name: Cache pre-commit
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
 
       - name: Check for pre-commit config
-        run: test -f .pre-commit-config.yaml || (echo "Missing pre-commit config" && exit 1)
+        run: |
+          if [ ! -f .pre-commit-config.yaml ]; then
+            echo " Missing .pre-commit-config.yaml file"
+            exit 1
+          fi
 
       - uses: pre-commit/action@v3.0.1

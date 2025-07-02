@@ -13,27 +13,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4.1.1
+    - name: Checkout repository
+      uses: actions/checkout@v4.2.1
 
-      - name: Download actionlint
-        id: get_actionlint
-        shell: bash
-        run: |
+    - name: Cache actionlint
+      uses: actions/cache@v4
+      with:
+        path: ./actionlint
+        key: actionlint-${{ runner.os }}
+
+    - name: Download actionlint
+      id: get_actionlint
+      shell: bash
+      run: |
+        if [ ! -f ./actionlint ]; then
           bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
-          echo "executable=./actionlint" >> "$GITHUB_OUTPUT"
-
-      - name: Check workflow files
-        shell: bash
-        run: |
-          ${{ steps.get_actionlint.outputs.executable }} \
-            -color \
-            -ignore "SC2086" \
-            -ignore "SC2155" \
-            -ignore "SC2002" \
-            -ignore "SC2129" \
-            -ignore "SC2046" \
-            -ignore "SC2016" \
-            -ignore "SC2034" \
-            -ignore "SC2005"
-        continue-on-error: false  # explicit and preferred for clarity
+        fi
+        echo "executable=./actionlint" >> "$GITHUB_OUTPUT

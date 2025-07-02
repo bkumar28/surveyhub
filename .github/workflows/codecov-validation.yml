@@ -25,4 +25,8 @@ jobs:
       - name: Validate codecov.yml
         if: steps.filter.outputs.codecov == 'true'
         run: |
-          curl --fail --data-binary @.codecov.yml https://codecov.io/validate || echo "Codecov config validation failed!"
+          if ! curl --fail --data-binary @.codecov.yml https://codecov.io/validate; then
+            echo " Codecov config validation failed!"
+            exit 1
+          fi
+          echo " Codecov config is valid"

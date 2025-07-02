@@ -12,41 +12,38 @@ jobs:
       - small
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4.1.1
-        with:
-          ref: ${{ github.event.pull_request.head.ref || github.sha }}
+    - name: Checkout code
+      uses: actions/checkout@v4.2.1  # Update version
+      with:
+        ref: ${{ github.event.pull_request.head.ref || github.sha }}
 
-      - name: Add Poetry to PATH
-        run: echo "/opt/poetry/bin" >> $GITHUB_PATH
+    - name: Add Poetry to PATH
+      run: |
+        if [ -d "/opt/poetry/bin" ]; then
+          echo "/opt/poetry/bin" >> $GITHUB_PATH
+        else
+          echo "Poetry not found in expected location" >&2
+          exit 1
+        fi
 
-      - name: Get Poetry cache dir
-        id: poetry-cache
-        run: echo "dir=$(poetry config cache-dir)" >> $GITHUB_OUTPUT
+    - name: Install system dependencies
+      run: |
+        sudo dnf install -y curl-devel openldap-devel libxml2-devel || {
+          echo "Failed to install system dependencies" >&2
+          exit 1
+        }
 
-      - name: Poetry cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.poetry-cache.outputs.dir }}
-          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-poetry-
+    - name: Poetry install
+      run: |
+        poetry config virtualenvs.create false
+        poetry install --with=dev --no-interaction
 
-      - name: Install system dependencies
-        run: |
-          sudo dnf install -y curl-devel openldap-devel libxml2-devel
+    - name: Verify Django install
+      run: poetry run python -m django --version
 
-      - name: Poetry install
-        run: |
-          poetry config virtualenvs.create false
-          poetry install --with=dev
-
-      - name: Verify Django install
-        run: poetry run python -m django --version
-
-      - name: Run makemigrations check
-        working-directory: ./src
-        env:
-          DJANGO_SETTINGS_MODULE: settings.development
-        run: |
-          poetry run python manage.py makemigrations --check --dry-run --noinput
+    - name: Run makemigrations check
+      working-directory: ./src
+      env:
+        DJANGO_SETTINGS_MODULE: settings.development
+      run: |
+        poetry run python manage.py makemigrations --check --dry-run --noinput

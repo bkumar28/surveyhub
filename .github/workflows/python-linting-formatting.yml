@@ -1,29 +1,36 @@
-name: Ruff Lint and Format
+name: Python Linting and Formatting
 
 on:
   pull_request:
-    branches:
-      - '*'
+    branches: ['*']
+    paths: ['**.py']
 
 jobs:
   ruff:
-    name: Run Ruff Linter & Formatter
+    name: Ruff Linter & Formatter
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4.2.1
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: '3.12'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ runner.os }}-${{ hashFiles('**/requirements*.txt', '**/pyproject.toml') }}
 
       - name: Install Ruff
         run: pip install ruff
 
       - name: Run Ruff linter
-        run: ruff check .
+        run: ruff check . --output-format=github
 
       - name: Run Ruff formatter check
         run: ruff format --check .
