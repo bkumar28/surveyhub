@@ -11,26 +11,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.1
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Cache pre-commit
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pre-commit
-          key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
+      - name: Disable Poetry virtualenv
+        run: poetry config virtualenvs.create false
 
-      - name: Check for pre-commit config
-        run: |
-          if [ ! -f .pre-commit-config.yaml ]; then
-            echo "Missing .pre-commit-config.yaml file"
-            exit 1
-          fi
+      - name: Install dependencies
+        run: poetry install --no-interaction --only dev
 
-      - uses: pre-commit/action@v3.0.1
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.1
