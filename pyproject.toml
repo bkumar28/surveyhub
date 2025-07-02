@@ -64,3 +64,4 @@ exclude = [".venv", "migrations", "settings"]
 
 [tool.ruff.lint]
 extend-select = ["F", "E", "W", "I", "UP", "N"]
+ignore = ["E501", "E402", "F403", "F405"]

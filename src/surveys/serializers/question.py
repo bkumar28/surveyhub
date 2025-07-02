@@ -1,6 +1,7 @@
-from core.api_message import EXTRA_FIELD_CONTAIN, REQUIRED_FIELD
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+
+from core.api_message import EXTRA_FIELD_CONTAIN, REQUIRED_FIELD
 from surveys.models.question import Question
 
 
