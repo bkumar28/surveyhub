@@ -8,11 +8,7 @@ on:
 jobs:
   pra-precommit:
     name: Pre-commit Hooks
-    runs-on:
-      - self-hosted
-      - ubuntu
-      - m7a-medium
-
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4.2.1
 
