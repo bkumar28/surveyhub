@@ -1,9 +1,6 @@
 name: PRA - Pre-Commit
 
-on:
-  workflow_call:
-  pull_request:
-    types: [opened, synchronize, reopened]
+on: pull_request
 
 jobs:
   pra-precommit:
