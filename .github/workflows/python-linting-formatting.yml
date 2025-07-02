@@ -1,6 +1,7 @@
 name: Python Linting and Formatting
 
 on:
+  workflow_call:  # Add this to make it reusable
   pull_request:
     branches: ['*']
     paths: ['**.py']

@@ -35,6 +35,7 @@ jobs:
         shell: bash
         run: |
           ${{ steps.get_actionlint.outputs.executable }} \
+            -config-file actionlint.yaml \
             -color \
             -ignore "SC2086" \
             -ignore "SC2155" \
