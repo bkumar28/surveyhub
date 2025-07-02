@@ -3,45 +3,48 @@ name: 011 Pull Request Analysis
 on:
   pull_request:
 
+# Top-level concurrency controls the entire workflow file
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  pull-request-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Analyze
+        run: echo "Running analysis..."
+
   pre-commit-checks:
-    name: Pre-commit Hooks
     uses: ./.github/workflows/pra-pre-commit.yml
+    name: Pre-commit Hooks
+    needs: pull-request-analysis
     secrets: inherit
-    concurrency:
-      group: migrations-${{ github.event.pull_request.number || github.sha }}
-      cancel-in-progress: true
 
   python-linting:
-    name: Python Linting
     uses: ./.github/workflows/python-linting-formatting.yml
+    name: Python Linting
+    needs: pull-request-analysis
     secrets: inherit
-    concurrency:
-      group: linting-${{ github.event.pull_request.number || github.sha }}
-      cancel-in-progress: true
 
   codecov-validation:
-    name: Codecov Validation
     uses: ./.github/workflows/codecov-validation.yml
+    name: Codecov Validation
+    needs: consolidated-unit-tests
     secrets: inherit
-    concurrency:
-      group: migrations-${{ github.event.pull_request.number || github.sha }}
-      cancel-in-progress: true
 
   check-migrations:
-    name: Check Migrations
     uses: ./.github/workflows/migrations.yaml
+    name: Check Migrations
+    needs: pre-commit-checks
     secrets: inherit
-    concurrency:
-      group: migrations-${{ github.event.pull_request.number || github.sha }}
-      cancel-in-progress: true
 
   consolidated-unit-tests:
-    name: Consolidated Unit Tests
     uses: ./.github/workflows/pra-backend-tests.yaml
+    name: Consolidated Unit Tests
     with:
       full-crypto-flag: false
+    needs: check-migrations
     secrets: inherit
-    concurrency:
-      group: unit-tests-${{ github.event.pull_request.number || github.sha }}
-      cancel-in-progress: true
