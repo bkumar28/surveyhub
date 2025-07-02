@@ -7,9 +7,8 @@ jobs:
   validate:
     name: Validate .codecov.yml
     runs-on:
-      - self-hosted
-      - oracle-linux-8
-      - small
+      - ubuntu-latest
+
     permissions: read-all
     steps:
       - name: Checkout repository

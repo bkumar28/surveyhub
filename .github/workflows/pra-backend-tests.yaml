@@ -17,9 +17,7 @@ jobs:
   pytest-pra:
     name: Consolidated Unit Tests
     runs-on:
-      - self-hosted
-      - oracle-linux-8
-      - m7a-2xlarge
+      - ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4.1.1
