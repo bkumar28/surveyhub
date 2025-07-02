@@ -6,42 +6,32 @@ on:
 jobs:
   check-migrations:
     name: Django Migration Check
-    runs-on:
-      - ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4.2.1  # Update version
-      with:
-        ref: ${{ github.event.pull_request.head.ref || github.sha }}
+      - name: Checkout code
+        uses: actions/checkout@v4.1.1
 
-    - name: Add Poetry to PATH
-      run: |
-        if [ -d "/opt/poetry/bin" ]; then
-          echo "/opt/poetry/bin" >> $GITHUB_PATH
-        else
-          echo "Poetry not found in expected location" >&2
-          exit 1
-        fi
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: false
+          virtualenvs-in-project: false
 
-    - name: Install system dependencies
-      run: |
-        sudo dnf install -y curl-devel openldap-devel libxml2-devel || {
-          echo "Failed to install system dependencies" >&2
-          exit 1
-        }
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libldap2-dev libsasl2-dev libxml2-dev libxmlsec1-dev
 
-    - name: Poetry install
-      run: |
-        poetry config virtualenvs.create false
-        poetry install --with=dev --no-interaction
+      - name: Install dependencies with Poetry
+        run: poetry install --with=dev --no-interaction
 
-    - name: Verify Django install
-      run: poetry run python -m django --version
+      - name: Verify Django install
+        run: poetry run python -m django --version
 
-    - name: Run makemigrations check
-      working-directory: ./src
-      env:
-        DJANGO_SETTINGS_MODULE: settings.development
-      run: |
-        poetry run python manage.py makemigrations --check --dry-run --noinput
+      - name: Run makemigrations check
+        working-directory: ./src
+        env:
+          DJANGO_SETTINGS_MODULE: settings.development
+        run: |
+          poetry run python manage.py makemigrations --check --dry-run --noinput
