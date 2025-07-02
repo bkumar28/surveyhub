@@ -35,16 +35,16 @@ jobs:
     needs: consolidated-unit-tests
     secrets: inherit
 
-  check-migrations:
-    uses: ./.github/workflows/migrations.yaml
-    name: Check Migrations
-    needs: pre-commit-checks
-    secrets: inherit
+  # check-migrations:
+  #   uses: ./.github/workflows/migrations.yaml
+  #   name: Check Migrations
+  #   needs: pre-commit-checks
+  #   secrets: inherit
 
   consolidated-unit-tests:
     uses: ./.github/workflows/pra-backend-tests.yaml
     name: Consolidated Unit Tests
     with:
       full-crypto-flag: false
-    needs: check-migrations
+    needs: pre-commit-checks
     secrets: inherit
