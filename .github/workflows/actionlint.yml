@@ -34,22 +34,13 @@ jobs:
       - name: Check workflow files
         shell: bash
         run: |
-          # Check if config file exists and use it, otherwise use ignore flags
-          if [ -f actionlint.yaml ]; then
-            echo "Using actionlint.yaml config file"
-            ${{ steps.get_actionlint.outputs.executable }} \
-              -config-file actionlint.yaml \
-              -color
-          else
-            echo "No config file found, using ignore flags"
-            ${{ steps.get_actionlint.outputs.executable }} \
-              -color \
-              -ignore "SC2086" \
-              -ignore "SC2155" \
-              -ignore "SC2002" \
-              -ignore "SC2129" \
-              -ignore "SC2046" \
-              -ignore "SC2016" \
-              -ignore "SC2034" \
-              -ignore "SC2005"
-          fi
+          ${{ steps.get_actionlint.outputs.executable }} \
+            -color \
+            -ignore "SC2086" \
+            -ignore "SC2155" \
+            -ignore "SC2002" \
+            -ignore "SC2129" \
+            -ignore "SC2046" \
+            -ignore "SC2016" \
+            -ignore "SC2034" \
+            -ignore "SC2005"

@@ -2,9 +2,6 @@ name: 011 Pull Request Analysis
 
 on:
   pull_request:
-  push:
-    branches:
-      - develop
 
 permissions:
   contents: read
