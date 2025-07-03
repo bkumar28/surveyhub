@@ -17,6 +17,7 @@ jobs:
   pytest-pra:
     name: Consolidated Unit Tests
     runs-on: ubuntu-latest
+
     services:
       postgres:
         image: postgres:15
@@ -42,7 +43,8 @@ jobs:
       DB_PORT: 5432
 
     steps:
-      - uses: actions/checkout@v4.1.1
+      - name: Checkout Code
+        uses: actions/checkout@v4.1.1
         with:
           ref: ${{ github.event.pull_request.head.ref || github.sha }}
 
@@ -51,31 +53,29 @@ jobs:
           echo "/opt/poetry/bin" >> $GITHUB_PATH
           echo "/usr/local/bin/" >> $GITHUB_PATH
 
-      - name: Get Poetry cache dir
+      - name: Cache Poetry
         id: poetry-cache
         run: echo "dir=$(poetry config cache-dir)" >> $GITHUB_OUTPUT
 
-      - name: Poetry cache
+      - name: Restore Poetry Cache
         uses: actions/cache@v4
         with:
           path: ${{ steps.poetry-cache.outputs.dir }}
           key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-poetry-
+          restore-keys: ${{ runner.os }}-poetry-
 
-      - name: Install system packages
+      - name: Install System Packages
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential libpq-dev
 
-      - name: Poetry install
+      - name: Install Dependencies
         run: |
           poetry config virtualenvs.create false
-          poetry config virtualenvs.options.system-site-packages true
           poetry install --with=dev
           poetry run pip install keyring pytest-xdist pytest-rerunfailures
 
-      - name: Ensure logs directory exists
+      - name: Ensure Logs Directory
         run: mkdir -p logs
 
       - name: Run Unit Tests with Coverage
@@ -85,7 +85,7 @@ jobs:
             --cov=src \
             --cov-config=src/.coveragerc \
             --cov-branch \
-            --cov-report=xml \
+            --cov-report=xml:coverage.xml \
             --cov-report=term \
             --showlocals \
             -W ignore::DeprecationWarning \
@@ -99,7 +99,7 @@ jobs:
             --reruns-delay 2 \
             | tee /tmp/pytest.log
 
-      - name: Upload Coverage Reports to Codecov
+      - name: Upload Coverage to Codecov
         if: always()
         uses: codecov/codecov-action@v4
         with:
@@ -107,4 +107,4 @@ jobs:
           flags: unittests
           name: codecov-coverage-report
           fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}  # Optional if public repo
+          token: ${{ secrets.CODECOV_TOKEN }} # Optional if public
