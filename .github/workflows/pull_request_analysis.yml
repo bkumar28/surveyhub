@@ -3,7 +3,6 @@ name: 011 Pull Request Analysis
 on:
   pull_request:
 
-# Top-level concurrency controls the entire workflow file
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -17,34 +16,28 @@ jobs:
       - name: Analyze
         run: echo "Running analysis..."
 
-  pre-commit-checks:
-    uses: ./.github/workflows/pra-pre-commit.yml
-    name: Pre-commit Hooks
-    needs: pull-request-analysis
-    secrets: inherit
-
-  python-linting:
-    uses: ./.github/workflows/python-linting-formatting.yml
-    name: Python Linting
+  python-quality:
+    uses: ./.github/workflows/python-quality.yml
+    name: Python Quality Checks
     needs: pull-request-analysis
     secrets: inherit
 
   codecov-validation:
     uses: ./.github/workflows/codecov-validation.yml
     name: Codecov Validation
-    needs: consolidated-unit-tests
+    needs: backend-tests
     secrets: inherit
 
-  # check-migrations:
-  #   uses: ./.github/workflows/migrations.yaml
-  #   name: Check Migrations
-  #   needs: pre-commit-checks
-  #   secrets: inherit
+  check-migrations:
+    uses: ./.github/workflows/migrations.yml
+    name: Check Migrations
+    needs: python-quality
+    secrets: inherit
 
-  consolidated-unit-tests:
-    uses: ./.github/workflows/pra-backend-tests.yaml
-    name: Consolidated Unit Tests
+  backend-tests:
+    uses: ./.github/workflows/backend-tests.yml
+    name: Backend Unit Tests
     with:
       full-crypto-flag: false
-    needs: pre-commit-checks
+    needs: python-quality
     secrets: inherit

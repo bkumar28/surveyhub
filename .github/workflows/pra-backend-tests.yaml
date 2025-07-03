@@ -1,4 +1,4 @@
-name: Consolidated Unit Tests
+name: Backend Unit Tests
 
 on:
   workflow_call:
@@ -14,9 +14,10 @@ defaults:
     shell: bash -eo pipefail {0}
 
 jobs:
-  pytest-pra:
-    name: Consolidated Unit Tests
+  backend-tests:
+    name: Backend Unit Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     services:
       postgres:
@@ -46,39 +47,26 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref || github.sha }}
 
-      - name: Add Poetry to PATH
-        run: |
-          echo "/opt/poetry/bin" >> $GITHUB_PATH
-          echo "/usr/local/bin/" >> $GITHUB_PATH
-
-      - name: Cache Poetry Directory
-        id: poetry-cache
-        run: |
-          echo "dir=$(poetry config cache-dir)" >> $GITHUB_OUTPUT
-
-      - name: Restore Poetry Cache
-        uses: actions/cache@v4
+      - name: Setup System Dependencies
+        uses: ./.github/actions/setup-system-deps
         with:
-          path: ${{ steps.poetry-cache.outputs.dir }}
-          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: ${{ runner.os }}-poetry-
+          packages: 'build-essential libpq-dev'
 
-      - name: Install System Packages
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential libpq-dev
+      - name: Setup Python & Poetry
+        uses: ./.github/actions/setup-python-poetry
+        with:
+          python-version: '3.12'
+          poetry-groups: '--with=dev'
+          cache-key-suffix: '-backend-tests'
 
-      - name: Install Dependencies
+      - name: Install additional test dependencies
         run: |
-          poetry config virtualenvs.create false
-          poetry install --with=dev
           poetry run pip install keyring pytest-xdist pytest-rerunfailures
 
       - name: Ensure Logs Directory
         run: mkdir -p logs
 
       - name: Run Unit Tests with Coverage
-        timeout-minutes: 30
         run: |
           PYTHONPATH=./src DJANGO_SETTINGS_MODULE=settings.development poetry run pytest \
             --cov=src \
@@ -109,4 +97,4 @@ jobs:
           flags: unittests
           name: codecov-coverage-report
           fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }} # Optional if public
+          token: ${{ secrets.CODECOV_TOKEN }}

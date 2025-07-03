@@ -7,24 +7,22 @@ jobs:
   check-migrations:
     name: Django Migration Check
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
+      - name: Setup System Dependencies
+        uses: ./.github/actions/setup-system-deps
         with:
-          virtualenvs-create: false
-          virtualenvs-in-project: false
+          packages: 'libcurl4-openssl-dev libldap2-dev libsasl2-dev libxml2-dev libxmlsec1-dev'
 
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libcurl4-openssl-dev libldap2-dev libsasl2-dev libxml2-dev libxmlsec1-dev
-
-      - name: Install dependencies with Poetry
-        run: poetry install --with=dev --no-interaction
+      - name: Setup Python & Poetry
+        uses: ./.github/actions/setup-python-poetry
+        with:
+          python-version: '3.12'
+          poetry-groups: '--with=dev'
 
       - name: Verify Django install
         run: poetry run python -m django --version

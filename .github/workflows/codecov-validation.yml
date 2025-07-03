@@ -7,13 +7,14 @@ jobs:
   validate-codecov-config:
     name: Validate .codecov.yml
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     permissions:
       contents: read
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4
 
       - name: Check if .codecov.yml exists
         run: |
