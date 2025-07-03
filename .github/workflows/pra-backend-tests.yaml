@@ -51,9 +51,10 @@ jobs:
           echo "/opt/poetry/bin" >> $GITHUB_PATH
           echo "/usr/local/bin/" >> $GITHUB_PATH
 
-      - name: Cache Poetry
+      - name: Cache Poetry Directory
         id: poetry-cache
-        run: echo "dir=$(poetry config cache-dir)" >> $GITHUB_OUTPUT
+        run: |
+          echo "dir=$(poetry config cache-dir)" >> $GITHUB_OUTPUT
 
       - name: Restore Poetry Cache
         uses: actions/cache@v4
@@ -79,13 +80,11 @@ jobs:
       - name: Run Unit Tests with Coverage
         timeout-minutes: 30
         run: |
-          PYTHONPATH=./src \
-          DJANGO_SETTINGS_MODULE=settings.development \
-          poetry run pytest \
+          PYTHONPATH=./src DJANGO_SETTINGS_MODULE=settings.development poetry run pytest \
             --cov=src \
             --cov-config=src/.coveragerc \
             --cov-branch \
-            --cov-report=xml \
+            --cov-report=xml:coverage.xml \
             src/ \
             --dist loadgroup \
             --numprocesses auto \
@@ -95,11 +94,18 @@ jobs:
             --reruns-delay 2 \
             | tee /tmp/pytest.log
 
+      - name: Debug coverage.xml existence
+        run: |
+          echo "Listing workspace directory:"
+          ls -la
+          echo "Displaying beginning of coverage.xml (if it exists):"
+          head -n 20 coverage.xml || echo "coverage.xml not found"
+
       - name: Upload Coverage to Codecov
         if: always()
         uses: codecov/codecov-action@v4
         with:
-          file: coverage.xml
+          file: ./coverage.xml
           flags: unittests
           name: codecov-coverage-report
           fail_ci_if_error: true
