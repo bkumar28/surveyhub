@@ -34,8 +34,6 @@ jobs:
           --health-retries=5
 
     env:
-      PYTHONPATH: ./src
-      DJANGO_SETTINGS_MODULE: settings.development
       DB_NAME: surveyhub
       DB_USER: postgres
       DB_PASSWORD: postgres
@@ -44,7 +42,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref || github.sha }}
 
@@ -81,16 +79,14 @@ jobs:
       - name: Run Unit Tests with Coverage
         timeout-minutes: 30
         run: |
+          PYTHONPATH=./src \
+          DJANGO_SETTINGS_MODULE=settings.development \
           poetry run pytest \
             --cov=src \
             --cov-config=src/.coveragerc \
             --cov-branch \
-            --cov-report=xml:coverage.xml \
-            --cov-report=term \
-            --showlocals \
-            -W ignore::DeprecationWarning \
-            ${{ (inputs.full-crypto-flag == true) && '--full-crypto' || '--no-full-crypto' }} \
-            ./src \
+            --cov-report=xml \
+            src/ \
             --dist loadgroup \
             --numprocesses auto \
             -v \
@@ -103,7 +99,7 @@ jobs:
         if: always()
         uses: codecov/codecov-action@v4
         with:
-          file: ./coverage.xml
+          file: coverage.xml
           flags: unittests
           name: codecov-coverage-report
           fail_ci_if_error: true
