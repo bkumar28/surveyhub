@@ -1,20 +1,13 @@
 name: Codecov Config Validation
 
 on:
-  pull_request:
-    paths:
-      - ".codecov.yml"
-  push:
-    branches:
-      - main
-      - develop
-    paths:
-      - ".codecov.yml"
+  workflow_call:
 
 jobs:
   validate-codecov-config:
-    name: Validate Codecov Configuration
+    name: Validate .codecov.yml
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
 
@@ -22,7 +15,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.1
 
-      - name: Validate .codecov.yml
+      - name: Check if .codecov.yml exists
+        run: |
+          if [ ! -f .codecov.yml ]; then
+            echo ".codecov.yml not found. Skipping validation."
+            exit 0
+          fi
+
+      - name: Validate .codecov.yml with Codecov API
         run: |
           echo "Validating .codecov.yml..."
           result=$(curl --silent --fail --data-binary @.codecov.yml https://codecov.io/validate)
@@ -33,3 +33,4 @@ jobs:
             exit 1
           else
             echo "Codecov config is valid"
+          fi
