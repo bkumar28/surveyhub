@@ -36,10 +36,10 @@ jobs:
           echo "$result"
 
           if echo "$result" | grep -q '"status": "error"'; then
-            echo " Codecov config validation failed!"
+            echo "Codecov config validation failed!"
             exit 1
           else
-            echo " Codecov config is valid"
+            echo "Codecov config is valid"
           fi
 
   upload-coverage:
@@ -49,6 +49,21 @@ jobs:
     permissions:
       contents: read
       id-token: write
+
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: testdb
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -68,11 +83,17 @@ jobs:
       - name: Install dependencies using Poetry
         run: poetry install --with=dev
 
-      - name: Run tests with coverage
+      - name: Run migrations and tests with coverage
         working-directory: ./src
         env:
           DJANGO_SETTINGS_MODULE: settings.development
+          DB_NAME: testdb
+          DB_USER: testuser
+          DB_PASSWORD: testpass
+          DB_HOST: localhost
+          DB_PORT: 5432
         run: |
+          poetry run python manage.py migrate
           poetry run pytest --cov=your_app_name --cov-report=xml
 
       - name: Upload coverage to Codecov
