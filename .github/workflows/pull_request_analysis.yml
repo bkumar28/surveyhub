@@ -23,19 +23,19 @@ jobs:
     secrets: inherit
 
   codecov-validation:
-    uses: ./.github/workflows/codecov-validation.yml
+    uses: ./.github/workflows/codecov-validation.yaml
     name: Codecov Validation
-    needs: backend-tests
+    needs: pra-backend-tests
     secrets: inherit
 
   check-migrations:
-    uses: ./.github/workflows/migrations.yml
+    uses: ./.github/workflows/migrations.yaml
     name: Check Migrations
     needs: python-quality
     secrets: inherit
 
-  backend-tests:
-    uses: ./.github/workflows/backend-tests.yml
+  pra-backend-tests:
+    uses: ./.github/workflows/pra-backend-tests.yaml
     name: Backend Unit Tests
     with:
       full-crypto-flag: false
