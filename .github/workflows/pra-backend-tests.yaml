@@ -16,8 +16,30 @@ defaults:
 jobs:
   pytest-pra:
     name: Consolidated Unit Tests
-    runs-on:
-      - ubuntu-latest
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: surveyhub
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      PYTHONPATH: ./src
+      DJANGO_SETTINGS_MODULE: settings.development
+      DB_NAME: surveyhub
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: localhost
+      DB_PORT: 5432
 
     steps:
       - uses: actions/checkout@v4.1.1
@@ -37,27 +59,31 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.poetry-cache.outputs.dir }}
-          key: ${{ runner.os }}-el8-poetry-${{ hashFiles('**/poetry.lock') }}
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
           restore-keys: |
-            ${{ runner.os }}-el8-poetry-
+            ${{ runner.os }}-poetry-
 
-      - name: Install system packages (if needed)
+      - name: Install system packages
         run: |
-          sudo dnf install -y curl-devel openldap-devel libxml2-devel
+          sudo apt-get update
+          sudo apt-get install -y build-essential libpq-dev
 
       - name: Poetry install
         run: |
           poetry config virtualenvs.create false
           poetry config virtualenvs.options.system-site-packages true
           poetry install --with=dev
-          poetry run pip install keyring pytest-xdist pytest-rerunfailures rerun
+          poetry run pip install keyring pytest-xdist pytest-rerunfailures
+
+      - name: Ensure logs directory exists
+        run: mkdir -p logs
 
       - name: Run Unit Tests with Coverage
-        timeout-minutes: 30  # Add timeout protection
+        timeout-minutes: 30
         run: |
           poetry run pytest \
-            --cov='src/' \
-            --cov-config='src/.coveragerc' \
+            --cov=src \
+            --cov-config=src/.coveragerc \
             --cov-branch \
             --cov-report=xml \
             --cov-report=term \
@@ -73,9 +99,12 @@ jobs:
             --reruns-delay 2 \
             | tee /tmp/pytest.log
 
-      - name: Upload Coverage Reports
+      - name: Upload Coverage Reports to Codecov
         if: always()
         uses: codecov/codecov-action@v4
         with:
           file: ./coverage.xml
+          flags: unittests
+          name: codecov-coverage-report
           fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}  # Optional if public repo
