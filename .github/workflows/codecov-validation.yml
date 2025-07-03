@@ -1,18 +1,20 @@
 name: Codecov Config Validation
 
 on:
-  workflow_call:
   pull_request:
+    paths:
+      - ".codecov.yml"
   push:
     branches:
       - main
       - develop
+    paths:
+      - ".codecov.yml"
 
 jobs:
   validate-codecov-config:
     name: Validate Codecov Configuration
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
 
@@ -20,16 +22,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4.1.1
 
-      - name: Check if .codecov.yml changed
-        uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            codecov:
-              - '.codecov.yml'
-
       - name: Validate .codecov.yml
-        if: steps.filter.outputs.codecov == 'true'
         run: |
           echo "Validating .codecov.yml..."
           result=$(curl --silent --fail --data-binary @.codecov.yml https://codecov.io/validate)
