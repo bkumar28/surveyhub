@@ -1,0 +1,100 @@
+name: Backend Unit Tests
+
+on:
+  workflow_call:
+    inputs:
+      full-crypto-flag:
+        description: 'Run all unit tests with full crypto enabled'
+        type: boolean
+        default: false
+        required: false
+
+defaults:
+  run:
+    shell: bash -eo pipefail {0}
+
+jobs:
+  backend-tests:
+    name: Backend Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: surveyhub
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.sha }}
+
+      - name: Setup System Dependencies
+        uses: ./.github/actions/setup-system-deps
+        with:
+          packages: 'build-essential libpq-dev'
+
+      - name: Setup Python & Poetry
+        uses: ./.github/actions/setup-python-poetry
+        with:
+          python-version: '3.12'
+          poetry-groups: '--with=dev'
+          cache-key-suffix: '-backend-tests'
+
+      - name: Set CI Environment Variables
+        uses: ./.github/actions/set-ci-env-vars
+        with:
+          django-settings: 'settings.development'
+
+      - name: Install additional test dependencies
+        run: |
+          poetry run pip install keyring pytest-xdist pytest-rerunfailures
+
+      - name: Ensure Logs Directory
+        run: mkdir -p logs
+
+      - name: Run Unit Tests with Coverage
+        run: |
+          echo "Running tests using DB: $DB_NAME at $DB_HOST"
+          PYTHONPATH=./src poetry run pytest \
+            --ds=$DJANGO_SETTINGS_MODULE \
+            --cov=src \
+            --cov-config=src/.coveragerc \
+            --cov-branch \
+            --cov-report=xml:coverage.xml \
+            src/ \
+            --dist loadgroup \
+            --numprocesses auto \
+            -v \
+            --tb=long \
+            --reruns 3 \
+            --reruns-delay 2 \
+            | tee /tmp/pytest.log
+
+      - name: Debug coverage.xml existence
+        run: |
+          echo "Listing workspace directory:"
+          ls -la
+          echo "Displaying beginning of coverage.xml (if it exists):"
+          head -n 20 coverage.xml || echo "coverage.xml not found"
+
+      - name: Upload Coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-coverage-report
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}

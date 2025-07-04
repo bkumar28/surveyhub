@@ -1,5 +1,8 @@
 import uuid
 
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
 from core.api_message import (
     INVALID_ANS_NUMBER_VALUE,
     INVALID_SURVEY_INVITATION_ID,
@@ -7,8 +10,6 @@ from core.api_message import (
     NOT_ALLOW_BLANK_VALUE,
     REQUIRED_FIELD,
 )
-from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 from surveys.models.answer import Answer
 from surveys.models.survey import Survey
 from surveys.serializers.common import UserViewSerializer

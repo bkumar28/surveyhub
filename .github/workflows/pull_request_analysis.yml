@@ -1,0 +1,43 @@
+name: Pull Request Analysis
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pull-request-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Analyze
+        run: echo "Running analysis..."
+
+  codecov-validation:
+    uses: ./.github/workflows/codecov-validation.yaml
+    name: Codecov Validation
+    needs: pull-request-analysis
+    secrets: inherit
+
+  python-quality:
+    uses: ./.github/workflows/python-quality.yml
+    name: Python Quality Checks
+    needs: codecov-validation
+    secrets: inherit
+
+  check-migrations:
+    uses: ./.github/workflows/migrations.yaml
+    name: Check Migrations
+    needs: python-quality
+    secrets: inherit
+
+  pra-backend-tests:
+    uses: ./.github/workflows/pra-backend-tests.yaml
+    name: Backend Unit Tests
+    with:
+      full-crypto-flag: false
+    needs: python-quality
+    secrets: inherit
