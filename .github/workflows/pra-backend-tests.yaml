@@ -34,13 +34,6 @@ jobs:
           --health-timeout=5s
           --health-retries=5
 
-    env:
-      DB_NAME: surveyhub
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_HOST: localhost
-      DB_PORT: 5432
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -59,6 +52,11 @@ jobs:
           poetry-groups: '--with=dev'
           cache-key-suffix: '-backend-tests'
 
+      - name: Set CI Environment Variables
+        uses: ./.github/actions/set-ci-env-vars
+        with:
+          django-settings: 'settings.development'
+
       - name: Install additional test dependencies
         run: |
           poetry run pip install keyring pytest-xdist pytest-rerunfailures
@@ -68,7 +66,9 @@ jobs:
 
       - name: Run Unit Tests with Coverage
         run: |
-          PYTHONPATH=./src DJANGO_SETTINGS_MODULE=settings.development poetry run pytest \
+          echo "Running tests using DB: $DB_NAME at $DB_HOST"
+          PYTHONPATH=./src poetry run pytest \
+            --ds=$DJANGO_SETTINGS_MODULE \
             --cov=src \
             --cov-config=src/.coveragerc \
             --cov-branch \

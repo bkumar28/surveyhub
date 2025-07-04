@@ -7,7 +7,23 @@ jobs:
   check-migrations:
     name: Django Migration Check
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
+    environment: testing
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: surveyhub
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
       - name: Checkout code
@@ -16,7 +32,7 @@ jobs:
       - name: Setup System Dependencies
         uses: ./.github/actions/setup-system-deps
         with:
-          packages: 'libcurl4-openssl-dev libldap2-dev libsasl2-dev libxml2-dev libxmlsec1-dev'
+          packages: 'libcurl4-openssl-dev libldap2-dev libsasl2-dev libxml2-dev libxmlsec1-dev libpq-dev'
 
       - name: Setup Python & Poetry
         uses: ./.github/actions/setup-python-poetry
@@ -24,12 +40,28 @@ jobs:
           python-version: '3.12'
           poetry-groups: '--with=dev'
 
+      - name: Setup Environment Variables from CI Action
+        uses: ./.github/actions/setup-ci-env
+        with:
+          database-url: 'postgres://postgres:postgres@localhost:5432/surveyhub'
+          django-settings: 'settings.development'
+
+      - name: Wait for PostgreSQL
+        run: |
+          until pg_isready -h localhost -p 5432 -U $DB_USER; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
+
       - name: Verify Django install
         run: poetry run python -m django --version
 
       - name: Run makemigrations check
         working-directory: ./src
-        env:
-          DJANGO_SETTINGS_MODULE: settings.development
         run: |
           poetry run python manage.py makemigrations --check --dry-run --noinput
+
+      - name: Test migrations can be applied
+        working-directory: ./src
+        run: |
+          poetry run python manage.py migrate --noinput

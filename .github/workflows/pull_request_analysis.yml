@@ -1,4 +1,4 @@
-name: 011 Pull Request Analysis
+name: Pull Request Analysis
 
 on:
   pull_request:
@@ -16,16 +16,16 @@ jobs:
       - name: Analyze
         run: echo "Running analysis..."
 
-  python-quality:
-    uses: ./.github/workflows/python-quality.yml
-    name: Python Quality Checks
-    needs: pull-request-analysis
-    secrets: inherit
-
   codecov-validation:
     uses: ./.github/workflows/codecov-validation.yaml
     name: Codecov Validation
-    needs: pra-backend-tests
+    needs: pull-request-analysis
+    secrets: inherit
+
+  python-quality:
+    uses: ./.github/workflows/python-quality.yml
+    name: Python Quality Checks
+    needs: codecov-validation
     secrets: inherit
 
   check-migrations:
