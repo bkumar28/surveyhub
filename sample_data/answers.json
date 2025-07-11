@@ -1,0 +1,752 @@
+[
+  {
+    "model": "surveys.answer",
+    "pk": 1,
+    "fields": {
+      "response": 1,
+      "question": 1,
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:05:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 2,
+    "fields": {
+      "response": 2,
+      "question": 2,
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:06:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 3,
+    "fields": {
+      "response": 3,
+      "question": 3,
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:07:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 4,
+    "fields": {
+      "response": 4,
+      "question": 4,
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:08:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 5,
+    "fields": {
+      "response": 5,
+      "question": 5,
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:09:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 6,
+    "fields": {
+      "response": 6,
+      "question": 6,
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:10:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 7,
+    "fields": {
+      "response": 7,
+      "question": 7,
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:11:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 8,
+    "fields": {
+      "response": 8,
+      "question": 8,
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:12:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 9,
+    "fields": {
+      "response": 9,
+      "question": 9,
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:13:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 10,
+    "fields": {
+      "response": 10,
+      "question": 10,
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:14:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 11,
+    "fields": {
+      "response": 1,
+      "question": 11,
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:15:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 12,
+    "fields": {
+      "response": 2,
+      "question": 12,
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:16:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 13,
+    "fields": {
+      "response": 3,
+      "question": 13,
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:17:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 14,
+    "fields": {
+      "response": 4,
+      "question": 14,
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:18:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 15,
+    "fields": {
+      "response": 5,
+      "question": 15,
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:19:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 16,
+    "fields": {
+      "response": 6,
+      "question": 16,
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:20:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 17,
+    "fields": {
+      "response": 7,
+      "question": 17,
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:21:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 18,
+    "fields": {
+      "response": 8,
+      "question": 18,
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:22:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 19,
+    "fields": {
+      "response": 9,
+      "question": 19,
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:23:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 20,
+    "fields": {
+      "response": 10,
+      "question": 20,
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:24:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 21,
+    "fields": {
+      "response": 1,
+      "question": 21,
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:25:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 22,
+    "fields": {
+      "response": 2,
+      "question": 22,
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:26:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 23,
+    "fields": {
+      "response": 3,
+      "question": 23,
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:27:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 24,
+    "fields": {
+      "response": 4,
+      "question": 24,
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:28:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 25,
+    "fields": {
+      "response": 5,
+      "question": 25,
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:29:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 26,
+    "fields": {
+      "response": 6,
+      "question": 26,
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:30:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 27,
+    "fields": {
+      "response": 7,
+      "question": 27,
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:31:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 28,
+    "fields": {
+      "response": 8,
+      "question": 28,
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:32:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 29,
+    "fields": {
+      "response": 9,
+      "question": 29,
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:33:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 30,
+    "fields": {
+      "response": 10,
+      "question": 30,
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:34:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 31,
+    "fields": {
+      "response": 1,
+      "question": 31,
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:35:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 32,
+    "fields": {
+      "response": 2,
+      "question": 32,
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:36:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 33,
+    "fields": {
+      "response": 3,
+      "question": 33,
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:37:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 34,
+    "fields": {
+      "response": 4,
+      "question": 34,
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:38:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 35,
+    "fields": {
+      "response": 5,
+      "question": 35,
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:39:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 36,
+    "fields": {
+      "response": 6,
+      "question": 36,
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:40:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 37,
+    "fields": {
+      "response": 7,
+      "question": 37,
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:41:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 38,
+    "fields": {
+      "response": 8,
+      "question": 38,
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:42:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 39,
+    "fields": {
+      "response": 9,
+      "question": 39,
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:43:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 40,
+    "fields": {
+      "response": 10,
+      "question": 40,
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:44:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 41,
+    "fields": {
+      "response": 1,
+      "question": 41,
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:45:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 42,
+    "fields": {
+      "response": 2,
+      "question": 42,
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:46:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 43,
+    "fields": {
+      "response": 3,
+      "question": 43,
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:47:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 44,
+    "fields": {
+      "response": 4,
+      "question": 44,
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:48:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 45,
+    "fields": {
+      "response": 5,
+      "question": 45,
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:49:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 46,
+    "fields": {
+      "response": 6,
+      "question": 46,
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:50:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 47,
+    "fields": {
+      "response": 7,
+      "question": 47,
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:51:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 48,
+    "fields": {
+      "response": 8,
+      "question": 48,
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:52:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 49,
+    "fields": {
+      "response": 9,
+      "question": 49,
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:53:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": 50,
+    "fields": {
+      "response": 10,
+      "question": 50,
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:54:00Z"
+    }
+  }
+]
