@@ -1,4 +1,5 @@
-name: Release on Merge to Main
+# .github/workflows/main-release.yaml
+name: Production Release on main merge
 
 on:
   pull_request:
@@ -7,31 +8,21 @@ on:
     types:
       - closed
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  create-release:
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' && github.event.pull_request.head.ref == 'develop'
-    name: Create Release and Tag
+  release:
+    if: github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'develop'
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Required for creating releases and pushing tags
+      contents: write
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Set up Git
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
 
       - name: Generate release tag
         id: tag
         run: |
-          VERSION="v$(date +'%Y.%m.%d.%H%M%S')"
+          VERSION="v$(date +'%Y.%m.%d-%H%M%S')"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Create Git tag
@@ -44,6 +35,6 @@ jobs:
         with:
           tag_name: ${{ steps.tag.outputs.version }}
           name: Release ${{ steps.tag.outputs.version }}
-          body: "Automated release after merging develop into main"
+          body: "Production release from develop"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
