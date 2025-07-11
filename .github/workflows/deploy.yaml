@@ -1,13 +1,13 @@
 name: Deploy to Dev on PR Merge
 
-#   This workflow deploys the application to the development environment when a pull request is merged into the main branch.
-#   It includes code analysis, code coverage validation, quality checks, migration checks, and backend unit tests.
+# This workflow runs only when a pull request is merged into the 'develop' branch
 
 on:
-  push:
+  pull_request:
     branches:
-      - main
       - develop
+    types:
+      - closed
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -15,27 +15,31 @@ concurrency:
 
 jobs:
   deploy-to-testing:
+    if: github.event.pull_request.merged == true
     name: Deploy to Testing Environment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref || github.sha }}
+          ref: ${{ github.event.pull_request.head.ref }}
 
   code-quality:
+    if: github.event.pull_request.merged == true
     uses: ./.github/workflows/code-quality.yaml
     name: Code Quality Checks
     needs: deploy-to-testing
     secrets: inherit
 
   check-migrations:
+    if: github.event.pull_request.merged == true
     uses: ./.github/workflows/migrations.yaml
     name: Migration Checks
     needs: code-quality
     secrets: inherit
 
   pra-backend-tests:
+    if: github.event.pull_request.merged == true
     uses: ./.github/workflows/pra-backend-tests.yaml
     name: Backend Unit Tests
     with:
