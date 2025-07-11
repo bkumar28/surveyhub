@@ -1,0 +1,41 @@
+# .github/workflows/develop-release.yaml
+name: Pre-release on develop merge
+
+on:
+  pull_request:
+    branches:
+      - develop
+    types:
+      - closed
+
+jobs:
+  pre-release:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate pre-release tag
+        id: tag
+        run: |
+          VERSION="v$(date +'%Y.%m.%d-%H%M%S')-beta"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create Git tag
+        run: |
+          git tag ${{ steps.tag.outputs.version }}
+          git push origin ${{ steps.tag.outputs.version }}
+
+      - name: Create GitHub Pre-Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.version }}
+          name: Pre-Release ${{ steps.tag.outputs.version }}
+          prerelease: true
+          body: "Staging release from develop"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
