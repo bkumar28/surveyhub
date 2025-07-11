@@ -1,0 +1,130 @@
+[
+  {
+    "model": "templates.surveytemplate",
+    "pk": 1,
+    "fields": {
+      "name": "Customer Feedback Survey Template",
+      "description": "A template for customer feedback surveys.",
+      "category": 1,
+      "tags": ["feedback", "customer"],
+      "is_public": true,
+      "created_by": 1,
+      "created_at": "2025-07-11T10:00:00Z",
+      "usage_count": 10,
+      "template_data": {"questions": ["How satisfied are you?", "Any suggestions?"]},
+      "preview_image": null
+    }
+  },
+  {
+    "model": "templates.surveytemplate",
+    "pk": 2,
+    "fields": {
+      "name": "Market Research Survey Template",
+      "description": "A template for market research surveys.",
+      "category": 2,
+      "tags": ["research", "market"],
+      "is_public": false,
+      "created_by": 1,
+      "created_at": "2025-07-11T10:10:00Z",
+      "usage_count": 5,
+      "template_data": {"questions": ["What is your age group?", "What products do you use?"]},
+      "preview_image": null
+    }
+  },
+  {
+    "model": "templates.surveytemplate",
+    "pk": 3,
+    "fields": {
+      "name": "HR Survey Template",
+      "description": "A template for HR-related surveys.",
+      "category": 3,
+      "tags": ["hr", "employee"],
+      "is_public": true,
+      "created_by": 1,
+      "created_at": "2025-07-11T10:20:00Z",
+      "usage_count": 7,
+      "template_data": {"questions": ["How do you rate your work environment?", "Suggestions for HR?"]},
+      "preview_image": null
+    }
+  },
+  {
+    "model": "templates.surveytemplate",
+    "pk": 4,
+    "fields": {
+      "name": "Education Survey Template",
+      "description": "A template for education feedback surveys.",
+      "category": 4,
+      "tags": ["education", "student"],
+      "is_public": true,
+      "created_by": 1,
+      "created_at": "2025-07-11T10:30:00Z",
+      "usage_count": 8,
+      "template_data": {"questions": ["How do you rate the course?", "Any improvements?"]},
+      "preview_image": null
+    }
+  },
+  {
+    "model": "templates.surveytemplate",
+    "pk": 5,
+    "fields": {
+      "name": "Healthcare Survey Template",
+      "description": "A template for healthcare feedback surveys.",
+      "category": 5,
+      "tags": ["healthcare", "patient"],
+      "is_public": false,
+      "created_by": 1,
+      "created_at": "2025-07-11T10:40:00Z",
+      "usage_count": 6,
+      "template_data": {"questions": ["How was your experience?", "Rate the staff."]},
+      "preview_image": null
+    }
+  },
+  {
+    "model": "templates.surveytemplate",
+    "pk": 6,
+    "fields": {
+      "name": "Event Feedback Survey Template",
+      "description": "A template for event feedback surveys.",
+      "category": 6,
+      "tags": ["event", "feedback"],
+      "is_public": true,
+      "created_by": 1,
+      "created_at": "2025-07-11T10:50:00Z",
+      "usage_count": 4,
+      "template_data": {"questions": ["How did you hear about the event?", "Rate the event."]},
+      "preview_image": null
+    }
+  },
+  {
+    "model": "templates.surveytemplate",
+    "pk": 7,
+    "fields": {
+      "name": "Product Evaluation Survey Template",
+      "description": "A template for product evaluation surveys.",
+      "category": 7,
+      "tags": ["product", "evaluation"],
+      "is_public": false,
+      "created_by": 1,
+      "created_at": "2025-07-11T11:00:00Z",
+      "usage_count": 3,
+      "template_data": {"questions": ["How do you rate the product?", "Would you recommend it?"]},
+      "preview_image": null
+    }
+  },
+  {
+    "model": "templates.surveytemplate",
+    "pk": 8,
+    "fields": {
+      "name": "General Purpose Survey Template",
+      "description": "A template for general purpose surveys.",
+      "category": 8,
+      "tags": ["general", "purpose"],
+      "is_public": true,
+      "created_by": 1,
+      "created_at": "2025-07-11T11:10:00Z",
+      "usage_count": 2,
+      "template_data": {"questions": ["What would you like to share?", "Any comments?"]},
+      "preview_image": null
+    }
+  }
+]
