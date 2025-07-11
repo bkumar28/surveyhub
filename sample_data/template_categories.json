@@ -1,0 +1,82 @@
+[
+  {
+    "model": "templates.templatecategory",
+    "pk": 1,
+    "fields": {
+      "name": "FEEDBACK",
+      "description": "Customer Feedback",
+      "icon": "feedback",
+      "order": 1
+    }
+  },
+  {
+    "model": "templates.templatecategory",
+    "pk": 2,
+    "fields": {
+      "name": "RESEARCH",
+      "description": "Market Research",
+      "icon": "research",
+      "order": 2
+    }
+  },
+  {
+    "model": "templates.templatecategory",
+    "pk": 3,
+    "fields": {
+      "name": "HR",
+      "description": "Human Resources",
+      "icon": "hr",
+      "order": 3
+    }
+  },
+  {
+    "model": "templates.templatecategory",
+    "pk": 4,
+    "fields": {
+      "name": "EDUCATION",
+      "description": "Education",
+      "icon": "education",
+      "order": 4
+    }
+  },
+  {
+    "model": "templates.templatecategory",
+    "pk": 5,
+    "fields": {
+      "name": "HEALTHCARE",
+      "description": "Healthcare",
+      "icon": "healthcare",
+      "order": 5
+    }
+  },
+  {
+    "model": "templates.templatecategory",
+    "pk": 6,
+    "fields": {
+      "name": "EVENT",
+      "description": "Event Feedback",
+      "icon": "event",
+      "order": 6
+    }
+  },
+  {
+    "model": "templates.templatecategory",
+    "pk": 7,
+    "fields": {
+      "name": "PRODUCT",
+      "description": "Product Evaluation",
+      "icon": "product",
+      "order": 7
+    }
+  },
+  {
+    "model": "templates.templatecategory",
+    "pk": 8,
+    "fields": {
+      "name": "GENERAL",
+      "description": "General Purpose",
+      "icon": "general",
+      "order": 8
+    }
+  }
+]
