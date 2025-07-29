@@ -1,0 +1,2951 @@
+/* ========================================
+   SURVEYHUB - MAIN CSS STYLESHEET
+   Professional design
+   ======================================== */
+
+/* ========================================
+   TABLE OF CONTENTS
+
+   1. CSS Variables & Root Styles
+   2. Base & Reset Styles
+   3. Layout Structure
+   4. Sidebar Styles
+   5. Navigation Bar
+   6. Typography
+   7. Buttons & Form Controls
+   8. Avatars & Indicators
+   9. Lists & Tables
+   10. Component Styles
+   11. Dropdown Enhancements
+   12. Form Responsiveness
+   13. DataTable Enhancements
+   14. Utility Classes
+   15. Footer Styles
+   16. Media Queries & Responsive Design
+   17. Print Styles
+   ======================================== */
+
+/* ========================================
+   1. CSS VARIABLES & ROOT STYLES
+   ======================================== */
+:root {
+  /* Color System */
+  --bs-blue: #3b7ddd;
+  --bs-indigo: #6610f2;
+  --bs-purple: #6f42c1;
+  --bs-pink: #e83e8c;
+  --bs-red: #dc3545;
+  --bs-orange: #fd7e14;
+  --bs-yellow: #fcb92c;
+  --bs-green: #1cbb8c;
+  --bs-teal: #20c997;
+  --bs-cyan: #17a2b8;
+  --bs-white: #fff;
+  --bs-gray: #6c757d;
+  --bs-gray-dark: #343a40;
+  --bs-gray-100: #f8f9fa;
+  --bs-gray-200: #e9ecef;
+  --bs-gray-300: #dee2e6;
+  --bs-gray-400: #ced4da;
+  --bs-gray-500: #adb5bd;
+  --bs-gray-600: #6c757d;
+  --bs-gray-700: #495057;
+  --bs-gray-800: #343a40;
+  --bs-gray-900: #212529;
+  --bs-primary: #3b7ddd;
+  --bs-secondary: #6c757d;
+  --bs-success: #1cbb8c;
+  --bs-info: #17a2b8;
+  --bs-warning: #fcb92c;
+  --bs-danger: #dc3545;
+  --bs-light: #f5f7fb;
+  --bs-dark: #212529;
+
+  /* Theme Colors */
+  --sidebar-bg: #222e3c;
+  --sidebar-color: #a6b5c9;
+  --sidebar-color-active: var(--bs-white);
+  --sidebar-brand-color: var(--bs-white);
+  --content-bg: #f5f7fb;
+  --navbar-bg: #ffffff;
+  --card-bg: #ffffff;
+  --footer-bg: #ffffff;
+  --border-color: var(--rgba-sidebar-transparent);
+  --box-shadow: 0 0.75rem 1.5rem var(--rgba-dark-shadow-light);
+  --box-shadow-sm: 0 0.125rem 0.25rem var(--rgba-sidebar-shadow);
+  --box-shadow-lg: 0 1rem 3rem var(--rgba-primary-shadow);
+
+  /* Typography */
+  --font-family-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-size-base: 0.875rem;
+  --font-size-sm: 0.75rem;
+  --font-size-lg: 1rem;
+  --line-height-base: 1.5;
+
+  /* Spacing */
+  --spacer: 1rem;
+  --spacer-1: 0.25rem;
+  --spacer-2: 0.5rem;
+  --spacer-3: 1rem;
+  --spacer-4: 1.5rem;
+  --spacer-5: 3rem;
+
+  /* Border Radius */
+  --border-radius: 0.375rem;
+  --border-radius-sm: 0.25rem;
+  --border-radius-lg: 0.5rem;
+
+  /* Sidebar */
+  --sidebar-width: 260px;
+  --sidebar-width-collapsed: 80px;
+
+  /* Button Hover Colors */
+  --bs-primary-hover: #326abc;
+  --bs-success-hover: #169c70;
+  --bs-danger-hover: #b02a37;
+  --bs-secondary-hover: #565e64;
+  --bs-info-hover: #117a8b;
+  --bs-warning-hover: #d39e00;
+
+  /* Additional Theme Variables */
+  --primary-text: #495057;
+  --border-muted: #dee2e6;
+  --light-background: #f8f9fa;
+  --background: #ffffff;
+  --avatar-bg: var(--bs-primary);
+  --avatar-color: var(--bs-white);
+  --avatar-hover-bg: var(--bs-primary-hover);
+
+  /* Scrollbar Colors */
+  --scrollbar-track: #f1f1f1;
+  --scrollbar-thumb: #c1c1c1;
+  --scrollbar-thumb-hover: #a8a8a8;
+
+  /* Shadow RGBA Variables */
+  --rgba-primary-shadow: rgba(59, 125, 221, 0.25);
+  --rgba-dark-shadow-light: rgba(0, 0, 0, 0.05);
+  --rgba-dark-shadow-medium: rgba(0, 0, 0, 0.1);
+  --rgba-dark-shadow-heavy: rgba(0, 0, 0, 0.15);
+  --rgba-white-transparent-sm: rgba(255, 255, 255, 0.075);
+  --rgba-white-transparent-md: rgba(255, 255, 255, 0.1);
+  --rgba-primary-transparent: rgba(28, 187, 140, 0.1);
+  --rgba-sidebar-transparent: rgba(34, 46, 60, 0.075);
+  --rgba-sidebar-shadow: rgba(34, 46, 60, 0.05);
+}
+
+/* ========================================
+   2. BASE & RESET STYLES
+   ======================================== */
+*, ::after, ::before {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: visible !important; /* Changed to ensure dropdowns aren't clipped */
+  max-width: 100vw;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+body {
+  font-family: var(--font-family-sans-serif);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--primary-text);
+  background-color: var(--content-bg) !important;
+  margin: 0;
+  padding: 0;
+  overflow: visible !important; /* Changed to ensure dropdowns aren't clipped */
+  text-align: left;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  max-width: 100vw;
+}
+
+/* Scrollbar Styling */
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* ========================================
+   3. LAYOUT STRUCTURE
+   ======================================== */
+.wrapper {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background: transparent;
+  overflow: visible; /* Changed from hidden to visible for dropdowns */
+  max-width: 100vw;
+  position: relative; /* Create a stacking context */
+}
+
+.container-fluid {
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * .5);
+  padding-left: calc(var(--bs-gutter-x) * .5);
+  margin-right: auto;
+  margin-left: auto;
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+}
+
+.p-0 {
+  padding: 0 !important;
+}
+
+/* ========================================
+   4. SIDEBAR STYLES
+   ======================================== */
+.sidebar {
+  width: var(--sidebar-width);
+  min-height: 100vh;
+  background-color: var(--sidebar-bg);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease-in-out;
+}
+
+.sidebar-header {
+  padding: 0 1.5rem;
+  border-bottom: 1px solid var(--rgba-white-transparent-md);
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-brand {
+  text-decoration: none;
+  color: var(--sidebar-brand-color);
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.sidebar-brand:hover {
+  color: var(--sidebar-brand-color);
+  text-decoration: none;
+}
+
+.sidebar-brand h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+/* Sidebar brand visibility control for collapsed state */
+.sidebar-brand-full {
+  display: block;
+}
+
+.sidebar-brand-collapsed {
+  display: none !important;
+}
+
+/* When sidebar is collapsed, show abbreviated brand */
+.sidebar.collapsed .sidebar-brand-full {
+  display: none !important;
+}
+
+.sidebar.collapsed .sidebar-brand-collapsed {
+  display: block !important;
+}
+
+/* Center the collapsed brand text to match menu icons */
+.sidebar.collapsed .sidebar-brand {
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar.collapsed .sidebar-brand h2 {
+  text-align: center;
+  width: 100%;
+}
+
+/* Remove horizontal padding from sidebar header when collapsed */
+.sidebar.collapsed .sidebar-header {
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0;
+  font-weight: 600;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+.sidebar-content {
+  flex: 1;
+  padding: 1rem 0;
+  overflow-y: auto;
+}
+
+.sidebar .nav {
+  padding: 0 1rem;
+}
+
+.sidebar .nav-item {
+  margin-bottom: 0.25rem;
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: var(--sidebar-color);
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  transition: all 0.15s ease-in-out;
+  position: relative;
+}
+
+.sidebar .nav-link:hover {
+  color: var(--sidebar-color-active);
+  background-color: var(--rgba-white-transparent-sm);
+  text-decoration: none;
+}
+
+.sidebar .nav-link.active {
+  color: var(--sidebar-color-active);
+  background-color: var(--rgba-primary-transparent);
+  border-left: 3px solid var(--bs-primary);
+  margin-left: -1rem;
+  padding-left: calc(1rem - 3px);
+}
+
+.sidebar .nav-link i {
+  font-size: 1.1rem;
+  margin-right: 0.5rem;
+  width: 24px;
+  text-align: center;
+  display: inline-block;
+  position: relative;
+  top: 1px;
+}
+
+.sidebar.collapsed {
+  width: 70px;
+  text-align: center;
+}
+
+.sidebar.collapsed .sidebar-header h2 {
+  display: none;
+}
+
+.sidebar.collapsed .nav-link span {
+  display: none;
+}
+
+.sidebar.collapsed .nav-item i {
+  font-size: 1.25rem;
+  margin-right: 0;
+  width: 100%;
+  text-align: center;
+  display: block;
+}
+
+/* Additional collapsed sidebar nav adjustments for perfect alignment */
+.sidebar.collapsed .nav {
+  padding: 0;
+}
+
+.sidebar.collapsed .nav-link {
+  padding: 0.625rem 0;
+  margin: 0.25rem 0.5rem;
+  justify-content: center;
+  text-align: center;
+  height: 40px;
+  width: auto;
+  border-radius: 3px;
+}
+
+.sidebar-toggle,
+.js-sidebar-toggle {
+  cursor: pointer;
+  padding: 0;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  transition: all 0.3s ease-in-out;
+  text-decoration: none !important;
+}
+
+/* Hamburger menu style */
+.hamburger {
+  display: flex;
+  cursor: pointer;
+  width: 24px;
+  height: 18px;
+  margin-right: 16px;
+  position: relative;
+  z-index: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.hamburger-line {
+  display: block;
+  height: 3px;
+  background: var(--bs-gray-700);
+  border-radius: 1px;
+  transition: background-color 0.2s ease;
+}
+
+/* First two lines - full width */
+.hamburger-line:nth-child(1),
+.hamburger-line:nth-child(2) {
+  width: 25px;
+}
+
+/* Third line - 70% width */
+.hamburger-line:nth-child(3) {
+  width: 19px; /* 70% of 30px */
+}
+
+/* Hover effect */
+.hamburger:hover .hamburger-line,
+.sidebar-toggle:hover .hamburger .hamburger-line,
+.js-sidebar-toggle:hover .hamburger .hamburger-line,
+.sidebar-toggle:hover .hamburger-line,
+.js-sidebar-toggle:hover .hamburger-line {
+  background-color: var(--bs-gray-900) !important;
+}
+
+/* Spacing for hamburger menu */
+.sidebar-toggle {
+  margin-right: 1rem !important;
+  margin-left: 0 !important;
+  padding: 0 !important;
+  outline: none !important;
+  color: var(--bs-gray-700);
+  text-decoration: none;
+}
+
+.js-sidebar-toggle {
+  cursor: pointer;
+  color: var(--bs-gray-700);
+  text-decoration: none;
+}
+
+.js-sidebar-toggle:hover {
+  color: var(--bs-gray-900);
+}
+
+.align-self-center {
+  align-self: center !important;
+}
+
+/* Override ALL Bootstrap margin classes in navbar context */
+.navbar .me-1,
+.navbar .me-2,
+.navbar .me-3,
+.navbar .me-4,
+.navbar .me-5,
+.navbar .mx-1,
+.navbar .mx-2,
+.navbar .mx-3,
+.navbar .mx-4,
+.navbar .mx-5 {
+  margin-right: 0.5rem !important;
+}
+
+.navbar .ms-auto {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--rgba-dark-shadow-heavy);
+  z-index: 999;
+  display: block;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Content Area & Main Content */
+.content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.3s ease-in-out;
+  background-color: var(--content-bg);
+  width: calc(100vw - var(--sidebar-width));
+  max-width: calc(100vw - var(--sidebar-width));
+  padding: 0;
+  direction: ltr;
+  overflow: visible; /* Changed from hidden to visible to allow dropdowns to show */
+  box-sizing: border-box;
+  z-index: auto; /* Remove z-index to avoid creating a stacking context */
+}
+
+.content.expanded {
+  width: calc(100vw - 70px);
+  max-width: calc(100vw - 70px);
+  margin-left: 70px;
+}
+
+.main {
+  flex: 1;
+  margin-left: 0;
+  padding: 1.5rem;
+  background-color: var(--content-bg) !important;
+  overflow-x: visible; /* Changed from hidden to allow dropdowns to show */
+  overflow-y: auto;
+  position: static; /* Remove positioning context to avoid stacking context issues */
+  z-index: auto; /* Remove z-index to avoid creating a stacking context */
+  height: calc(100vh - 110px); /* Account for navbar (60px) + footer (50px) */
+  min-width: 0;
+  max-width: 100%;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  transition: margin-left .35s ease-in-out,left .35s ease-in-out,margin-right .35s ease-in-out,right .35s ease-in-out;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  background: var(--content-bg);
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0.875rem 0 var(--rgba-sidebar-shadow);
+  padding: 1.5rem;
+  margin: 1.5rem;
+  position: relative;
+}
+
+/* ========================================
+   5. NAVIGATION BAR
+   ======================================== */
+
+/* Fix for notification dropdown */
+#notificationsDropdown::after {
+  display: none;
+}
+.navbar {
+  border-bottom: 1px solid var(--rgba-sidebar-transparent);
+  padding: 0;
+  box-shadow: 0 0 0.875rem var(--rgba-sidebar-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 1050; /* Higher than content but lower than dropdown */
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: var(--navbar-bg);
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: visible; /* Changed from hidden to visible to allow dropdowns to show */
+  overflow-y: visible;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* Universal navbar styling */
+.navbar * {
+  box-sizing: border-box;
+}
+
+.navbar,
+.navbar .container-fluid {
+  max-width: 100%;
+}
+
+/* Don't prevent overflow on navbar nav items - dropdowns need to show */
+
+.navbar .container-fluid {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible !important;
+  box-sizing: border-box;
+  gap: 1rem;
+}
+
+/* Aggressive navbar overflow prevention */
+.navbar .container-fluid > * {
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.navbar .container-fluid .navbar-nav {
+  max-width: calc(100% - 80px);
+}
+
+/* Navbar background colors - consolidated */
+.navbar-bg,
+.navbar-light,
+.navbar {
+  background-color: var(--navbar-bg) !important;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--bs-gray-900) !important;
+  text-decoration: none;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.navbar-brand:hover {
+  color: var(--bs-gray-900) !important;
+  text-decoration: none;
+}
+
+.navbar-brand .logo-text,
+.navbar-brand .logo-text-accent {
+  font-size: 1.4rem;
+}
+
+.sidebar-brand .logo-text {
+  color: var(--sidebar-brand-color);
+}
+
+.navbar-brand .logo-text {
+  color: var(--bs-gray-900);
+}
+
+.navbar .nav-link {
+  color: var(--bs-gray-600);
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  transition: all 0.15s ease-in-out;
+  text-decoration: none;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-size: 0.875rem;
+  min-width: 38px;
+  justify-content: center;
+}
+
+.navbar .nav-link:hover {
+  color: var(--bs-gray-800);
+  background-color: var(--bs-gray-100);
+  text-decoration: none;
+}
+
+.navbar .nav-link i {
+  font-size: 1.125rem;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 1;
+  overflow-x: hidden;
+  overflow-y: visible;
+  min-width: 0;
+  max-width: calc(100% - 80px);
+  gap: 0.25rem;
+}
+
+.navbar-nav .nav-item {
+  margin: 0;
+  flex-shrink: 0;
+  min-width: 0;
+  position: relative;
+}
+
+.navbar-nav .nav-item:last-child {
+  margin-right: 0 !important;
+}
+
+.navbar-nav .nav-link {
+  padding: 0.5rem;
+  margin: 0;
+  height: 38px;
+  flex-shrink: 0;
+  min-width: 38px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  justify-content: center;
+}
+
+/* ========================================
+   7. BUTTONS & FORM CONTROLS
+   ======================================== */
+/* Base Button Styles */
+.btn,
+button.btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.2rem;
+  transition: all 0.15s ease-in-out;
+  border: 1px solid transparent;
+}
+
+.btn-lg,
+button.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+.btn-sm,
+button.btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+.btn-outline-light {
+  color: var(--bs-gray-600);
+  border-color: var(--bs-gray-300);
+}
+
+.btn-outline-light:hover {
+  background-color: var(--bs-gray-100);
+  border-color: var(--bs-gray-400);
+  color: var(--bs-gray-700);
+}
+
+/* Button Groups */
+.btn-group .btn {
+  margin-right: 2px;
+}
+
+.btn-group .btn:last-child {
+  margin-right: 0;
+}
+
+/* High Priority Button Color Overrides */
+.btn.btn-primary,
+button.btn.btn-primary,
+a.btn.btn-primary,
+input[type="submit"].btn.btn-primary {
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  color: var(--bs-white) !important;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  transition: all 0.15s ease-in-out;
+}
+
+.btn.btn-primary:hover,
+button.btn.btn-primary:hover,
+a.btn.btn-primary:hover,
+input[type="submit"].btn.btn-primary:hover {
+  background-color: var(--bs-primary-hover) !important;
+  border-color: var(--bs-primary-hover) !important;
+  color: var(--bs-white) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 0.125rem 0.25rem var(--rgba-primary-shadow);
+}
+
+.btn.btn-primary:focus,
+button.btn.btn-primary:focus,
+a.btn.btn-primary:focus,
+input[type="submit"].btn.btn-primary:focus {
+  box-shadow: 0 0 0 0.25rem var(--rgba-primary-shadow);
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+}
+
+.btn.btn-primary:active,
+button.btn.btn-primary:active,
+a.btn.btn-primary:active,
+input[type="submit"].btn.btn-primary:active {
+  background-color: var(--bs-primary-hover) !important;
+  border-color: var(--bs-primary-hover) !important;
+  color: var(--bs-white) !important;
+}
+
+/* Small button variant */
+.btn.btn-sm,
+button.btn.btn-sm,
+a.btn.btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  border-radius: 0.25rem;
+}
+
+/* Login button specific styling */
+.navbar .btn.btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  white-space: nowrap;
+}
+
+.navbar .btn.btn-primary i {
+  font-size: 0.875rem;
+}
+
+.btn.btn-success,
+button.btn.btn-success,
+a.btn.btn-success,
+.btn-success.btn,
+button.btn-success.btn,
+a.btn-success.btn {
+  background-color: var(--bs-success) !important;
+  border-color: var(--bs-success) !important;
+  color: var(--bs-white) !important;
+}
+
+.btn.btn-secondary,
+button.btn.btn-secondary,
+a.btn.btn-secondary,
+.btn-secondary.btn,
+button.btn-secondary.btn,
+a.btn-secondary.btn {
+  background-color: var(--bs-secondary) !important;
+  border-color: var(--bs-secondary) !important;
+  color: var(--bs-white) !important;
+}
+
+.btn.btn-danger,
+button.btn.btn-danger,
+a.btn.btn-danger,
+.btn-danger.btn,
+button.btn-danger.btn,
+a.btn-danger.btn {
+  background-color: var(--bs-danger) !important;
+  border-color: var(--bs-danger) !important;
+  color: var(--bs-white) !important;
+}
+
+.btn.btn-warning,
+button.btn.btn-warning,
+a.btn.btn-warning,
+.btn-warning.btn,
+button.btn-warning.btn,
+a.btn-warning.btn {
+  background-color: var(--bs-warning) !important;
+  border-color: var(--bs-warning) !important;
+  color: var(--bs-white) !important;
+}
+
+.btn.btn-info,
+button.btn.btn-info,
+a.btn.btn-info,
+.btn-info.btn,
+button.btn-info.btn,
+a.btn-info.btn {
+  background-color: var(--bs-info) !important;
+  border-color: var(--bs-info) !important;
+  color: var(--bs-white) !important;
+}
+
+/* Outline Button Overrides */
+.btn.btn-outline-primary,
+button.btn.btn-outline-primary,
+a.btn.btn-outline-primary {
+  color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  background-color: transparent !important;
+}
+
+.btn.btn-outline-success,
+button.btn.btn-outline-success,
+a.btn.btn-outline-success {
+  color: var(--bs-success) !important;
+  border-color: var(--bs-success) !important;
+  background-color: transparent !important;
+}
+
+.btn.btn-outline-secondary,
+button.btn.btn-outline-secondary,
+a.btn.btn-outline-secondary {
+  color: var(--bs-secondary) !important;
+  border-color: var(--bs-secondary) !important;
+  background-color: transparent !important;
+}
+
+.btn.btn-outline-danger,
+button.btn.btn-outline-danger,
+a.btn.btn-outline-danger {
+  color: var(--bs-danger) !important;
+  border-color: var(--bs-danger) !important;
+  background-color: transparent !important;
+}
+
+.btn.btn-outline-warning,
+button.btn.btn-outline-warning,
+a.btn.btn-outline-warning {
+  color: var(--bs-warning) !important;
+  border-color: var(--bs-warning) !important;
+  background-color: transparent !important;
+}
+
+.btn.btn-outline-info,
+button.btn.btn-outline-info,
+a.btn.btn-outline-info {
+  color: var(--bs-info) !important;
+  border-color: var(--bs-info) !important;
+  background-color: transparent !important;
+}
+
+
+/* ========================================
+   6. TYPOGRAPHY
+   ======================================== */
+.logo-text {
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  color: var(--bs-gray-900);
+  font-family: 'Open Sans', sans-serif;
+}
+
+.logo-text-accent {
+  color: var(--bs-primary);
+  font-weight: 700;
+}
+
+.h3 {
+  font-size: 1.4375rem;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.login-logo {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.login-logo .logo-text {
+  color: var(--primary-text);
+}
+
+.stat {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* ========================================
+   11. DROPDOWN ENHANCEMENTS
+   Bootstrap 5 dropdown fixes and enhancements
+   ======================================== */
+
+/* Essential dropdown fixes */
+
+/* Ensure dropdowns show when Bootstrap activates them */
+.dropdown-menu.show {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Ensure dropdowns are hidden by default */
+.dropdown-menu {
+  display: none;
+}
+
+/* Ensure proper z-index for dropdowns */
+.dropdown-menu {
+  z-index: 1050 !important;
+}
+
+/* Hide Bootstrap dropdown arrows for nav-icons */
+.nav-icon.dropdown-toggle::after,
+.nav-link.dropdown-toggle::after {
+  display: none !important;
+}
+
+/* Ensure dropdown toggles are clickable */
+.dropdown-toggle {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure nav items don't clip dropdowns */
+.navbar-nav,
+.navbar-nav .nav-item {
+  overflow: visible !important;
+}
+
+/* Right-align dropdown menus */
+.dropdown-menu-end {
+  right: 0 !important;
+  left: auto !important;
+}
+
+/* User dropdown specific fixes */
+.nav-link.dropdown-toggle {
+  display: flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  color: var(--bs-gray-700) !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0.5rem 0.75rem !important;
+  transition: none;
+}
+
+.nav-link.dropdown-toggle:hover,
+.nav-link.dropdown-toggle:focus,
+.nav-link.dropdown-toggle:active,
+.nav-link.dropdown-toggle.show {
+  background-color: transparent !important;
+  color: var(--bs-gray-700) !important;
+  border-radius: 0.375rem !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* User icon styling */
+.nav-link .bi-person-circle {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* User dropdown avatar styling */
+.nav-item .avatar {
+  width: 36px;
+  height: 36px;
+  background-color: var(--bs-gray-700);
+  color: var(--bs-white);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: none;
+  flex-shrink: 0;
+}
+
+.nav-item .avatar:hover,
+.nav-item .avatar:focus,
+.nav-item .avatar:active {
+  background-color: var(--bs-gray-700);
+  color: var(--bs-white);
+  transform: none;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.nav-item .avatar i {
+  font-size: 1.4rem;
+  color: inherit;
+}
+
+/* Responsive avatar sizing */
+@media (max-width: 575.98px) {
+  .nav-item .avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .nav-item .avatar i {
+    font-size: 1.2rem;
+  }
+}
+
+/* Dropdown item hover fix */
+.dropdown-item {
+  color: var(--bs-gray-900) !important;
+  text-decoration: none !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0.5rem 1rem !important;
+  transition: all 0.15s ease-in-out !important;
+}
+
+.dropdown-item:hover {
+  background-color: var(--bs-gray-100) !important;
+  color: var(--bs-gray-900) !important;
+}
+
+/* Remove focus and active styles for dropdown toggles */
+.nav-icon.dropdown-toggle:focus,
+.nav-icon.dropdown-toggle:active,
+.nav-icon.dropdown-toggle.show,
+.nav-link.dropdown-toggle:focus,
+.nav-link.dropdown-toggle:active,
+.nav-link.dropdown-toggle.show {
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: transparent !important;
+  color: var(--bs-gray-700) !important;
+}
+
+/* Specific styles for notification and user menu */
+#notificationsDropdown:focus,
+#notificationsDropdown:active,
+#notificationsDropdown.show,
+#notificationsDropdown:hover,
+#userDropdown:focus,
+#userDropdown:active,
+#userDropdown.show,
+#userDropdown:hover {
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: transparent !important;
+  color: var(--bs-gray-700) !important;
+}
+
+/* Basic styling for dropdown components */
+.dropdown-menu {
+  min-width: 200px;
+  border: 1px solid var(--bs-gray-300);
+  border-radius: 0.375rem;
+  box-shadow: 0 0.5rem 1rem var(--rgba-dark-shadow-heavy);
+  padding: 0.5rem 0;
+  background-color: var(--bs-white);
+}
+
+.dropdown-menu-lg {
+  min-width: 320px;
+}
+
+/* Dropdown header styling (for notifications) */
+.dropdown-menu-header {
+  background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-primary-hover) 100%);
+  padding: 1rem;
+  margin-bottom: 0;
+  border-radius: 0.375rem 0.375rem 0 0;
+  color: white;
+}
+
+/* Dropdown footer styling */
+.dropdown-menu-footer {
+  border-top: 1px solid var(--bs-gray-200);
+  padding: 0.5rem 1rem;
+  text-align: center;
+  background-color: var(--bs-gray-100);
+  border-radius: 0 0 0.375rem 0.375rem;
+}
+
+.dropdown-menu-footer a {
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--bs-gray-600);
+}
+
+/* List group in dropdown */
+.dropdown-menu .list-group {
+  margin: 0;
+  border: none;
+}
+
+.dropdown-menu .list-group-item {
+  border: none;
+  border-bottom: 1px solid var(--bs-gray-100);
+  padding: 0.75rem 1rem;
+  background: transparent;
+  color: inherit;
+  text-decoration: none;
+}
+
+.dropdown-menu .list-group-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-menu .list-group-item:hover {
+  background-color: var(--bs-gray-100);
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Notification indicator dot */
+.indicator {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 8px;
+  height: 8px;
+  background-color: #dc3545;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+}
+
+/* ========================================
+   12. FORM RESPONSIVENESS
+   ======================================== */
+
+/* Basic form responsiveness improvements */
+.survey-form .form-control,
+.survey-form .form-select {
+  max-width: 100%;
+}
+
+/* Responsive styles for form elements */
+@media (max-width: 767.98px) {
+  /* Increase touch targets on mobile */
+  .form-control,
+  .form-select,
+  .btn {
+    font-size: 16px;
+    min-height: 44px;
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Improve button spacing on mobile */
+  .btn + .btn {
+    margin-top: 0.5rem;
+  }
+
+  /* Full-width buttons on mobile */
+  .d-flex.flex-wrap .btn {
+    flex: 1 0 100%;
+    margin-right: 0 !important;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Ensure date inputs are properly sized */
+  input[type="date"],
+  input[type="datetime-local"] {
+    min-height: 44px;
+  }
+
+  /* Improve form layout for better mobile experience */
+  .form-label {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  /* Better checkbox alignment on mobile */
+  .form-check {
+    padding-left: 1.75rem;
+  }
+
+  .form-check .form-check-input {
+    margin-left: -1.75rem;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 575.98px) {
+  /* Stack form actions on very small screens */
+  .d-flex.flex-wrap.gap-2 {
+    flex-direction: column;
+  }
+
+  .d-flex.flex-wrap.gap-2 .btn {
+    margin-right: 0 !important;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .d-flex.flex-wrap.gap-2 .ms-auto {
+    margin-left: 0 !important;
+  }
+}
+
+/* ========================================
+   13. DATATABLE ENHANCEMENTS
+   DataTables styling and responsive behavior
+   ======================================== */
+
+/* Force responsive behavior */
+.dataTables_wrapper {
+  width: 100% !important;
+  overflow-x: hidden;
+}
+
+/* Ensure all buttons are touch-friendly */
+.dataTables_wrapper .btn {
+  min-height: 38px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Responsive table container */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* General DataTable styles */
+table.dataTable {
+  width: 100% !important;
+  margin-bottom: 0 !important;
+}
+
+/* Mobile-first DataTable controls */
+@media screen and (max-width: 767px) {
+  /* Make DataTables controls stack properly on mobile */
+  .dataTables_wrapper .row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    margin: 0 !important;
+  }
+
+  .dataTables_wrapper .row > div {
+    flex: 1 1 auto !important;
+    margin-bottom: 0.5rem !important;
+    min-width: 0 !important;
+  }
+
+  /* Mobile-first DataTable controls */
+  .dataTables_filter,
+  .dataTables_length {
+    text-align: center !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .dataTables_filter input {
+    width: 100% !important;
+    max-width: 300px !important;
+    margin: 0 auto !important;
+  }
+
+  .dataTables_filter label {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+  }
+
+  .dataTables_length label {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Pagination improvements */
+  .dataTables_paginate {
+    text-align: center !important;
+    margin-top: 1rem !important;
+  }
+
+  .dataTables_paginate .pagination {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+  }
+
+  /* Info text centering */
+  .dataTables_info {
+    text-align: center !important;
+    margin-top: 0.75rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* Responsive table headers */
+  table.dataTable thead th {
+    white-space: nowrap !important;
+    font-size: 0.875rem !important;
+    padding: 0.5rem 0.25rem !important;
+  }
+
+  /* Responsive table cells */
+  table.dataTable tbody td {
+    white-space: nowrap !important;
+    font-size: 0.875rem !important;
+    padding: 0.5rem 0.25rem !important;
+  }
+
+  /* Action buttons in tables */
+  .action-buttons {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0.25rem !important;
+    justify-content: flex-start !important;
+  }
+
+  .action-buttons .btn {
+    flex: 0 0 auto !important;
+    min-width: 2.5rem !important;
+    height: 2.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1rem !important;
+    padding: 0.5rem !important;
+    border-radius: 0.25rem !important;
+    margin: 0 !important;
+  }
+
+  /* Make touch targets larger on mobile */
+  .btn-group .btn {
+    margin: 0.125rem !important;
+    font-size: 0.875rem !important;
+    padding: 0.375rem 0.75rem !important;
+    border-radius: 0.25rem !important;
+    min-height: 2.5rem !important;
+  }
+
+  /* Dropdown menus in tables */
+  .dropdown-menu {
+    font-size: 0.875rem !important;
+  }
+
+  .dropdown-menu .dropdown-item {
+    padding: 0.375rem 0.75rem !important;
+  }
+
+  /* Badge responsiveness */
+  .badge {
+    font-size: 0.75rem !important;
+    padding: 0.25em 0.5em !important;
+  }
+}
+
+/* Very small screens */
+@media screen and (max-width: 480px) {
+  .dataTables_wrapper {
+    font-size: 0.8rem !important;
+  }
+
+  .dataTables_filter input {
+    font-size: 16px !important; /* Prevent iOS zoom */
+  }
+
+  table.dataTable thead th,
+  table.dataTable tbody td {
+    font-size: 0.8rem !important;
+    padding: 0.375rem 0.125rem !important;
+  }
+
+  /* Even smaller buttons on tiny screens */
+  .btn-sm {
+    font-size: 0.7rem !important;
+    padding: 0.125rem 0.375rem !important;
+  }
+}
+
+/* Ensure responsive breakpoints are honored */
+@media screen and (min-width: 768px) {
+  .dataTables_wrapper .row > div {
+    margin-bottom: 0 !important;
+  }
+
+  .dataTables_filter,
+  .dataTables_length {
+    margin-bottom: 0 !important;
+  }
+
+  .dataTables_filter {
+    text-align: right !important;
+  }
+
+  .dataTables_length {
+    text-align: left !important;
+  }
+
+  .dataTables_filter label,
+  .dataTables_length label {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+  }
+}
+
+/* Style for table headers */
+table.dataTable thead th {
+  background-color: var(--bs-light);
+}
+
+/* Stripe classes for rows - enhanced alternating colors */
+table.dataTable tbody tr:nth-child(even) {
+  background-color: var(--bs-gray-100) !important;
+}
+
+table.dataTable tbody tr:nth-child(odd) {
+  background-color: var(--bs-white) !important;
+}
+
+/* Hover effects for table rows */
+table.dataTable tbody tr:hover {
+  background-color: var(--bs-gray-100, #f1f3f4) !important;
+}
+
+/* Selected row styling */
+table.dataTable tbody tr.selected {
+  background-color: var(--bs-primary-subtle, #cfe2ff) !important;
+}
+
+/* Enhanced child row display */
+table.dataTable > tbody > tr.child {
+  background-color: rgba(0,0,0,0.02) !important;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details {
+  width: 100% !important;
+  padding: 0.5rem !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details > li {
+  border-bottom: 1px solid rgba(0,0,0,0.1) !important;
+  padding: 0.75rem 0.5rem !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.5rem !important;
+  align-items: center !important;
+}
+
+table.dataTable > tbody > tr.child span.dtr-title {
+  font-weight: 600 !important;
+  color: var(--bs-gray-700, #495057) !important;
+  min-width: 120px !important;
+  display: inline-block !important;
+  flex: 0 0 auto !important;
+}
+
+table.dataTable > tbody > tr.child span.dtr-data {
+  display: inline-block !important;
+  flex: 1 1 auto !important;
+}
+
+/* Style responsive data items for custom renderer */
+.responsive-item {
+  padding: 0.5rem !important;
+  border-bottom: 1px solid rgba(0,0,0,0.1) !important;
+}
+
+.responsive-item:last-child {
+  border-bottom: none !important;
+}
+
+.responsive-item-label {
+  display: inline-block !important;
+  min-width: 120px !important;
+  color: var(--bs-gray-700, #495057) !important;
+}
+
+.responsive-item-value {
+  display: inline-block !important;
+}
+
+/* Ensure proper DataTable responsive display */
+table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before {
+  background-color: var(--bs-primary) !important;
+  color: white !important;
+  font-weight: bold !important;
+  border-radius: 3px !important;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child::before,
+table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child::before {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+/* Ensure page actions are always right-aligned and properly styled */
+#page-actions-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+/* Style page action buttons */
+#page-actions-container .btn-group {
+  display: inline-flex !important;
+  flex-wrap: nowrap !important;
+  width: auto !important;
+}
+
+/* Ensure buttons maintain proper spacing and text */
+#page-actions-container .btn {
+  white-space: nowrap !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  font-size: 0.875rem !important;
+}
+
+/* Handle responsive page actions */
+@media (max-width: 576px) {
+  #page-actions-container {
+    margin-top: 1rem;
+  }
+
+  .d-flex.justify-content-between {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  #page-actions-container .btn-group {
+    width: 100% !important;
+    display: flex !important;
+  }
+}
+
+@media (min-width: 577px) {
+  #page-actions-container {
+    margin-left: auto;
+  }
+}
+
+#page-actions-container .btn:first-child {
+  border-top-left-radius: 0.25rem !important;
+  border-bottom-left-radius: 0.25rem !important;
+}
+
+#page-actions-container .btn:last-child {
+  border-top-right-radius: 0.25rem !important;
+  border-bottom-right-radius: 0.25rem !important;
+}
+
+/* Add spacing to card contents */
+.card-body {
+  padding: 1rem !important;
+}
+
+@media (min-width: 768px) {
+  .card-body {
+    padding: 1.5rem !important;
+  }
+}
+
+/* Make form controls more touch-friendly */
+.form-control, .form-select {
+  min-height: 38px !important;
+  font-size: 1rem !important;
+}
+
+/* Ensure inputs are sized properly for touch */
+@media (max-width: 767px) {
+  input[type="date"] {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+}
+
+/* Notification list styles for mobile */
+@media (max-width: 767.98px) {
+  /* Hide table on mobile when we have a custom mobile view */
+  .notification-table-container #notificationsTable_wrapper {
+    display: none !important;
+  }
+
+  .notification-list .list-group-item {
+    border-left: none !important;
+    border-right: none !important;
+    padding: 1rem 0.75rem !important;
+  }
+
+  .notification-list .list-group-item:first-child {
+    border-top: none !important;
+  }
+
+  .notification-list .list-group-item:last-child {
+    border-bottom: none !important;
+  }
+}
+
+/* Improved mobile notification design */
+.notification-list .list-group-item {
+  transition: background-color 0.15s ease-in-out !important;
+}
+
+.notification-list .list-group-item:hover,
+.notification-list .list-group-item:focus {
+  background-color: var(--rgba-dark-shadow-light) !important;
+}
+
+/* Ensure reset filter button is always visible */
+#resetFiltersBtn {
+  display: inline-flex !important;
+}
+
+/* Card view for tables when needed */
+@media screen and (max-width: 575px) {
+  .card-view-table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(0,0,0,0.125);
+    border-radius: 0.25rem;
+  }
+
+  .card-view-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    text-align: right;
+    border-bottom: 1px solid rgba(0,0,0,0.125);
+  }
+
+  .card-view-table tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .card-view-table tbody td:before {
+    content: attr(data-label);
+    font-weight: bold;
+    float: left;
+    text-align: left;
+  }
+
+  .card-view-table thead {
+    display: none;
+  }
+}
+
+/* ========================================
+   14. UTILITY CLASSES
+   ======================================== */
+/* Spacing Utilities */
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+.ms-2 {
+  margin-left: 0.5rem !important;
+}
+
+/* Display Utilities */
+.d-inline {
+  display: inline !important;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+/* Alignment Utilities */
+.align-middle {
+  vertical-align: middle !important;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
+.justify-content-center {
+  justify-content: center !important;
+}
+
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+/* Flex Utilities */
+.flex-column {
+  flex-direction: column !important;
+}
+
+.flex-wrap {
+  flex-wrap: wrap !important;
+}
+
+.flex-grow-1 {
+  flex-grow: 1 !important;
+}
+
+/* Responsive display utilities */
+@media (min-width: 576px) {
+  .d-sm-none { display: none !important; }
+  .d-sm-block { display: block !important; }
+  .d-sm-flex { display: flex !important; }
+}
+
+@media (min-width: 768px) {
+  .d-md-none { display: none !important; }
+  .d-md-block { display: block !important; }
+  .d-md-flex { display: flex !important; }
+}
+
+@media (min-width: 992px) {
+  .d-lg-none { display: none !important; }
+  .d-lg-block { display: block !important; }
+  .d-lg-flex { display: flex !important; }
+}
+
+@media (min-width: 1200px) {
+  .d-xl-none { display: none !important; }
+  .d-xl-block { display: block !important; }
+  .d-xl-flex { display: flex !important; }
+}
+
+/* Overflow control utilities */
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.overflow-auto {
+  overflow: auto !important;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Color Utilities */
+.accent {
+  color: var(--bs-success);
+}
+
+/* Responsive text utilities */
+.text-sm-center {
+  @media (max-width: 576px) {
+    text-align: center !important;
+  }
+}
+
+/* Width utilities */
+.w-100 {
+  width: 100% !important;
+}
+
+.mw-100 {
+  max-width: 100% !important;
+}
+
+/* ========================================
+   15. FOOTER STYLES
+   ======================================== */
+.footer {
+  margin-top: auto;
+  background-color: var(--footer-bg);
+  padding: 0.75rem 0;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+}
+
+.footer p {
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  color: var(--bs-gray-600);
+  line-height: 1;
+}
+
+.footer .container-fluid {
+  width: 100%;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.footer .row {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer .col-6 {
+  padding: 0;
+}
+
+.footer .col-6:last-child {
+  text-align: right;
+}
+
+.footer .list-inline {
+  margin-bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.footer .list-inline-item {
+  margin-right: 0;
+}
+
+.footer .list-inline-item:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.footer .list-inline-item a {
+  color: var(--bs-gray-600);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+}
+
+.footer .list-inline-item a:hover {
+  color: var(--bs-primary);
+}
+
+/* Links & Navigation */
+a {
+  color: var(--bs-primary);
+}
+
+a:hover {
+  color: var(--bs-primary-hover);
+}
+
+/* Navbar basic styles */
+
+/* List group styles - not dropdown specific */
+
+/* General text styling */
+
+.nav-link .bi-gear {
+  font-size: 1.2rem;
+}
+
+/* Nav Icon Style */
+.nav-icon {
+  padding: 0.5rem;
+  display: inline-block;
+  font-size: 1.3rem;
+  color: var(--bs-gray-700);
+  position: relative;
+  transition: none;
+  text-decoration: none;
+  height: 38px;
+  min-width: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  background-color: transparent;
+}
+
+.nav-icon:hover,
+.nav-icon:focus,
+.nav-icon:active,
+.nav-icon.show {
+  color: var(--bs-gray-700);
+  background-color: transparent !important;
+  text-decoration: none;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* ========================================
+   9. LISTS & TABLES
+   ======================================== */
+.table {
+  color: var(--primary-text);
+}
+
+.table thead th {
+  border-bottom-color: var(--border-muted);
+}
+
+/* Table striping */
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+  --bs-table-accent-bg: transparent;
+  color: #495057;
+}
+
+.table-striped>tbody>tr:nth-of-type(even)>* {
+  --bs-table-accent-bg: #f8f9fa;
+  color: #495057;
+}
+
+/* General table styling */
+.table {
+  border-radius: 0.375rem;
+  overflow: hidden;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border: 1px solid #dee2e6;
+}
+
+.table thead th {
+  background-color: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
+  border-bottom: 1px solid #dee2e6;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.table tbody td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #dee2e6;
+  color: #495057;
+  font-size: 0.875rem;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Enhanced surveys table styling */
+.surveys-table {
+  border-radius: 0.375rem;
+  overflow: hidden;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border: 1px solid #dee2e6;
+  background: white;
+}
+
+.surveys-table thead th {
+  background-color: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
+  border: none;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #dee2e6;
+  position: relative;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.surveys-table thead th:first-child {
+  border-top-left-radius: 0.375rem;
+}
+
+.surveys-table thead th:last-child {
+  border-top-right-radius: 0.375rem;
+}
+
+.surveys-table tbody tr {
+  transition: background-color 0.15s ease-in-out;
+  border: none;
+}
+
+.surveys-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.surveys-table tbody td {
+  padding: 0.75rem;
+  border: none;
+  vertical-align: middle;
+  border-bottom: 1px solid #dee2e6;
+  color: #495057;
+  font-size: 0.875rem;
+}
+
+.surveys-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.surveys-table .table-striped>tbody>tr:nth-of-type(odd) {
+  background-color: transparent;
+}
+
+.surveys-table .table-striped>tbody>tr:nth-of-type(even) {
+  background-color: #f8f9fa;
+}
+
+.surveys-table .table-striped>tbody>tr:nth-of-type(even):hover {
+  background-color: #e9ecef;
+}
+
+.surveys-table .badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* Status badge colors */
+.surveys-table .badge.bg-success {
+  background-color: #198754 !important;
+  color: white !important;
+}
+
+.surveys-table .badge.bg-warning {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+}
+
+.surveys-table .badge.bg-danger {
+  background-color: #dc3545 !important;
+  color: white !important;
+}
+
+.surveys-table .badge.bg-secondary {
+  background-color: #6c757d !important;
+  color: white !important;
+}
+
+.surveys-table .badge.bg-dark {
+  background-color: #212529 !important;
+  color: white !important;
+}
+
+/* Action buttons styling */
+.surveys-table .btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 0.375rem;
+  margin: 0 0.125rem;
+  transition: all 0.15s ease-in-out;
+  border-width: 1px;
+  font-weight: 400;
+}
+
+.surveys-table .btn-sm:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.surveys-table .btn-outline-info:hover {
+  background-color: #0dcaf0;
+  border-color: #0dcaf0;
+  color: #000;
+}
+
+.surveys-table .btn-outline-primary:hover {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+}
+
+.surveys-table .btn-outline-danger:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: #fff;
+}
+
+.surveys-table .btn-group.action-buttons {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .surveys-table .btn-sm {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.7rem;
+  }
+
+  .surveys-table tbody td {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .surveys-table thead th {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Form Controls */
+.form-control:focus {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.25rem var(--rgba-primary-shadow);
+}
+
+/* Lists & Categories */
+.category-list {
+  list-style: none;
+  padding: 0;
+}
+
+.category-list li {
+  background: var(--light-background);
+  border-radius: var(--border-radius);
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border: 1px solid var(--border-muted);
+}
+
+.list-group-item {
+  transition: all 0.2s;
+}
+
+.list-group-item:hover {
+  background-color: var(--light-background);
+}
+
+/* ========================================
+   10. COMPONENT STYLES
+   ======================================== */
+.auth-header {
+  background-color: var(--bs-primary);
+  color: var(--bs-white);
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px var(--rgba-dark-shadow-medium);
+}
+
+.auth-footer {
+  margin-top: auto;
+  padding: 1.5rem 0;
+  color: var(--primary-text);
+  background-color: var(--background);
+  border-top: 1px solid var(--border-muted);
+}
+
+.auth-body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Styles */
+.header {
+  background: var(--content-bg);
+  border-bottom: 1px solid var(--border-muted);
+  box-shadow: 0 0 2rem 0 var(--rgba-dark-shadow-light);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 1.5rem;
+}
+
+/* ========================================
+   8. AVATARS & INDICATORS
+   ======================================== */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--bs-gray-100);
+  transition: all 0.15s ease-in-out;
+  vertical-align: middle;
+  font-size: 1.2rem;
+  color: var(--bs-gray-600);
+}
+
+.avatar:hover {
+  background-color: var(--bs-gray-200);
+}
+
+.avatar i {
+  font-size: 1.125rem;
+  color: inherit;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar.bg-primary {
+  background-color: var(--avatar-bg) !important;
+  color: var(--avatar-color);
+}
+
+.avatar.bg-secondary {
+  background-color: var(--bs-gray-600) !important;
+  color: var(--bs-white);
+}
+
+.avatar.bg-success {
+  background-color: var(--bs-success) !important;
+  color: var(--bs-white);
+}
+
+/* Badge styles */
+.badge {
+  display: inline-block;
+  padding: 0.35em 0.65em;
+  font-size: 0.625rem;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+}
+
+.badge.rounded-pill {
+  border-radius: 10rem;
+  padding: 0.25rem 0.5rem;
+  min-width: 1.25rem;
+  text-align: center;
+}
+
+/* Navbar nav item styling */
+.navbar-nav .nav-item {
+  margin: 0;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+/* Navigation styling */
+
+/* Navbar specific avatar styling */
+.navbar .avatar {
+  background-color: var(--avatar-bg);
+  color: var(--avatar-color);
+  border: 2px solid var(--rgba-white-transparent-sm);
+  box-shadow: 0 2px 4px var(--rgba-dark-shadow-medium);
+}
+
+.navbar .avatar:hover {
+  background-color: var(--avatar-hover-bg);
+  border-color: var(--rgba-white-transparent-md);
+  box-shadow: 0 4px 8px var(--rgba-dark-shadow-heavy);
+}
+
+/* Background color styles - used throughout the app */
+.bg-primary {
+  background-color: var(--bs-primary) !important;
+}
+
+.bg-success {
+  background-color: var(--bs-success) !important;
+}
+
+.bg-warning {
+  background-color: var(--bs-warning) !important;
+}
+
+.bg-info {
+  background-color: var(--bs-info) !important;
+}
+
+.bg-danger {
+  background-color: var(--bs-danger) !important;
+}
+
+/* Last item in navbar */
+.navbar-nav .nav-item:last-child {
+  margin-right: 0 !important;
+}
+
+/* Timeline Styles */
+.timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+}
+
+.timeline:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--light-background);
+  left: 9px;
+  margin-left: -1.5px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 30px;
+  padding-bottom: 1.5rem;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-item:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--bs-primary);
+  margin-left: 2px;
+}
+
+/* ========================================
+   16. MEDIA QUERIES & RESPONSIVE DESIGN
+   ======================================== */
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+
+  .main-content {
+    margin: 2rem;
+    padding: 2rem;
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .sidebar-toggle {
+    display: flex !important;
+  }
+
+  .js-sidebar-toggle {
+    display: flex !important;
+  }
+
+  /* Ensure navbar doesn't overflow with sidebar toggle */
+  .navbar .container-fluid {
+    padding: 0 1rem;
+    gap: 1rem;
+    max-width: 100%;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 0.375rem 0.75rem;
+  }
+
+  .navbar-brand {
+    margin-right: 1rem;
+    font-size: 1.25rem;
+  }
+
+  .sidebar-toggle,
+  .js-sidebar-toggle,
+  #sidebar-toggle {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  /* Use proper spacing for all navbar elements */
+  .navbar .me-1,
+  .navbar .me-2,
+  .navbar .me-3,
+  .navbar .me-4,
+  .navbar .me-5 {
+    margin-right: 1rem !important;
+  }
+
+  /* Enhanced desktop layout */
+  .main {
+    padding: 1.75rem;
+  }
+}
+
+/* Medium devices (tablets, 768px to 991.98px) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100%;
+    z-index: 1030;
+    transition: left 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.show {
+    transform: translateX(0);
+    left: 0;
+  }
+
+  .sidebar.collapsed {
+    margin-left: 0;
+    left: 0;
+  }
+
+  .sidebar.active {
+    left: 0;
+  }
+
+  .content {
+    margin-left: 0;
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .main {
+    margin-left: 0;
+    width: 100%;
+    max-width: 100%;
+    padding: 1.25rem;
+  }
+
+  .content.expanded {
+    margin-left: 0;
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .main-content {
+    margin: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .navbar .container-fluid {
+    padding: 0 1rem;
+  }
+
+  /* Better responsive layout for cards in tablet view */
+  .card-header .row .col-md-6:last-child {
+    margin-top: 1rem;
+    text-align: left !important;
+  }
+
+  /* Improve tablet form layouts */
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .form-row > [class*="col-"] {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+}
+
+/* Mobile devices (less than 768px) */
+@media (max-width: 767.98px) {
+  .sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100%;
+    z-index: 1030;
+    transition: left 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+    width: 260px;
+  }
+
+  .sidebar.show {
+    transform: translateX(0);
+    left: 0;
+  }
+
+  .content {
+    margin-left: 0;
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .main {
+    margin-left: 0;
+    width: 100%;
+    max-width: 100%;
+    padding: 1rem;
+    height: auto;
+  }
+
+  .main-content {
+    margin: 0.75rem;
+    padding: 1rem;
+  }
+
+  .navbar .container-fluid {
+    padding: 0 0.75rem;
+  }
+
+  /* Improve spacing in mobile card headers */
+  .card-header {
+    padding: 0.75rem;
+  }
+
+  /* Stack buttons in mobile views */
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .btn-group .btn {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+    border-radius: 0.25rem !important;
+  }
+
+  /* Adjust form elements for mobile */
+  .form-control {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+}
+
+/* Small Mobile Devices (575.98px and below) */
+@media (max-width: 575.98px) {
+  .main {
+    margin-left: 0;
+    padding: 0.75rem;
+  }
+
+  .card {
+    margin-bottom: 0.75rem;
+  }
+
+  .card-body {
+    padding: 0.875rem;
+  }
+
+  .card-header {
+    padding: 0.75rem 0.875rem;
+  }
+
+  .navbar .container-fluid {
+    padding: 0 0.5rem;
+    gap: 0.25rem;
+  }
+
+  .sidebar-toggle,
+  .js-sidebar-toggle {
+    width: 36px;
+    height: 36px;
+    padding: 0.25rem;
+    font-size: 16px;
+    min-width: 36px;
+  }
+
+  .navbar-brand {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 0.25rem 0.375rem;
+    min-width: 36px;
+    height: 36px;
+  }
+
+  .footer {
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+    min-height: auto;
+  }
+
+  .footer .row {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .footer .col-6 {
+    width: 100%;
+    text-align: center !important;
+  }
+
+  .footer .list-inline {
+    justify-content: center;
+  }
+
+  /* Make tables more mobile friendly */
+  .table-responsive {
+    font-size: 0.75rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem 0.25rem;
+    white-space: nowrap;
+  }
+
+  /* Optimize table display on small screens */
+  .table-sm {
+    font-size: 0.75rem;
+  }
+
+  .table-sm th,
+  .table-sm td {
+    padding: 0.25rem;
+  }
+
+  /* Stack action buttons vertically on small screens */
+  .btn-group,
+  .btn-group-sm {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .btn-group .btn,
+  .btn-group-sm .btn {
+    margin-bottom: 0.5rem;
+    width: 100%;
+    margin-left: 0 !important;
+    border-radius: 0.25rem !important;
+  }
+
+  /* Button styling for mobile */
+  .btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.2;
+  }
+
+  /* Make modals more mobile friendly */
+  .modal-dialog {
+    margin: 0.5rem;
+    max-width: calc(100% - 1rem);
+  }
+
+  .modal-header {
+    padding: 0.75rem;
+  }
+
+  .modal-body {
+    padding: 0.875rem;
+  }
+
+  .modal-footer {
+    padding: 0.75rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal-footer .btn {
+    margin: 0.25rem 0;
+    width: 100%;
+  }
+
+  /* Properly size avatars on small screens */
+  .avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  /* Specific navbar avatar sizing for small screens */
+  .nav-item .avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .nav-item .avatar i {
+    font-size: 1.2rem;
+  }
+
+  /* Typography adjustments for small screens */
+  h1, .h1 { font-size: 1.5rem; }
+  h2, .h2 { font-size: 1.25rem; }
+  h3, .h3 { font-size: 1.125rem; }
+
+  /* Add common utility classes for responsive layouts */
+  .d-xs-none { display: none !important; }
+  .d-xs-block { display: block !important; }
+  .d-xs-flex { display: flex !important; }
+
+  /* Fix form inputs for small screens */
+  .form-control,
+  .form-select {
+    font-size: 16px; /* Prevent iOS zoom */
+    height: auto;
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Improve form layout on small screens */
+  .form-group {
+    margin-bottom: 0.75rem;
+  }
+
+  /* Main content padding adjustment */
+  .main-content {
+    margin: 0.5rem;
+    padding: 0.75rem;
+  }
+}
+
+/* Extra Small Devices (under 400px) */
+@media (max-width: 399.98px) {
+  .main {
+    padding: 0.5rem;
+  }
+
+  .main-content {
+    margin: 0.25rem;
+    padding: 0.5rem;
+  }
+
+  .card-body {
+    padding: 0.75rem;
+  }
+
+  .navbar-brand {
+    font-size: 0.9rem;
+    max-width: 130px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .navbar-brand .logo-text-accent {
+    display: none;
+  }
+
+  /* Adjust navbar icons for extra small screens */
+  .navbar .nav-icon,
+  .navbar .avatar {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    font-size: 0.875rem;
+  }
+
+  .hamburger {
+    width: 20px;
+    height: 16px;
+    margin-right: 8px;
+  }
+
+  .hamburger-line {
+    height: 2px;
+  }
+
+  .hamburger-line:nth-child(1),
+  .hamburger-line:nth-child(2) {
+    width: 20px;
+  }
+
+  .hamburger-line:nth-child(3) {
+    width: 14px;
+  }
+
+  /* Better spacing for tiny screens */
+  .form-group {
+    margin-bottom: 0.5rem;
+  }
+
+  .btn {
+    padding: 0.375rem 0.5rem;
+  }
+}
+
+/* Landscape Mode Adjustments */
+@media (max-height: 500px) and (orientation: landscape) {
+  .sidebar {
+    overflow-y: auto;
+    padding-bottom: 60px; /* Allow space to scroll to bottom items */
+  }
+
+  .navbar {
+    height: 50px;
+  }
+
+  .main {
+    height: calc(100vh - 100px); /* Adjust for smaller navbar and footer */
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .footer {
+    min-height: 40px;
+    padding: 0.5rem;
+  }
+
+  /* Optimize vertical space in landscape mode */
+  .card-header {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  /* Reduce vertical spacing in landscape */
+  .mb-3 {
+    margin-bottom: 0.5rem !important;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  /* Dark mode styles can be added here */
+}
+
+/* Print Styles */
+@media print {
+  .sidebar,
+  .navbar,
+  .footer {
+    display: none;
+  }
+
+  .content {
+    margin-left: 0;
+  }
+
+  .main {
+    padding: 0;
+  }
+
+  /* Enhanced print styles */
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  a {
+    text-decoration: underline;
+    color: black !important;
+  }
+
+  .card {
+    border: 1px solid #ddd;
+    box-shadow: none !important;
+  }
+
+  .main-content {
+    box-shadow: none !important;
+  }
+
+  /* Hide elements not needed for printing */
+  .btn,
+  .nav-icon,
+  .avatar,
+  .badge {
+    display: none !important;
+  }
+
+  /* Table print optimization */
+  .table {
+    border-collapse: collapse !important;
+  }
+
+  .table td,
+  .table th {
+    background-color: white !important;
+    border: 1px solid #ddd !important;
+  }
+}
+
+/* ========================================
+   17. PRINT STYLES
+   ======================================== */

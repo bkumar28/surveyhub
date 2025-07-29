@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/app.css' %}">
+<div class="blueprint-card">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">{{ blueprint.name }}</h2>
+    <div class="blueprint-actions">
+      <a href="{% url 'blueprints:edit' blueprint.id %}" class="btn btn-outline-secondary">Edit</a>
+      <a href="{% url 'blueprints:delete' blueprint.id %}" class="btn btn-outline-danger">Delete</a>
+    </div>
+  </div>
+  <p class="text-muted">{{ blueprint.description }}</p>
+  <hr>
+  <h4 class="mt-4">Categories</h4>
+  <ul class="category-list">
+    {% for category in blueprint.categories.all %}
+      <li>{{ category.name }}</li>
+    {% empty %}
+      <li class="text-muted">No categories yet.</li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'blueprints:add_category' blueprint.id %}" class="btn btn-primary mt-3">Add Category</a>
+</div>
+{% endblock %}

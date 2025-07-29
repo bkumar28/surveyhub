@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>Notification</h2>
+  <div>
+    <a href="{% url 'notifications:edit' notification.id %}" class="btn btn-outline-primary">Edit</a>
+    <a href="{% url 'notifications:delete' notification.id %}" class="btn btn-outline-danger">Delete</a>
+  </div>
+</div>
+<p>{{ notification.content }}</p>
+<a href="{% url 'notifications:mark_read' notification.id %}" class="btn btn-success mt-3">Mark as Read</a>
+{% endblock %}

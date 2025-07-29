@@ -1,0 +1,418 @@
+{% extends 'base.html' %}
+
+{% block title %}Question Analytics - SurveyHub{% endblock %}
+
+{% block page_title %}Question Analytics{% endblock %}
+
+{% block page_actions %}
+<div class="d-flex gap-2">
+  <button type="button" class="btn btn-outline-primary btn-sm" id="exportBtn">
+    <i class="bi bi-download me-1"></i> Export Data
+  </button>
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-outline-secondary btn-sm" id="refreshBtn">
+      <i class="bi bi-arrow-clockwise"></i>
+    </button>
+    <button type="button" class="btn btn-outline-secondary btn-sm" id="filterBtn">
+      <i class="bi bi-funnel"></i>
+    </button>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Custom styles for question analytics page */
+  .chart-container {
+    position: relative;
+    height: 50vh;
+    min-height: 300px;
+    width: 100%;
+  }
+
+  @media (max-width: 767.98px) {
+    .chart-container {
+      height: 40vh;
+      min-height: 250px;
+    }
+
+    .metric-card {
+      margin-bottom: 1rem;
+    }
+  }
+
+  /* Question selection panel */
+  .question-selector {
+    padding: 1rem;
+    border-radius: 0.375rem;
+    background-color: var(--bs-light);
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 575.98px) {
+    .question-selector {
+      padding: 0.75rem;
+    }
+
+    .question-selector .form-select,
+    .question-selector .form-control {
+      font-size: 0.875rem;
+    }
+
+    .chart-container {
+      height: 35vh;
+    }
+
+    .pie-container {
+      height: 30vh;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+  <div class="col-12">
+    <!-- Question Selector Panel -->
+    <div class="question-selector mb-3" id="questionPanel">
+      <div class="row g-2">
+        <div class="col-md-4 col-sm-6">
+          <label class="form-label">Survey</label>
+          <select class="form-select" id="surveySelect">
+            <option value="1">Customer Feedback</option>
+            <option value="2">Product Satisfaction</option>
+            <option value="3">Employee Engagement</option>
+          </select>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <label class="form-label">Question</label>
+          <select class="form-select" id="questionSelect">
+            <option value="1">How satisfied are you with our product?</option>
+            <option value="2">Would you recommend us to others?</option>
+            <option value="3">What features would you like to see improved?</option>
+          </select>
+        </div>
+        <div class="col-md-4 col-sm-12 d-flex align-items-end">
+          <button type="button" class="btn btn-primary w-100 mt-2 mt-md-0" id="loadQuestion">
+            Load Question Data
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Question Info Card -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-8">
+            <h5 id="questionTitle">How satisfied are you with our product?</h5>
+            <p class="text-muted mb-2">From <strong>Customer Feedback</strong> survey</p>
+          </div>
+          <div class="col-lg-4 text-lg-end">
+            <span class="badge bg-success">Multiple Choice</span>
+            <p class="text-muted mt-2">Total responses: <strong>120</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Metrics Row -->
+<div class="row mb-4">
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card metric-card">
+      <div class="card-body p-3">
+        <div class="row">
+          <div class="col">
+            <h6 class="text-muted mb-1">Response Rate</h6>
+            <h3>85%</h3>
+          </div>
+          <div class="col-auto">
+            <div class="icon icon-shape bg-primary text-white rounded-circle p-2">
+              <i class="bi bi-graph-up"></i>
+            </div>
+          </div>
+        </div>
+        <p class="mb-0 text-muted small">
+          <span class="text-success me-1">
+            <i class="bi bi-arrow-up"></i> 3.2%
+          </span>
+          <span class="text-nowrap">vs avg</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card metric-card">
+      <div class="card-body p-3">
+        <div class="row">
+          <div class="col">
+            <h6 class="text-muted mb-1">Avg. Score</h6>
+            <h3>4.2/5</h3>
+          </div>
+          <div class="col-auto">
+            <div class="icon icon-shape bg-success text-white rounded-circle p-2">
+              <i class="bi bi-star"></i>
+            </div>
+          </div>
+        </div>
+        <p class="mb-0 text-muted small">
+          <span class="text-success me-1">
+            <i class="bi bi-arrow-up"></i> 0.3
+          </span>
+          <span class="text-nowrap">vs previous</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card metric-card">
+      <div class="card-body p-3">
+        <div class="row">
+          <div class="col">
+            <h6 class="text-muted mb-1">Skipped</h6>
+            <h3>12%</h3>
+          </div>
+          <div class="col-auto">
+            <div class="icon icon-shape bg-warning text-white rounded-circle p-2">
+              <i class="bi bi-skip-forward"></i>
+            </div>
+          </div>
+        </div>
+        <p class="mb-0 text-muted small">
+          <span class="text-success me-1">
+            <i class="bi bi-arrow-down"></i> 2.1%
+          </span>
+          <span class="text-nowrap">vs previous</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card metric-card">
+      <div class="card-body p-3">
+        <div class="row">
+          <div class="col">
+            <h6 class="text-muted mb-1">Time Spent</h6>
+            <h3>25 sec</h3>
+          </div>
+          <div class="col-auto">
+            <div class="icon icon-shape bg-info text-white rounded-circle p-2">
+              <i class="bi bi-clock"></i>
+            </div>
+          </div>
+        </div>
+        <p class="mb-0 text-muted small">
+          <span class="text-danger me-1">
+            <i class="bi bi-arrow-up"></i> 3 sec
+          </span>
+          <span class="text-nowrap">vs avg</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row">
+  <div class="col-lg-8 mb-4">
+    <div class="card h-100">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Response Distribution</h5>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="questionAnalyticsChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 mb-4">
+    <div class="card h-100">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Response Percentage</h5>
+      </div>
+      <div class="card-body">
+        <div class="chart-container pie-container">
+          <canvas id="questionPieChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Toggle filter panel
+    document.getElementById('filterBtn').addEventListener('click', function() {
+      const questionPanel = document.getElementById('questionPanel');
+      questionPanel.classList.toggle('d-none');
+    });
+
+    // Export data
+    document.getElementById('exportBtn').addEventListener('click', function() {
+      window.location.href = "{% url 'analytics:export' %}";
+    });
+
+    // Refresh chart
+    document.getElementById('refreshBtn').addEventListener('click', function() {
+      // Add loading state
+      this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+      this.disabled = true;
+
+      // Simulate refresh
+      setTimeout(() => {
+        this.innerHTML = '<i class="bi bi-arrow-clockwise"></i>';
+        this.disabled = false;
+        renderCharts();
+      }, 1000);
+    });
+
+    // Load question data
+    document.getElementById('loadQuestion').addEventListener('click', function() {
+      // Add loading state
+      this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading';
+      this.disabled = true;
+
+      // Simulate loading
+      setTimeout(() => {
+        this.innerHTML = 'Load Question Data';
+        this.disabled = false;
+
+        // Update question title based on selection
+        const questionSelect = document.getElementById('questionSelect');
+        const selectedText = questionSelect.options[questionSelect.selectedIndex].text;
+        document.getElementById('questionTitle').textContent = selectedText;
+
+        // Update chart data
+        renderCharts();
+      }, 1000);
+    });
+
+    // Initialize charts
+    let barChart, pieChart;
+
+    function renderCharts() {
+      // Bar chart
+      const barCtx = document.getElementById('questionAnalyticsChart').getContext('2d');
+
+      // Destroy existing chart if it exists
+      if (barChart) {
+        barChart.destroy();
+      }
+
+      // Sample data
+      const labels = ['Very Satisfied', 'Satisfied', 'Neutral', 'Dissatisfied', 'Very Dissatisfied'];
+      const data = [45, 30, 15, 8, 2];
+      const colors = ['#1cbb8c', '#3b7ddd', '#fcb92c', '#fd7e14', '#dc3545'];
+
+      // Create new bar chart
+      barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Responses',
+            data: data,
+            backgroundColor: colors,
+            borderColor: colors,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                drawBorder: false
+              }
+            },
+            x: {
+              grid: {
+                display: false,
+                drawBorder: false
+              }
+            }
+          }
+        }
+      });
+
+      // Pie chart
+      const pieCtx = document.getElementById('questionPieChart').getContext('2d');
+
+      // Destroy existing chart if it exists
+      if (pieChart) {
+        pieChart.destroy();
+      }
+
+      // Create new pie chart
+      pieChart = new Chart(pieCtx, {
+        type: 'doughnut',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: colors,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                boxWidth: 12,
+                font: {
+                  size: 10
+                }
+              }
+            }
+          },
+          cutout: '60%'
+        }
+      });
+    }
+
+    // Check for responsive layout
+    function adjustForScreenSize() {
+      const width = window.innerWidth;
+
+      // Adjust chart options for smaller screens
+      if (width < 576) {
+        if (pieChart) {
+          pieChart.options.plugins.legend.position = 'right';
+          pieChart.update();
+        }
+      } else {
+        if (pieChart) {
+          pieChart.options.plugins.legend.position = 'bottom';
+          pieChart.update();
+        }
+      }
+    }
+
+    // Initialize
+    renderCharts();
+    adjustForScreenSize();
+
+    // Listen for window resize
+    window.addEventListener('resize', adjustForScreenSize);
+  });
+</script>
+{% endblock %}

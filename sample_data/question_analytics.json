@@ -1,0 +1,342 @@
+[
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440003",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440003",
+      "total_answers": 50,
+      "skip_count": 5,
+      "word_cloud_data": {"good": 10, "excellent": 5},
+      "sentiment_score": 0.8,
+      "choice_distribution": {"5": 20, "4": 15, "3": 10, "2": 5},
+      "average_value": 4.2,
+      "median_value": 4.0,
+      "min_value": 2.0,
+      "max_value": 5.0,
+      "updated_at": "2025-07-11T12:00:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440004",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440004",
+      "total_answers": 30,
+      "skip_count": 2,
+      "word_cloud_data": {"average": 8, "good": 6},
+      "sentiment_score": 0.6,
+      "choice_distribution": {"A": 10, "B": 10, "C": 10},
+      "average_value": 3.5,
+      "median_value": 3.0,
+      "min_value": 1.0,
+      "max_value": 5.0,
+      "updated_at": "2025-07-11T12:10:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440005",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440005",
+      "total_answers": 40,
+      "skip_count": 3,
+      "word_cloud_data": {"neutral": 7, "ok": 5},
+      "sentiment_score": 0.5,
+      "choice_distribution": {"3": 15, "2": 10, "1": 5},
+      "average_value": 2.7,
+      "median_value": 3.0,
+      "min_value": 1.0,
+      "max_value": 4.0,
+      "updated_at": "2025-07-11T12:20:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440006",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440006",
+      "total_answers": 25,
+      "skip_count": 1,
+      "word_cloud_data": {"bad": 4, "poor": 3},
+      "sentiment_score": 0.3,
+      "choice_distribution": {"2": 10, "1": 8, "3": 7},
+      "average_value": 1.8,
+      "median_value": 2.0,
+      "min_value": 1.0,
+      "max_value": 3.0,
+      "updated_at": "2025-07-11T12:30:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440007",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440007",
+      "total_answers": 60,
+      "skip_count": 6,
+      "word_cloud_data": {"great": 12, "awesome": 8},
+      "sentiment_score": 0.9,
+      "choice_distribution": {"5": 30, "4": 20, "3": 10},
+      "average_value": 4.6,
+      "median_value": 5.0,
+      "min_value": 3.0,
+      "max_value": 5.0,
+      "updated_at": "2025-07-11T12:40:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440008",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440008",
+      "total_answers": 35,
+      "skip_count": 2,
+      "word_cloud_data": {"ok": 6, "fine": 4},
+      "sentiment_score": 0.55,
+      "choice_distribution": {"3": 12, "4": 10, "2": 8, "1": 5},
+      "average_value": 2.9,
+      "median_value": 3.0,
+      "min_value": 1.0,
+      "max_value": 4.0,
+      "updated_at": "2025-07-11T12:50:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440009",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440009",
+      "total_answers": 45,
+      "skip_count": 4,
+      "word_cloud_data": {"good": 9, "average": 7},
+      "sentiment_score": 0.7,
+      "choice_distribution": {"4": 18, "3": 15, "2": 12},
+      "average_value": 3.8,
+      "median_value": 4.0,
+      "min_value": 2.0,
+      "max_value": 5.0,
+      "updated_at": "2025-07-11T13:00:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440010",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440010",
+      "total_answers": 20,
+      "skip_count": 1,
+      "word_cloud_data": {"bad": 2, "ok": 2},
+      "sentiment_score": 0.4,
+      "choice_distribution": {"2": 8, "1": 6, "3": 6},
+      "average_value": 2.1,
+      "median_value": 2.0,
+      "min_value": 1.0,
+      "max_value": 3.0,
+      "updated_at": "2025-07-11T13:10:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440011",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440011",
+      "total_answers": 55,
+      "skip_count": 5,
+      "word_cloud_data": {"excellent": 11, "good": 9},
+      "sentiment_score": 0.85,
+      "choice_distribution": {"5": 25, "4": 20, "3": 10},
+      "average_value": 4.5,
+      "median_value": 5.0,
+      "min_value": 3.0,
+      "max_value": 5.0,
+      "updated_at": "2025-07-11T13:20:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440012",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440012",
+      "total_answers": 28,
+      "skip_count": 2,
+      "word_cloud_data": {"average": 6, "ok": 4},
+      "sentiment_score": 0.5,
+      "choice_distribution": {"3": 10, "2": 10, "1": 8},
+      "average_value": 2.6,
+      "median_value": 3.0,
+      "min_value": 1.0,
+      "max_value": 4.0,
+      "updated_at": "2025-07-11T13:30:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440013",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440013",
+      "total_answers": 32,
+      "skip_count": 3,
+      "word_cloud_data": {"good": 7, "fine": 5},
+      "sentiment_score": 0.65,
+      "choice_distribution": {"4": 12, "3": 10, "2": 10},
+      "average_value": 3.2,
+      "median_value": 3.0,
+      "min_value": 2.0,
+      "max_value": 4.0,
+      "updated_at": "2025-07-11T13:40:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440014",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440014",
+      "total_answers": 38,
+      "skip_count": 2,
+      "word_cloud_data": {"average": 8, "ok": 6},
+      "sentiment_score": 0.55,
+      "choice_distribution": {"3": 14, "2": 12, "1": 12},
+      "average_value": 2.7,
+      "median_value": 3.0,
+      "min_value": 1.0,
+      "max_value": 4.0,
+      "updated_at": "2025-07-11T13:50:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440015",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440015",
+      "total_answers": 44,
+      "skip_count": 4,
+      "word_cloud_data": {"good": 9, "average": 7},
+      "sentiment_score": 0.7,
+      "choice_distribution": {"4": 18, "3": 15, "2": 11},
+      "average_value": 3.7,
+      "median_value": 4.0,
+      "min_value": 2.0,
+      "max_value": 5.0,
+      "updated_at": "2025-07-11T14:00:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440016",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440016",
+      "total_answers": 22,
+      "skip_count": 1,
+      "word_cloud_data": {"bad": 3, "ok": 2},
+      "sentiment_score": 0.35,
+      "choice_distribution": {"2": 8, "1": 7, "3": 7},
+      "average_value": 2.0,
+      "median_value": 2.0,
+      "min_value": 1.0,
+      "max_value": 3.0,
+      "updated_at": "2025-07-11T14:10:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440017",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440017",
+      "total_answers": 60,
+      "skip_count": 6,
+      "word_cloud_data": {"great": 12, "awesome": 8},
+      "sentiment_score": 0.9,
+      "choice_distribution": {"5": 30, "4": 20, "3": 10},
+      "average_value": 4.6,
+      "median_value": 5.0,
+      "min_value": 3.0,
+      "max_value": 5.0,
+      "updated_at": "2025-07-11T14:20:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440018",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440018",
+      "total_answers": 35,
+      "skip_count": 2,
+      "word_cloud_data": {"ok": 6, "fine": 4},
+      "sentiment_score": 0.55,
+      "choice_distribution": {"3": 12, "4": 10, "2": 8, "1": 5},
+      "average_value": 2.9,
+      "median_value": 3.0,
+      "min_value": 1.0,
+      "max_value": 4.0,
+      "updated_at": "2025-07-11T14:30:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440019",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440019",
+      "total_answers": 45,
+      "skip_count": 4,
+      "word_cloud_data": {"good": 9, "average": 7},
+      "sentiment_score": 0.7,
+      "choice_distribution": {"4": 18, "3": 15, "2": 12},
+      "average_value": 3.8,
+      "median_value": 4.0,
+      "min_value": 2.0,
+      "max_value": 5.0,
+      "updated_at": "2025-07-11T14:40:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440020",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440020",
+      "total_answers": 20,
+      "skip_count": 1,
+      "word_cloud_data": {"bad": 2, "ok": 2},
+      "sentiment_score": 0.4,
+      "choice_distribution": {"2": 8, "1": 6, "3": 6},
+      "average_value": 2.1,
+      "median_value": 2.0,
+      "min_value": 1.0,
+      "max_value": 3.0,
+      "updated_at": "2025-07-11T14:50:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440021",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440021",
+      "total_answers": 55,
+      "skip_count": 5,
+      "word_cloud_data": {"excellent": 11, "good": 9},
+      "sentiment_score": 0.85,
+      "choice_distribution": {"5": 25, "4": 20, "3": 10},
+      "average_value": 4.5,
+      "median_value": 5.0,
+      "min_value": 3.0,
+      "max_value": 5.0,
+      "updated_at": "2025-07-11T15:00:00Z"
+    }
+  },
+  {
+    "model": "analytics.questionanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440022",
+    "fields": {
+      "question": "550e8400-e29b-41d4-a716-446655440022",
+      "total_answers": 28,
+      "skip_count": 2,
+      "word_cloud_data": {"average": 6, "ok": 4},
+      "sentiment_score": 0.5,
+      "choice_distribution": {"3": 10, "2": 10, "1": 8},
+      "average_value": 2.6,
+      "median_value": 3.0,
+      "min_value": 1.0,
+      "max_value": 4.0,
+      "updated_at": "2025-07-11T15:10:00Z"
+    }
+  }
+]

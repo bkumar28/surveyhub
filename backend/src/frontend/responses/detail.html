@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}Response Details{% endblock %}
+
+{% block page_actions %}
+<div class="btn-group">
+  <a href="/responses/list/" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i> Back to Responses
+  </a>
+</div>
+{% endblock %}
+
+{% block content %}
+  <h3 class="mb-3"><strong>Response Details</strong></h3>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Response Information</h5>
+          <table class="table">
+            <tbody>
+              <tr>
+                <th style="width: 30%">Survey</th>
+                <td id="surveyTitle">Loading...</td>
+              </tr>
+              <tr>
+                <th>Respondent</th>
+                <td id="respondentEmail">Loading...</td>
+              </tr>
+              <tr>
+                <th>Status</th>
+                <td id="completionStatus">Loading...</td>
+              </tr>
+              <tr>
+                <th>Submitted</th>
+                <td id="submittedDate">Loading...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Additional Information</h5>
+          <table class="table">
+            <tbody>
+              <tr>
+                <th style="width: 30%">IP Address</th>
+                <td id="ipAddress">Loading...</td>
+              </tr>
+              <tr>
+                <th>User Agent</th>
+                <td id="userAgent">Loading...</td>
+              </tr>
+              <tr>
+                <th>Time Spent</th>
+                <td id="timeSpent">Loading...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Response Answers</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th style="width: 50%">Question</th>
+                  <th style="width: 50%">Answer</th>
+                </tr>
+              </thead>
+              <tbody id="responseAnswers">
+                <!-- Answers will be loaded here via JavaScript -->
+                <tr>
+                  <td colspan="2" class="text-center">Loading answers...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-12 text-end">
+      <button type="button" class="btn btn-outline-danger" id="deleteResponseBtn">
+        <i class="bi bi-trash me-1"></i> Delete Response
+      </button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('authToken');
+    let responseId = null;
+
+    // Get response ID from URL
+    const pathParts = window.location.pathname.split('/');
+    if (pathParts.length > 3 && !isNaN(pathParts[3])) {
+      responseId = parseInt(pathParts[3]);
+      loadResponseDetails(responseId);
+    } else {
+      window.location.href = '/responses/list/';
+    }
+
+    // Delete response handler
+    document.getElementById('deleteResponseBtn').addEventListener('click', function() {
+      if (responseId && confirm('Are you sure you want to delete this response? This action cannot be undone.')) {
+        deleteResponse(responseId);
+      }
+    });
+  });
+
+  async function loadResponseDetails(responseId) {
+    const token = localStorage.getItem('authToken');
+
+    try {
+      const response = await fetch(`/api/v1/survey-responses/${responseId}/`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to load response details');
+
+      const responseData = await response.json();
+
+      // Populate response information
+      document.getElementById('surveyTitle').textContent = responseData.survey.title;
+      document.getElementById('respondentEmail').textContent = responseData.respondent_email || 'Anonymous';
+      document.getElementById('completionStatus').textContent = responseData.completed ? 'Completed' : 'Incomplete';
+      document.getElementById('submittedDate').textContent = new Date(responseData.submitted_at).toLocaleString();
+
+      // Populate additional information (if available in your API)
+      document.getElementById('ipAddress').textContent = responseData.ip_address || 'Not recorded';
+      document.getElementById('userAgent').textContent = responseData.user_agent || 'Not recorded';
+
+      // Calculate time spent if start and submit times are available
+      if (responseData.started_at && responseData.submitted_at) {
+        const startTime = new Date(responseData.started_at);
+        const submitTime = new Date(responseData.submitted_at);
+        const timeSpentMs = submitTime - startTime;
+        const timeSpentMinutes = Math.floor(timeSpentMs / 60000);
+        const timeSpentSeconds = Math.floor((timeSpentMs % 60000) / 1000);
+        document.getElementById('timeSpent').textContent = `${timeSpentMinutes} min ${timeSpentSeconds} sec`;
+      } else {
+        document.getElementById('timeSpent').textContent = 'Not recorded';
+      }
+
+      // Clear previous answers
+      const answersTable = document.getElementById('responseAnswers');
+      answersTable.innerHTML = '';
+
+      // Add answers to table
+      if (responseData.answers && responseData.answers.length) {
+        responseData.answers.forEach(answer => {
+          const row = document.createElement('tr');
+
+          const questionCell = document.createElement('td');
+          questionCell.textContent = answer.question.text;
+
+          const answerCell = document.createElement('td');
+
+          // Format answer based on question type
+          if (answer.question.question_type === 'choice') {
+            answerCell.textContent = answer.selected_option || answer.text_answer || '-';
+          } else if (answer.question.question_type === 'boolean') {
+            answerCell.textContent = answer.boolean_answer ? 'Yes' : 'No';
+          } else if (answer.question.question_type === 'rating') {
+            answerCell.textContent = '⭐'.repeat(answer.number_answer || 0);
+          } else {
+            answerCell.textContent = answer.text_answer || answer.number_answer || '-';
+          }
+
+          row.appendChild(questionCell);
+          row.appendChild(answerCell);
+          answersTable.appendChild(row);
+        });
+      } else {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 2;
+        cell.className = 'text-center';
+        cell.textContent = 'No answers found for this response.';
+        row.appendChild(cell);
+        answersTable.appendChild(row);
+      }
+
+    } catch (error) {
+      console.error('Error loading response details:', error);
+      alert('Failed to load response details: ' + error.message);
+    }
+  }
+
+  async function deleteResponse(responseId) {
+    const token = localStorage.getItem('authToken');
+
+    try {
+      const response = await fetch(`/api/v1/survey-responses/${responseId}/`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to delete response');
+
+      window.location.href = '/responses/list/';
+    } catch (error) {
+      console.error('Error deleting response:', error);
+      alert('Failed to delete response: ' + error.message);
+    }
+  }
+</script>
+{% endblock %}

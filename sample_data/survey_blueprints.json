@@ -1,0 +1,75 @@
+[
+  {
+    "model": "blueprints.surveyblueprint",
+    "pk": "550e8400-e29b-41d4-a716-446655440030",
+    "fields": {
+      "name": "Customer Satisfaction Survey",
+      "description": "A comprehensive template for measuring customer satisfaction with your products or services.",
+      "category": "550e8400-e29b-41d4-a716-446655440020",
+      "tags": ["customer", "satisfaction", "feedback", "service"],
+      "is_public": true,
+      "created_by": 1,
+      "created_at": "2025-07-11T10:00:00Z",
+      "usage_count": 5,
+      "blueprint_data": {
+        "title": "Customer Satisfaction Survey",
+        "description": "Help us improve by sharing your experience",
+        "questions": [
+          {
+            "title": "How satisfied are you with our service?",
+            "field_type": "R",
+            "is_required": true,
+            "order": 1,
+            "scale_min": 1,
+            "scale_max": 5,
+            "scale_labels": {"1": "Very Dissatisfied", "5": "Very Satisfied"}
+          },
+          {
+            "title": "What can we improve?",
+            "field_type": "TA",
+            "is_required": false,
+            "order": 2,
+            "placeholder_text": "Please share your suggestions..."
+          }
+        ]
+      },
+      "preview_image": null
+    }
+  },
+  {
+    "model": "blueprints.surveyblueprint",
+    "pk": "550e8400-e29b-41d4-a716-446655440031",
+    "fields": {
+      "name": "Employee Engagement Survey",
+      "description": "Measure employee satisfaction and engagement levels within your organization.",
+      "category": "550e8400-e29b-41d4-a716-446655440021",
+      "tags": ["employee", "engagement", "hr", "workplace"],
+      "is_public": true,
+      "created_by": 1,
+      "created_at": "2025-07-11T11:00:00Z",
+      "usage_count": 3,
+      "blueprint_data": {
+        "title": "Employee Engagement Survey",
+        "description": "Your feedback helps us create a better workplace",
+        "questions": [
+          {
+            "title": "How satisfied are you with your current role?",
+            "field_type": "S",
+            "is_required": true,
+            "order": 1,
+            "scale_min": 1,
+            "scale_max": 10
+          },
+          {
+            "title": "Do you feel valued at work?",
+            "field_type": "SC",
+            "is_required": true,
+            "order": 2,
+            "options": ["Yes", "No", "Sometimes"]
+          }
+        ]
+      },
+      "preview_image": null
+    }
+  }
+]

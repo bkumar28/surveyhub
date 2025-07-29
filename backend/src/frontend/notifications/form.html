@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+
+{% block title %}{% if notification %}Edit Notification{% else %}Add Notification{% endif %} - SurveyHub{% endblock %}
+
+{% block page_title %}{% if notification %}Edit Notification{% else %}Add Notification{% endif %}{% endblock %}
+
+{% block page_actions %}
+<div class="d-none d-sm-block">
+  <a href="{% url 'notifications:list' %}" class="btn btn-outline-primary btn-sm">
+    <i class="bi bi-arrow-left me-1"></i> Back to Notifications
+  </a>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Custom styles for notification form page */
+  @media (max-width: 767.98px) {
+    .card-header h5 {
+      font-size: 1rem;
+    }
+  }
+
+  /* Ensure consistent spacing on mobile */
+  .notification-form .row .col-12,
+  .notification-form .row .col-md-6,
+  .notification-form .row .col-lg-4 {
+    margin-bottom: 0.25rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title mb-0">Notification Details</h5>
+  </div>
+  <div class="card-body">
+    <form method="post" class="notification-form needs-validation" novalidate>
+      {% csrf_token %}
+
+      <div class="row g-3">
+        {% for field in form %}
+          <div class="{% if field.name == 'message' %}col-12{% else %}col-md-6 col-lg-4{% endif %}">
+            <div class="mb-3">
+              <label for="{{ field.id_for_label }}" class="form-label">
+                {{ field.label }}
+                {% if field.field.required %}
+                  <span class="text-danger">*</span>
+                {% endif %}
+              </label>
+
+              {% if field.field.widget.input_type == 'checkbox' %}
+                <div class="form-check">
+                  {{ field }}
+                  <label class="form-check-label" for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                  </label>
+                </div>
+              {% elif field.name == 'message' %}
+                <textarea
+                  name="{{ field.name }}"
+                  id="{{ field.id_for_label }}"
+                  class="form-control {% if field.errors %}is-invalid{% endif %}"
+                  rows="4"
+                  {% if field.field.required %}required{% endif %}>{{ field.value|default:'' }}</textarea>
+              {% else %}
+                {{ field.as_widget|safe|add_class:"form-control" }}
+              {% endif %}
+
+              {% if field.help_text %}
+                <div class="form-text text-muted small">{{ field.help_text }}</div>
+              {% endif %}
+
+              {% if field.errors %}
+                <div class="invalid-feedback">
+                  {% for error in field.errors %}
+                    {{ error }}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="mt-4 action-buttons">
+        <div class="row">
+          <div class="col-12 col-sm-auto mb-2 mb-sm-0">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-save me-1"></i> Save Notification
+            </button>
+          </div>
+
+          {% if notification %}
+          <div class="col-12 col-sm-auto mb-2 mb-sm-0">
+            <a href="{% url 'notifications:delete' notification.id %}" class="btn btn-outline-danger w-100"
+               onclick="return confirm('Are you sure you want to delete this notification?');">
+              <i class="bi bi-trash me-1"></i> Delete
+            </a>
+          </div>
+          {% endif %}
+
+          <div class="col-12 col-sm-auto ms-sm-auto">
+            <a href="{% url 'notifications:list' %}" class="btn btn-outline-secondary w-100">
+              <i class="bi bi-x me-1"></i> Cancel
+            </a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Form validation
+    const form = document.querySelector('.notification-form');
+    if (form) {
+      form.addEventListener('submit', function(event) {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+
+          // Find the first invalid element and scroll to it
+          const firstInvalid = form.querySelector(':invalid');
+          if (firstInvalid) {
+            firstInvalid.focus();
+            firstInvalid.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center'
+            });
+          }
+        }
+        form.classList.add('was-validated');
+      }, false);
+    }
+
+    // Responsive behavior for select elements
+    const selectElements = document.querySelectorAll('select.form-control, select.form-select');
+    selectElements.forEach(select => {
+      select.classList.remove('form-control');
+      select.classList.add('form-select');
+    });
+  });
+</script>
+{% endblock %}

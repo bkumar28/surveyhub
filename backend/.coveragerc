@@ -1,0 +1,12 @@
+[run]
+parallel = true
+source = src
+branch = True
+concurrency = multiprocessing
+data_file = src/.coverage
+omit =
+    */migrations/*
+    *test*
+    */python_client/ext/*
+    */pyrad/*
+    *__pycache__*

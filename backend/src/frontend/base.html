@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}SurveyHub{% endblock %}</title>
+
+  <!-- Preconnect to Google Fonts for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS -->
+  <link href="{% static 'vendor/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/css/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/css/dataTables.bootstrap5.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/css/responsive.dataTables.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/css/responsive.bootstrap5.min.css' %}" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+  <!-- Custom App CSS -->
+  <link href="{% static 'css/app.css' %}" rel="stylesheet">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <div class="wrapper">
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <a href="{% url 'dashboard:dashboard' %}" class="sidebar-brand">
+          <h2 class="sidebar-brand-full">
+            <span class="logo-text">Survey</span><span class="logo-text-accent">Hub</span>
+          </h2>
+          <h2 class="sidebar-brand-collapsed">
+            <span class="logo-text">S</span><span class="logo-text-accent">H</span>
+          </h2>
+        </a>
+      </div>
+      <div class="sidebar-content">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard:dashboard' %}" data-page="dashboard">
+              <i class="bi bi-house-door"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'surveys:surveys_list' %}" data-page="surveys">
+              <i class="bi bi-clipboard-data"></i>
+              <span>Surveys</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'surveys:questions_list' %}" data-page="questions">
+              <i class="bi bi-question-circle"></i>
+              <span>Questions</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'surveys:responses_list' %}" data-page="responses">
+              <i class="bi bi-reply-all"></i>
+              <span>Responses</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'blueprints:list' %}" data-page="blueprints">
+              <i class="bi bi-file-earmark-text"></i>
+              <span>Templates</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'notifications:list' %}" data-page="notifications">
+              <i class="bi bi-bell"></i>
+              <span>Notifications</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'analytics:dashboard' %}" data-page="analytics">
+              <i class="bi bi-graph-up"></i>
+              <span>Analytics</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+      <!-- Top Navigation Bar -->
+      <nav class="navbar navbar-expand navbar-light navbar-bg">
+        <div class="container-fluid">
+          <a class="sidebar-toggle js-sidebar-toggle" id="sidebar-toggle" aria-label="Toggle Sidebar">
+            <div class="hamburger align-self-center">
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+              <span class="hamburger-line"></span>
+            </div>
+          </a>
+
+          <ul class="navbar-nav ms-auto">
+            <!-- Notifications Dropdown -->
+            <li class="nav-item dropdown me-3">
+              <a class="nav-icon dropdown-toggle position-relative" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-bell align-middle"></i>
+                <span class="indicator"></span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="notificationsDropdown">
+                <div class="dropdown-menu-header">
+                  <h6 class="dropdown-header text-white m-0">4 New Notifications</h6>
+                  <span class="text-white-50 fs-sm d-block">Latest updates and activities</span>
+                </div>
+                <div class="list-group">
+                  <a href="#" class="list-group-item border-0">
+                    <div class="row g-0 align-items-center">
+                      <div class="col-2">
+                        <i class="bi bi-bell-fill text-primary fs-4"></i>
+                      </div>
+                      <div class="col-10 ps-2">
+                        <div class="text-dark">New survey response</div>
+                        <div class="text-muted small">You have a new response for "Customer Feedback"</div>
+                        <div class="text-muted small mt-1">15m ago</div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div class="dropdown-menu-footer">
+                  <a href="{% url 'notifications:list' %}" class="text-muted">View all notifications</a>
+                </div>
+              </div>
+            </li>
+
+            <!-- User Dropdown (Responsive) -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <!-- Avatar (consistent across all screens) -->
+                <div class="avatar me-2">
+                  <i class="bi bi-person-circle"></i>
+                </div>
+                <!-- Username (hidden on mobile) -->
+                <span class="d-none d-sm-inline text-dark">{{ user.get_full_name|default:user.username|default:'Guest User' }}</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="#"><i class="bi bi-person align-middle me-1"></i> Profile</a>
+                <a class="dropdown-item" href="#"><i class="bi bi-gear align-middle me-1"></i> Settings</a>
+                <a class="dropdown-item" href="#"><i class="bi bi-bar-chart-line align-middle me-1"></i> Analytics</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#"><i class="bi bi-question-circle align-middle me-1"></i> Help Center</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" onclick="logoutUser(); return false;"><i class="bi bi-box-arrow-right align-middle me-1"></i> Logout</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Page Content -->
+      <main class="main">
+        <div class="container-fluid p-0">
+          <!-- Page Header -->
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+              <div>
+                <h1 class="h3 d-inline align-middle">{% block page_title %}Dashboard{% endblock %}</h1>
+                {% block page_badge %}{% endblock %}
+              </div>
+              <div id="page-actions-container">{% block page_actions %}{% endblock %}</div>
+            </div>
+          </div>
+
+          <!-- Main Content Area -->
+          {% block content %}{% endblock %}
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="container-fluid">
+          <div class="row text-muted">
+            <div class="col-6 text-start">
+              <p class="mb-0">
+                &copy; 2025 <a class="text-muted" href="#"><strong>SurveyHub</strong></a>
+              </p>
+            </div>
+            <div class="col-6 text-end">
+              <ul class="list-inline">
+                <li class="list-inline-item">
+                  <a class="text-muted" href="#">Support</a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="text-muted" href="#">Help Center</a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="text-muted" href="#">Privacy</a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="text-muted" href="#">Terms</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay d-none">
+    <div class="loading-spinner">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static 'vendor/js/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/js/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'vendor/js/dataTables.bootstrap5.min.js' %}"></script>
+  <script src="{% static 'vendor/js/dataTables.responsive.min.js' %}"></script>
+  <script src="{% static 'vendor/js/responsive.bootstrap5.min.js' %}"></script>
+  <script src="{% static 'js/app.js' %}"></script>
+
+  {% block extra_js %}{% endblock %}
+  {% block scripts %}{% endblock %}
+</body>
+</html>

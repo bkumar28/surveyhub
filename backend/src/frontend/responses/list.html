@@ -1,0 +1,326 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}Survey Responses{% endblock %}
+
+{% block page_actions %}
+<div class="btn-group" role="group" aria-label="Export options">
+  <button type="button" class="btn btn-outline-secondary" id="exportCSVBtn">
+    <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+  </button>
+  <button type="button" class="btn btn-outline-secondary" id="printBtn">
+    <i class="bi bi-printer me-1"></i> Print
+  </button>
+</div>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-subtitle">
+            <div class="row mt-2">
+              <div class="col-md-3 mb-2">
+                <select class="form-select form-select-sm" id="surveysFilter">
+                  <option value="">All Surveys</option>
+                  <!-- Will be populated via JavaScript -->
+                </select>
+              </div>
+              <div class="col-md-3 mb-2">
+                <input type="date" class="form-control form-control-sm" id="dateFromFilter" placeholder="From Date">
+              </div>
+              <div class="col-md-3 mb-2">
+                <input type="date" class="form-control form-control-sm" id="dateToFilter" placeholder="To Date">
+              </div>
+              <div class="col-md-3 mb-2">
+                <div class="d-flex gap-2">
+                  <button type="button" class="btn btn-sm btn-primary flex-grow-1" id="applyFiltersBtn">
+                    <i class="bi bi-funnel me-1"></i> Filter
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary flex-grow-1" id="resetFiltersBtn">
+                    <i class="bi bi-x-circle me-1"></i> Reset
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table id="responsesTable" class="table table-hover my-0 w-100">
+              <thead>
+                <tr>
+                  <th>Survey</th>
+                  <th>Respondent</th>
+                  <th>Completed</th>
+                  <th>Submitted</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="responsesList">
+                <!-- Dummy data for demonstration -->
+                <tr>
+                  <td>Customer Satisfaction Survey</td>
+                  <td>john.doe@email.com</td>
+                  <td>Yes</td>
+                  <td>2025-01-22 14:30:00</td>
+                  <td>
+                    <a href="/responses/detail/1/" class="btn btn-sm btn-outline-info" title="View Response">
+                      <i class="fa fa-eye"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Product Feedback Survey</td>
+                  <td>jane.smith@email.com</td>
+                  <td>Yes</td>
+                  <td>2025-01-22 11:15:00</td>
+                  <td>
+                    <a href="/responses/detail/2/" class="btn btn-sm btn-outline-info" title="View Response">
+                      <i class="fa fa-eye"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Employee Engagement Survey</td>
+                  <td>mike.wilson@email.com</td>
+                  <td>No</td>
+                  <td>2025-01-21 16:45:00</td>
+                  <td>
+                    <a href="/responses/detail/3/" class="btn btn-sm btn-outline-info" title="View Response">
+                      <i class="fa fa-eye"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Website Usability Study</td>
+                  <td>sarah.johnson@email.com</td>
+                  <td>Yes</td>
+                  <td>2025-01-21 09:22:00</td>
+                  <td>
+                    <a href="/responses/detail/4/" class="btn btn-sm btn-outline-info" title="View Response">
+                      <i class="fa fa-eye"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Market Research Survey</td>
+                  <td>david.brown@email.com</td>
+                  <td>Yes</td>
+                  <td>2025-01-20 13:18:00</td>
+                  <td>
+                    <a href="/responses/detail/5/" class="btn btn-sm btn-outline-info" title="View Response">
+                      <i class="fa fa-eye"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Customer Satisfaction Survey</td>
+                  <td>emma.davis@email.com</td>
+                  <td>Yes</td>
+                  <td>2025-01-20 10:55:00</td>
+                  <td>
+                    <a href="/responses/detail/6/" class="btn btn-sm btn-outline-info" title="View Response">
+                      <i class="fa fa-eye"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('authToken');
+
+    // Initialize DataTable with consistent options
+    $('#responsesTable').DataTable({
+      pageLength: 10,
+      ordering: true,
+      responsive: true,
+      autoWidth: false,
+      scrollX: false,
+      language: {
+        search: "",
+        searchPlaceholder: "Search...",
+        info: "Showing _START_ to _END_ of _TOTAL_ responses",
+        lengthMenu: "Show _MENU_ responses per page",
+        emptyTable: "No responses found",
+        zeroRecords: "No matching responses found"
+      },
+      dom: '<"row mb-3"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row mt-3"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+      // Add styling for header and striped rows
+      "drawCallback": function() {
+        $('thead tr th').addClass('bg-light');
+      },
+      "stripeClasses": ['', 'bg-light-subtle'],
+      // Add responsive breakpoints
+      responsive: {
+        breakpoints: [
+          {name: 'desktop', width: Infinity},
+          {name: 'tablet', width: 1024},
+          {name: 'phone', width: 480}
+        ]
+      }
+    });
+
+    // Load surveys for filter dropdown
+    loadSurveys();
+
+    // Load responses
+    loadResponses();
+
+    // Filter button handler
+    document.getElementById('applyFiltersBtn').addEventListener('click', function() {
+      loadResponses({
+        surveyId: document.getElementById('surveysFilter').value,
+        dateFrom: document.getElementById('dateFromFilter').value,
+        dateTo: document.getElementById('dateToFilter').value
+      });
+    });
+
+    // Reset filters button handler
+    document.getElementById('resetFiltersBtn').addEventListener('click', function() {
+      document.getElementById('surveysFilter').value = '';
+      document.getElementById('dateFromFilter').value = '';
+      document.getElementById('dateToFilter').value = '';
+      loadResponses();
+    });
+
+    // Export CSV button handler
+    document.getElementById('exportCSVBtn').addEventListener('click', function() {
+      exportResponsesToCSV();
+    });
+
+    // Print button handler
+    document.getElementById('printBtn').addEventListener('click', function() {
+      window.print();
+    });
+  });
+
+  async function loadSurveys() {
+    const token = localStorage.getItem('authToken');
+    try {
+      const response = await fetch('/api/v1/surveys/', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to load surveys');
+
+      const surveys = await response.json();
+      const surveysFilter = document.getElementById('surveysFilter');
+
+      surveys.forEach(survey => {
+        const option = document.createElement('option');
+        option.value = survey.id;
+        option.textContent = survey.title;
+        surveysFilter.appendChild(option);
+      });
+    } catch (error) {
+      console.error('Error loading surveys:', error);
+    }
+  }
+
+  async function loadResponses(filters = {}) {
+    const token = localStorage.getItem('authToken');
+
+    let url = '/api/v1/survey-responses/';
+    const params = new URLSearchParams();
+
+    if (filters.surveyId) {
+      params.append('survey', filters.surveyId);
+    }
+
+    if (filters.dateFrom) {
+      params.append('date_from', filters.dateFrom);
+    }
+
+    if (filters.dateTo) {
+      params.append('date_to', filters.dateTo);
+    }
+
+    if (params.toString()) {
+      url += '?' + params.toString();
+    }
+
+    try {
+      const response = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to load responses');
+
+      const responses = await response.json();
+      renderResponses(responses);
+    } catch (error) {
+      console.error('Error loading responses:', error);
+    }
+  }
+
+  function renderResponses(responses) {
+    const table = $('#responsesTable').DataTable();
+    table.clear();
+
+    responses.forEach(response => {
+      table.row.add([
+        response.survey.title,
+        response.respondent_email || 'Anonymous',
+        response.completed ? 'Yes' : 'No',
+        new Date(response.submitted_at).toLocaleString(),
+        `<a href="/responses/detail/${response.id}/" class="btn btn-sm btn-outline-info" title="View Response">
+           <i class="fa fa-eye"></i>
+         </a>`
+      ]);
+    });
+
+    table.draw();
+  }
+
+  function exportResponsesToCSV() {
+    const token = localStorage.getItem('authToken');
+    const surveyId = document.getElementById('surveysFilter').value;
+    const dateFrom = document.getElementById('dateFromFilter').value;
+    const dateTo = document.getElementById('dateToFilter').value;
+
+    let url = '/api/v1/survey-responses/export/csv/';
+    const params = new URLSearchParams();
+
+    if (surveyId) {
+      params.append('survey', surveyId);
+    }
+
+    if (dateFrom) {
+      params.append('date_from', dateFrom);
+    }
+
+    if (dateTo) {
+      params.append('date_to', dateTo);
+    }
+
+    if (params.toString()) {
+      url += '?' + params.toString();
+    }
+
+    // Create a link to download the CSV
+    const downloadLink = document.createElement('a');
+    downloadLink.href = url;
+    downloadLink.setAttribute('download', 'survey_responses.csv');
+    downloadLink.setAttribute('target', '_blank');
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
+</script>
+{% endblock %}
