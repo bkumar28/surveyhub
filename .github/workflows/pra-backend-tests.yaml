@@ -87,7 +87,7 @@ jobs:
 
       - name: Apply migrations
         run: |
-          poetry run python src/manage.py migrate
+          poetry run python backend/src/manage.py migrate
 
       - name: Run Unit Tests with Coverage
         run: |
