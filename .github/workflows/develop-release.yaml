@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       environment: testing
-      DJANGO_SETTINGS: ${{ vars.DJANGO_SETTINGS_TESTING }}
+      CONTAINER_INIT_SCRIPT: ${{ vars.CONTAINER_INIT_SCRIPT_TESTING }}
       PYTHON_VERSION: ${{ vars.PYTHON_VERSION_TESTING }}
       DEBUG: ${{ vars.DEBUG_TESTING }}
       MOCK_DEPLOYMENT: ${{ vars.MOCK_TESTING_DEPLOYMENT }}
@@ -37,10 +37,10 @@ jobs:
       - name: Confirm values for env
         run: |
           echo "Environment: testing"
-          echo "DJANGO_SETTINGS: ${{ vars.DJANGO_SETTINGS_TESTING }}"
           echo "PYTHON_VERSION: ${{ vars.PYTHON_VERSION_TESTING }}"
           echo "DEBUG: ${{ vars.DEBUG_TESTING }}"
           echo "MOCK_DEPLOYMENT: ${{ vars.MOCK_TESTING_DEPLOYMENT }}"
+          echo "CONTAINER_INIT_SCRIPT: ${{ vars.CONTAINER_INIT_SCRIPT_TESTING }}"
 
   mock-deploy-validation:
     name: Validate Mock Deployment Workflow
@@ -65,8 +65,9 @@ jobs:
     uses: ./.github/workflows/migrations.yaml
     with:
       python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
-      django-settings: ${{ needs.setup.outputs.DJANGO_SETTINGS }}
+      environment: "testing"
       debug: ${{ needs.setup.outputs.DEBUG }}
+      container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }}
 
   backend-tests:
     name: Backend Tests
@@ -76,8 +77,10 @@ jobs:
     uses: ./.github/workflows/pra-backend-tests.yaml
     with:
       python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
-      django-settings: ${{ needs.setup.outputs.DJANGO_SETTINGS }}
       debug: ${{ needs.setup.outputs.DEBUG }}
+      environment: "testing"
+      container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }} 
+      
     secrets: inherit
 
   # Deploy with proper error handling and rollback capability
@@ -129,7 +132,8 @@ jobs:
       - name: Setup Environment Variables
         uses: ./.github/actions/setup-ci-env
         with:
-          django-settings: ${{ needs.setup.outputs.DJANGO_SETTINGS }}
+          environment: testing
+          container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }}
           debug: ${{ needs.setup.outputs.DEBUG }}
 
       - name: Get Django version

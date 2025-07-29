@@ -6,10 +6,13 @@ on:
       python-version:
         required: true
         type: string
-      django-settings:
+      debug:
         required: true
         type: string
-      debug:
+      container-init-script:
+        required: true
+        type: string
+      environment:
         required: true
         type: string
 
@@ -74,16 +77,13 @@ jobs:
       - name: Set CI Variables
         uses: ./.github/actions/setup-ci-env
         with:
-          django-settings: ${{ inputs.django-settings }}
+          container-init-script: ${{ inputs.container-init-script }}
           debug: ${{ inputs.debug }}
+          environment: ${{ inputs.environment }}
 
       - name: Install additional test dependencies
         run: |
           poetry run pip install keyring pytest-xdist pytest-rerunfailures
-
-      - name: Django System Check
-        run: |
-          DJANGO_SETTINGS_MODULE=${{ inputs.django-settings }} poetry run python src/manage.py check --deploy
 
       - name: Apply migrations
         run: |
@@ -93,7 +93,6 @@ jobs:
         run: |
           echo "Running tests using DB: $DB_NAME at $DB_HOST"
           poetry run pytest \
-            --ds=${{ inputs.django-settings }} \
             --cov=src \
             --cov-config=src/.coveragerc \
             --cov-branch \

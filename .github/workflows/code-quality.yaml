@@ -9,7 +9,10 @@ on:
       python-version:
         required: true
         type: string
-
+      container-init-script:
+        description: 'Name of the container startup script'
+        required: true
+        type: string
 jobs:
   code-quality:
     name: Code Quality Checks

@@ -11,22 +11,28 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  ENVIRONMENT: "development"
+
 jobs:
   setup:
     name: Setup Environment Variables
     runs-on: ubuntu-latest
     outputs:
-      DJANGO_SETTINGS: ${{ vars.DJANGO_SETTINGS_DEV }}
       PYTHON_VERSION: ${{ vars.PYTHON_VERSION_DEV }}
       DEBUG: ${{ vars.DEBUG_DEV }}
+      CONTAINER_INIT_SCRIPT: ${{ vars.CONTAINER_INIT_SCRIPT_DEV }}
     steps:
       - name: Confirm values from repository variables
         run: |
-          echo "DJANGO_SETTINGS: ${{ vars.DJANGO_SETTINGS_DEV }}"
           echo "PYTHON_VERSION: ${{ vars.PYTHON_VERSION_DEV }}"
           echo "DEBUG: ${{ vars.DEBUG_DEV }}"
 
-  # Rest of the workflow remains the same...
+  actionlint:
+    needs: setup
+    name: Lint GitHub
+    uses: ./.github/workflows/actionlint.yaml
+
   code-quality:
     needs: setup
     name: Code Quality Checks
@@ -45,8 +51,9 @@ jobs:
     uses: ./.github/workflows/migrations.yaml
     with:
       python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
-      django-settings: ${{ needs.setup.outputs.DJANGO_SETTINGS }}
       debug: ${{ needs.setup.outputs.DEBUG }}
+      container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }}
+      environment: ${{ env.ENVIRONMENT }}
 
   pra-backend-tests:
     needs: setup
@@ -54,6 +61,7 @@ jobs:
     uses: ./.github/workflows/pra-backend-tests.yaml
     with:
       python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
-      django-settings: ${{ needs.setup.outputs.DJANGO_SETTINGS }}
       debug: ${{ needs.setup.outputs.DEBUG }}
+      container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }}
+      environment: ${{ env.ENVIRONMENT }}
     secrets: inherit

@@ -6,10 +6,13 @@ on:
       python-version:
         required: true
         type: string
-      django-settings:
+      debug:
         required: true
         type: string
-      debug:
+      container-init-script:
+        required: true
+        type: string
+      environment:
         required: true
         type: string
 
@@ -52,8 +55,9 @@ jobs:
       - name: Setup Variables from CI Action
         uses: ./.github/actions/setup-ci-env
         with:
-          django-settings: ${{ inputs.django-settings }}
+          container-init-script: ${{ inputs.container-init-script }}
           debug: ${{ inputs.debug }}
+          environment: ${{ inputs.environment }}
 
       - name: Wait for PostgreSQL
         run: |

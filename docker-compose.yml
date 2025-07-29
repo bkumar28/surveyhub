@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   backend:
     build:
@@ -18,20 +17,6 @@ services:
     depends_on:
       - db
       - redis
-
-  frontend:
-    build:
-      context: ./frontend
-    working_dir: /app
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=development
-    command: npm start
-
   nginx:
     build: .
     ports:

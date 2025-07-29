@@ -6,7 +6,7 @@ services:
       - ./src:/app/src
       - ./pyproject.toml:/app/pyproject.toml
       - ./poetry.lock:/app/poetry.lock
-      - ./scripts/${START_SCRIPT:-start-dev.sh}:/app/docker_entrypoint.sh
+      - ./scripts/${START_SCRIPT:-start-dev}.sh:/app/docker_entrypoint.sh
       - ../sample_data:/app/sample_data
       - static_volume:/vol/web/static
 
