@@ -80,8 +80,8 @@ jobs:
 
       - name: Run makemigrations check
         run: |
-          poetry run python src/manage.py makemigrations --check --dry-run --noinput
+          poetry run python backend/src/manage.py makemigrations --check --dry-run --noinput
 
       - name: Test migrations can be applied
         run: |
-          poetry run python src/manage.py migrate --noinput
+          poetry run python backend/src/manage.py migrate --noinput

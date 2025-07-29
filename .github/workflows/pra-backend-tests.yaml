@@ -93,11 +93,11 @@ jobs:
         run: |
           echo "Running tests using DB: $DB_NAME at $DB_HOST"
           poetry run pytest \
-            --cov=src \
-            --cov-config=src/.coveragerc \
+            --cov=backend/src \
+            --cov-config=backend/src/.coveragerc \
             --cov-branch \
             --cov-report=xml:coverage.xml \
-            src \
+            backend/src \
             --dist loadgroup \
             --numprocesses auto \
             -v \
