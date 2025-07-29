@@ -1,0 +1,46 @@
+name: 'Set CI Environment Variables'
+description: 'Hardcoded CI env vars for Django app (temporary; replace with secrets later)'
+
+inputs:
+  django-settings:
+    description: 'Django settings module to use'
+    required: true
+  debug:
+    description: 'Django debug mode'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Export CI environment variables
+      shell: bash
+      run: |
+        echo "Setting environment variables for CI..."
+
+        # General Django Settings
+        echo "DEBUG=${{ inputs.debug }}" >> $GITHUB_ENV
+        echo "SECRET_KEY=yk+f@%@apa_@*jw$3-dtocg&2e%yi9%rg^f0f*_a-r9gqnn@h#" >> $GITHUB_ENV
+        echo "DJANGO_SETTINGS_MODULE=${{ inputs.django-settings }}" >> $GITHUB_ENV
+        echo "ALLOWED_HOSTS=localhost,127.0.0.1,web" >> $GITHUB_ENV
+        echo "CORS_ALLOW_ALL_ORIGINS=True" >> $GITHUB_ENV
+
+        # PostgreSQL (Docker-based)
+        echo "DB_USER=db_user" >> $GITHUB_ENV
+        echo "DB_PASSWORD=db_pass" >> $GITHUB_ENV
+        echo "DB_HOST=localhost" >> $GITHUB_ENV
+        echo "DB_PORT=5432" >> $GITHUB_ENV
+        echo "DB_NAME=db_test" >> $GITHUB_ENV
+
+        # Redis + Celery (Docker-based)
+        echo "REDIS_URL=redis://redis:6379/0" >> $GITHUB_ENV
+        echo "CELERY_BROKER_URL=redis://redis:6379/0" >> $GITHUB_ENV
+
+        # Email Settings (for local/dummy use)
+        echo "EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend" >> $GITHUB_ENV
+        echo "EMAIL_HOST=smtp.gmail.com" >> $GITHUB_ENV
+        echo "EMAIL_PORT=587" >> $GITHUB_ENV
+        echo "EMAIL_USE_TLS=True" >> $GITHUB_ENV
+        echo "EMAIL_HOST_USER=test@gmail.com" >> $GITHUB_ENV
+        echo "EMAIL_HOST_PASSWORD=test_pass" >> $GITHUB_ENV
+
+        echo "CI environment variables configured"

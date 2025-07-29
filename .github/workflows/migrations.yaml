@@ -1,0 +1,83 @@
+name: Check Migrations
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        required: true
+        type: string
+      django-settings:
+        required: true
+        type: string
+      debug:
+        required: true
+        type: string
+
+jobs:
+  check-migrations:
+    name: Django Migration Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: db_test
+          POSTGRES_USER: db_user
+          POSTGRES_PASSWORD: db_pass
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup System Dependencies
+        uses: ./.github/actions/setup-system-deps
+        with:
+          packages: 'libcurl4-openssl-dev libldap2-dev libsasl2-dev libxml2-dev libxmlsec1-dev libpq-dev'
+
+      - name: Setup Python & Poetry
+        uses: ./.github/actions/setup-python-poetry
+        with:
+          python-version: ${{ inputs.python-version }}
+          poetry-groups: '--with=dev'
+
+      - name: Setup Variables from CI Action
+        uses: ./.github/actions/setup-ci-env
+        with:
+          django-settings: ${{ inputs.django-settings }}
+          debug: ${{ inputs.debug }}
+
+      - name: Wait for PostgreSQL
+        run: |
+          timeout=60
+          elapsed=0
+          until pg_isready -h localhost -p 5432 -U db_user; do
+            if [ $elapsed -ge $timeout ]; then
+              echo "PostgreSQL failed to start within $timeout seconds"
+              docker logs $(docker ps -q --filter ancestor=postgres:15) || true
+              exit 1
+            fi
+            echo "Waiting for PostgreSQL... ($elapsed/$timeout seconds)"
+            sleep 2
+            elapsed=$((elapsed + 2))
+          done
+          echo "PostgreSQL is ready!"
+
+      - name: Verify Django install
+        run: poetry run python -m django --version
+
+      - name: Run makemigrations check
+        run: |
+          poetry run python src/manage.py makemigrations --check --dry-run --noinput
+
+      - name: Test migrations can be applied
+        run: |
+          poetry run python src/manage.py migrate --noinput

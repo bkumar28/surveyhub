@@ -1,0 +1,59 @@
+name: Pull Request Analysis
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  setup:
+    name: Setup Environment Variables
+    runs-on: ubuntu-latest
+    outputs:
+      DJANGO_SETTINGS: ${{ vars.DJANGO_SETTINGS_DEV }}
+      PYTHON_VERSION: ${{ vars.PYTHON_VERSION_DEV }}
+      DEBUG: ${{ vars.DEBUG_DEV }}
+    steps:
+      - name: Confirm values from repository variables
+        run: |
+          echo "DJANGO_SETTINGS: ${{ vars.DJANGO_SETTINGS_DEV }}"
+          echo "PYTHON_VERSION: ${{ vars.PYTHON_VERSION_DEV }}"
+          echo "DEBUG: ${{ vars.DEBUG_DEV }}"
+
+  # Rest of the workflow remains the same...
+  code-quality:
+    needs: setup
+    name: Code Quality Checks
+    uses: ./.github/workflows/code-quality.yaml
+    with:
+      python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
+
+  codecov-validation:
+    name: Codecov Validation
+    needs: setup
+    uses: ./.github/workflows/codecov-validation.yaml
+
+  check-migrations:
+    needs: setup
+    name: Check Migrations
+    uses: ./.github/workflows/migrations.yaml
+    with:
+      python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
+      django-settings: ${{ needs.setup.outputs.DJANGO_SETTINGS }}
+      debug: ${{ needs.setup.outputs.DEBUG }}
+
+  pra-backend-tests:
+    needs: setup
+    name: Backend Unit Tests
+    uses: ./.github/workflows/pra-backend-tests.yaml
+    with:
+      python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
+      django-settings: ${{ needs.setup.outputs.DJANGO_SETTINGS }}
+      debug: ${{ needs.setup.outputs.DEBUG }}
+    secrets: inherit
