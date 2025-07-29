@@ -23,7 +23,7 @@ runs:
         # Environment variables and startup script name
         echo "DJANGO_ENVIRONMENT=${{ inputs.environment }}" >> $GITHUB_ENV
         echo "CONTAINER_INIT_SCRIPT=${{ inputs.container-init-script }}" >> $GITHUB_ENV
-        
+
         # General Django Settings
         echo "DEBUG=${{ inputs.debug }}" >> $GITHUB_ENV
         echo "SECRET_KEY=yk+f@%@apa_@*jw$3-dtocg&2e%yi9%rg^f0f*_a-r9gqnn@h#" >> $GITHUB_ENV

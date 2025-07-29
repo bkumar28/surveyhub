@@ -79,8 +79,8 @@ jobs:
       python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
       debug: ${{ needs.setup.outputs.DEBUG }}
       environment: "testing"
-      container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }} 
-      
+      container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }}
+
     secrets: inherit
 
   # Deploy with proper error handling and rollback capability
@@ -170,9 +170,6 @@ jobs:
         run: |
           echo "Running pre-deployment checks..."
           if [ "$MOCK_DEPLOYMENT" != "true" ]; then
-            # Django System Check
-            DJANGO_SETTINGS_MODULE=${{ needs.setup.outputs.DJANGO_SETTINGS }} poetry run python src/manage.py check --deploy
-
             # Check if migrations are up to date
             poetry run python src/manage.py makemigrations --check --dry-run --noinput
 

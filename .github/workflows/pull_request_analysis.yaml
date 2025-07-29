@@ -26,6 +26,11 @@ jobs:
           echo "PYTHON_VERSION: ${{ vars.PYTHON_VERSION_DEV }}"
           echo "DEBUG: ${{ vars.DEBUG_DEV }}"
 
+  actionlint:
+    needs: setup
+    name: Lint GitHub
+    uses: ./.github/workflows/actionlint.yaml
+
   code-quality:
     needs: setup
     name: Code Quality Checks
