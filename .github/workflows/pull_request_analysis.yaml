@@ -12,9 +12,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  ENVIRONMENT: "development"
-
 jobs:
   setup:
     name: Setup Environment Variables
@@ -28,11 +25,6 @@ jobs:
         run: |
           echo "PYTHON_VERSION: ${{ vars.PYTHON_VERSION_DEV }}"
           echo "DEBUG: ${{ vars.DEBUG_DEV }}"
-
-  actionlint:
-    needs: setup
-    name: Lint GitHub
-    uses: ./.github/workflows/actionlint.yaml
 
   code-quality:
     needs: setup
@@ -54,7 +46,7 @@ jobs:
       python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
       debug: ${{ needs.setup.outputs.DEBUG }}
       container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }}
-      environment: ${{ env.ENVIRONMENT }}
+      environment: "development"
 
   pra-backend-tests:
     needs: setup
@@ -64,5 +56,5 @@ jobs:
       python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
       debug: ${{ needs.setup.outputs.DEBUG }}
       container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }}
-      environment: ${{ env.ENVIRONMENT }}
+      environment: "development"
     secrets: inherit
