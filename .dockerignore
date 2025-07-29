@@ -1,0 +1,46 @@
+# Git and VCS
+.git
+.gitignore
+
+# Bytecode, envs
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+venv/
+.env/
+
+# Poetry files not needed in image
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Logs and system files
+*.log
+.DS_Store
+Thumbs.db
+logs/
+
+# Environment secrets
+.env
+.env.*
+
+# Docker / Compose files (optional)
+Dockerfile
+docker-compose.yml
+
+# IDEs
+.vscode/
+.idea/
+
+# Test / coverage files
+.pytest_cache/
+.coverage
+htmlcov/
+.cache/
+test-results/

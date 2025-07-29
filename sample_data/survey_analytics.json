@@ -1,0 +1,422 @@
+[
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440001",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440001",
+      "total_views": 100,
+      "total_starts": 80,
+      "total_completions": 75,
+      "average_completion_time": "00:05:00",
+      "median_completion_time": "00:04:30",
+      "bounce_rate": 0.1,
+      "completion_rate": 0.75,
+      "mobile_responses": 40,
+      "desktop_responses": 30,
+      "tablet_responses": 5,
+      "top_countries": {"US": 30, "IN": 20, "UK": 10},
+      "top_cities": {"New York": 10, "London": 5},
+      "traffic_sources": {"email": 50, "social": 20},
+      "updated_at": "2025-07-11T12:00:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440002",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440002",
+      "total_views": 60,
+      "total_starts": 50,
+      "total_completions": 45,
+      "average_completion_time": "00:06:00",
+      "median_completion_time": "00:05:30",
+      "bounce_rate": 0.15,
+      "completion_rate": 0.7,
+      "mobile_responses": 20,
+      "desktop_responses": 20,
+      "tablet_responses": 5,
+      "top_countries": {"US": 15, "IN": 10},
+      "top_cities": {"San Francisco": 5, "Delhi": 3},
+      "traffic_sources": {"email": 25, "social": 10},
+      "updated_at": "2025-07-11T12:10:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440003",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440003",
+      "total_views": 80,
+      "total_starts": 60,
+      "total_completions": 55,
+      "average_completion_time": "00:05:30",
+      "median_completion_time": "00:05:00",
+      "bounce_rate": 0.12,
+      "completion_rate": 0.68,
+      "mobile_responses": 30,
+      "desktop_responses": 25,
+      "tablet_responses": 5,
+      "top_countries": {"US": 20, "IN": 15},
+      "top_cities": {"Chicago": 6, "Mumbai": 4},
+      "traffic_sources": {"email": 20, "social": 15},
+      "updated_at": "2025-07-11T12:20:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440004",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440004",
+      "total_views": 90,
+      "total_starts": 70,
+      "total_completions": 65,
+      "average_completion_time": "00:04:50",
+      "median_completion_time": "00:04:20",
+      "bounce_rate": 0.09,
+      "completion_rate": 0.72,
+      "mobile_responses": 35,
+      "desktop_responses": 30,
+      "tablet_responses": 10,
+      "top_countries": {"US": 25, "IN": 20},
+      "top_cities": {"Boston": 7, "Bangalore": 5},
+      "traffic_sources": {"email": 30, "social": 20},
+      "updated_at": "2025-07-11T12:30:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440005",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440005",
+      "total_views": 70,
+      "total_starts": 55,
+      "total_completions": 50,
+      "average_completion_time": "00:06:10",
+      "median_completion_time": "00:05:40",
+      "bounce_rate": 0.13,
+      "completion_rate": 0.71,
+      "mobile_responses": 25,
+      "desktop_responses": 20,
+      "tablet_responses": 5,
+      "top_countries": {"US": 10, "IN": 8},
+      "top_cities": {"Austin": 3, "Hyderabad": 2},
+      "traffic_sources": {"email": 15, "social": 10},
+      "updated_at": "2025-07-11T12:40:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440006",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440006",
+      "total_views": 110,
+      "total_starts": 90,
+      "total_completions": 85,
+      "average_completion_time": "00:05:20",
+      "median_completion_time": "00:04:50",
+      "bounce_rate": 0.08,
+      "completion_rate": 0.77,
+      "mobile_responses": 50,
+      "desktop_responses": 30,
+      "tablet_responses": 10,
+      "top_countries": {"US": 35, "IN": 25},
+      "top_cities": {"Seattle": 8, "Pune": 6},
+      "traffic_sources": {"email": 40, "social": 25},
+      "updated_at": "2025-07-11T12:50:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440007",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440007",
+      "total_views": 95,
+      "total_starts": 75,
+      "total_completions": 70,
+      "average_completion_time": "00:05:40",
+      "median_completion_time": "00:05:10",
+      "bounce_rate": 0.11,
+      "completion_rate": 0.74,
+      "mobile_responses": 45,
+      "desktop_responses": 25,
+      "tablet_responses": 5,
+      "top_countries": {"US": 28, "IN": 18},
+      "top_cities": {"Dallas": 5, "Chennai": 4},
+      "traffic_sources": {"email": 22, "social": 18},
+      "updated_at": "2025-07-11T13:00:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440008",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440008",
+      "total_views": 85,
+      "total_starts": 65,
+      "total_completions": 60,
+      "average_completion_time": "00:06:20",
+      "median_completion_time": "00:05:50",
+      "bounce_rate": 0.14,
+      "completion_rate": 0.69,
+      "mobile_responses": 32,
+      "desktop_responses": 22,
+      "tablet_responses": 6,
+      "top_countries": {"US": 18, "IN": 12},
+      "top_cities": {"Miami": 4, "Kolkata": 3},
+      "traffic_sources": {"email": 12, "social": 8},
+      "updated_at": "2025-07-11T13:10:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440009",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440009",
+      "total_views": 120,
+      "total_starts": 100,
+      "total_completions": 95,
+      "average_completion_time": "00:05:10",
+      "median_completion_time": "00:04:40",
+      "bounce_rate": 0.07,
+      "completion_rate": 0.79,
+      "mobile_responses": 60,
+      "desktop_responses": 40,
+      "tablet_responses": 15,
+      "top_countries": {"US": 40, "IN": 30},
+      "top_cities": {"Houston": 9, "Ahmedabad": 7},
+      "traffic_sources": {"email": 45, "social": 30},
+      "updated_at": "2025-07-11T13:20:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440010",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440010",
+      "total_views": 75,
+      "total_starts": 60,
+      "total_completions": 55,
+      "average_completion_time": "00:06:30",
+      "median_completion_time": "00:06:00",
+      "bounce_rate": 0.16,
+      "completion_rate": 0.67,
+      "mobile_responses": 22,
+      "desktop_responses": 18,
+      "tablet_responses": 4,
+      "top_countries": {"US": 12, "IN": 8},
+      "top_cities": {"Phoenix": 3, "Jaipur": 2},
+      "traffic_sources": {"email": 8, "social": 6},
+      "updated_at": "2025-07-11T13:30:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440011",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440011",
+      "total_views": 105,
+      "total_starts": 85,
+      "total_completions": 80,
+      "average_completion_time": "00:05:15",
+      "median_completion_time": "00:04:45",
+      "bounce_rate": 0.09,
+      "completion_rate": 0.76,
+      "mobile_responses": 48,
+      "desktop_responses": 32,
+      "tablet_responses": 8,
+      "top_countries": {"US": 32, "IN": 22},
+      "top_cities": {"Denver": 6, "Pune": 5},
+      "traffic_sources": {"email": 28, "social": 20},
+      "updated_at": "2025-07-11T13:40:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440012",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440012",
+      "total_views": 65,
+      "total_starts": 50,
+      "total_completions": 45,
+      "average_completion_time": "00:06:40",
+      "median_completion_time": "00:06:10",
+      "bounce_rate": 0.17,
+      "completion_rate": 0.69,
+      "mobile_responses": 18,
+      "desktop_responses": 15,
+      "tablet_responses": 3,
+      "top_countries": {"US": 8, "IN": 6},
+      "top_cities": {"Orlando": 2, "Lucknow": 1},
+      "traffic_sources": {"email": 6, "social": 4},
+      "updated_at": "2025-07-11T13:50:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440013",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440013",
+      "total_views": 115,
+      "total_starts": 95,
+      "total_completions": 90,
+      "average_completion_time": "00:05:25",
+      "median_completion_time": "00:04:55",
+      "bounce_rate": 0.1,
+      "completion_rate": 0.78,
+      "mobile_responses": 55,
+      "desktop_responses": 35,
+      "tablet_responses": 12,
+      "top_countries": {"US": 38, "IN": 28},
+      "top_cities": {"Atlanta": 7, "Nagpur": 6},
+      "traffic_sources": {"email": 32, "social": 22},
+      "updated_at": "2025-07-11T14:00:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440014",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440014",
+      "total_views": 78,
+      "total_starts": 60,
+      "total_completions": 55,
+      "average_completion_time": "00:06:50",
+      "median_completion_time": "00:06:20",
+      "bounce_rate": 0.18,
+      "completion_rate": 0.68,
+      "mobile_responses": 20,
+      "desktop_responses": 16,
+      "tablet_responses": 4,
+      "top_countries": {"US": 10, "IN": 7},
+      "top_cities": {"Portland": 2, "Kanpur": 1},
+      "traffic_sources": {"email": 5, "social": 3},
+      "updated_at": "2025-07-11T14:10:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440015",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440015",
+      "total_views": 130,
+      "total_starts": 110,
+      "total_completions": 105,
+      "average_completion_time": "00:05:35",
+      "median_completion_time": "00:05:05",
+      "bounce_rate": 0.07,
+      "completion_rate": 0.81,
+      "mobile_responses": 65,
+      "desktop_responses": 45,
+      "tablet_responses": 18,
+      "top_countries": {"US": 45, "IN": 35},
+      "top_cities": {"San Diego": 10, "Indore": 8},
+      "traffic_sources": {"email": 50, "social": 35},
+      "updated_at": "2025-07-11T14:20:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440016",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440016",
+      "total_views": 88,
+      "total_starts": 70,
+      "total_completions": 65,
+      "average_completion_time": "00:06:00",
+      "median_completion_time": "00:05:30",
+      "bounce_rate": 0.13,
+      "completion_rate": 0.74,
+      "mobile_responses": 28,
+      "desktop_responses": 22,
+      "tablet_responses": 8,
+      "top_countries": {"US": 14, "IN": 10},
+      "top_cities": {"Baltimore": 3, "Patna": 2},
+      "traffic_sources": {"email": 12, "social": 8},
+      "updated_at": "2025-07-11T14:30:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440017",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440017",
+      "total_views": 92,
+      "total_starts": 75,
+      "total_completions": 70,
+      "average_completion_time": "00:05:45",
+      "median_completion_time": "00:05:15",
+      "bounce_rate": 0.11,
+      "completion_rate": 0.76,
+      "mobile_responses": 38,
+      "desktop_responses": 28,
+      "tablet_responses": 10,
+      "top_countries": {"US": 18, "IN": 14},
+      "top_cities": {"Cleveland": 4, "Ranchi": 3},
+      "traffic_sources": {"email": 14, "social": 10},
+      "updated_at": "2025-07-11T14:40:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440018",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440018",
+      "total_views": 77,
+      "total_starts": 60,
+      "total_completions": 55,
+      "average_completion_time": "00:06:20",
+      "median_completion_time": "00:05:50",
+      "bounce_rate": 0.15,
+      "completion_rate": 0.71,
+      "mobile_responses": 18,
+      "desktop_responses": 14,
+      "tablet_responses": 5,
+      "top_countries": {"US": 8, "IN": 6},
+      "top_cities": {"Nashville": 2, "Bhopal": 1},
+      "traffic_sources": {"email": 6, "social": 4},
+      "updated_at": "2025-07-11T14:50:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440019",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440019",
+      "total_views": 112,
+      "total_starts": 90,
+      "total_completions": 85,
+      "average_completion_time": "00:05:55",
+      "median_completion_time": "00:05:25",
+      "bounce_rate": 0.09,
+      "completion_rate": 0.76,
+      "mobile_responses": 48,
+      "desktop_responses": 32,
+      "tablet_responses": 8,
+      "top_countries": {"US": 32, "IN": 22},
+      "top_cities": {"Denver": 6, "Pune": 5},
+      "traffic_sources": {"email": 28, "social": 20},
+      "updated_at": "2025-07-11T15:00:00Z"
+    }
+  },
+  {
+    "model": "analytics.surveyanalytics",
+    "pk": "550e8400-e29b-41d4-a716-446655440020",
+    "fields": {
+      "survey": "550e8400-e29b-41d4-a716-446655440020",
+      "total_views": 68,
+      "total_starts": 55,
+      "total_completions": 50,
+      "average_completion_time": "00:06:10",
+      "median_completion_time": "00:05:40",
+      "bounce_rate": 0.13,
+      "completion_rate": 0.73,
+      "mobile_responses": 18,
+      "desktop_responses": 15,
+      "tablet_responses": 3,
+      "top_countries": {"US": 8, "IN": 6},
+      "top_cities": {"Orlando": 2, "Lucknow": 1},
+      "traffic_sources": {"email": 6, "social": 4},
+      "updated_at": "2025-07-11T15:10:00Z"
+    }
+  }
+]

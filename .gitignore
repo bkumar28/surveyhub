@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Poetry
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Django
+*.log
+*.pot
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+# Environment
+.env
+.env.*
+
+# VS Code / PyCharm
+.vscode/
+.idea/
+
+# Virtualenvs
+.venv/
+venv/
+.env/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test and coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+test-results/
+logs/

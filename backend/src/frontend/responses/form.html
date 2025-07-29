@@ -1,0 +1,480 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}Response Form{% endblock %}
+
+{% block page_actions %}
+<div class="btn-group">
+  <a href="/responses/list/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back to Responses</a>
+</div>
+{% endblock %}
+
+{% block content %}
+  <h3 class="mb-3"><strong id="formTitle">Create New Response</strong></h3>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Response Information</h5>
+        </div>
+        <div class="card-body">
+          <form id="responseForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="surveySelect" class="form-label">Survey</label>
+                <select class="form-select" id="surveySelect" required>
+                  <option value="">Select Survey</option>
+                  <!-- Surveys will be loaded here via JavaScript -->
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="respondentEmail" class="form-label">Respondent Email (Optional)</label>
+                <input type="email" class="form-control" id="respondentEmail">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Survey Questions</h5>
+        </div>
+        <div class="card-body">
+          <div id="loadingQuestions" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading survey questions...</p>
+          </div>
+
+          <div id="noQuestionsMessage" class="text-center py-4" style="display:none;">
+            <p class="text-muted">Please select a survey to load its questions.</p>
+          </div>
+
+          <form id="questionsForm" style="display:none;">
+            <div id="questionsContainer">
+              <!-- Questions will be loaded here dynamically -->
+            </div>
+
+            <div class="text-end mt-3">
+              <button type="button" class="btn btn-primary" id="saveResponseBtn">Save Response</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('authToken');
+    let responseId = null;
+    let currentSurvey = null;
+
+    // Check if we're editing an existing response
+    const pathParts = window.location.pathname.split('/');
+    if (pathParts.length > 3 && !isNaN(pathParts[3])) {
+      responseId = parseInt(pathParts[3]);
+      document.getElementById('formTitle').textContent = 'Edit Response';
+    }
+
+    // Load surveys
+    loadSurveys();
+
+    // Survey change handler
+    document.getElementById('surveySelect').addEventListener('change', function() {
+      const surveyId = this.value;
+      if (surveyId) {
+        currentSurvey = surveyId;
+        loadSurveyQuestions(surveyId);
+      } else {
+        document.getElementById('questionsForm').style.display = 'none';
+        document.getElementById('loadingQuestions').style.display = 'none';
+        document.getElementById('noQuestionsMessage').style.display = 'block';
+      }
+    });
+
+    // Save response handler
+    document.getElementById('saveResponseBtn').addEventListener('click', function() {
+      saveResponse();
+    });
+
+    // If editing, load the existing response
+    if (responseId) {
+      loadResponse(responseId);
+    } else {
+      document.getElementById('loadingQuestions').style.display = 'none';
+      document.getElementById('noQuestionsMessage').style.display = 'block';
+    }
+  });
+
+  async function loadSurveys() {
+    const token = localStorage.getItem('authToken');
+    try {
+      const response = await fetch('/api/v1/surveys/', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to load surveys');
+
+      const surveys = await response.json();
+      const surveySelect = document.getElementById('surveySelect');
+
+      surveys.forEach(survey => {
+        const option = document.createElement('option');
+        option.value = survey.id;
+        option.textContent = survey.title;
+        surveySelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error('Error loading surveys:', error);
+      alert('Failed to load surveys: ' + error.message);
+    }
+  }
+
+  async function loadResponse(id) {
+    const token = localStorage.getItem('authToken');
+
+    try {
+      const response = await fetch(`/api/v1/survey-responses/${id}/`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to load response');
+
+      const responseData = await response.json();
+
+      // Set survey and load its questions
+      document.getElementById('surveySelect').value = responseData.survey.id;
+      document.getElementById('surveySelect').disabled = true; // Prevent changing survey when editing
+      document.getElementById('respondentEmail').value = responseData.respondent_email || '';
+
+      // Load the survey questions
+      await loadSurveyQuestions(responseData.survey.id, responseData.answers);
+
+    } catch (error) {
+      console.error('Error loading response:', error);
+      alert('Failed to load response: ' + error.message);
+    }
+  }
+
+  async function loadSurveyQuestions(surveyId, existingAnswers = null) {
+    const token = localStorage.getItem('authToken');
+
+    // Show loading
+    document.getElementById('questionsForm').style.display = 'none';
+    document.getElementById('noQuestionsMessage').style.display = 'none';
+    document.getElementById('loadingQuestions').style.display = 'block';
+
+    try {
+      const response = await fetch(`/api/v1/surveys/${surveyId}/questions/`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to load survey questions');
+
+      const questions = await response.json();
+
+      // Hide loading
+      document.getElementById('loadingQuestions').style.display = 'none';
+
+      if (questions.length === 0) {
+        document.getElementById('noQuestionsMessage').textContent = 'This survey has no questions yet.';
+        document.getElementById('noQuestionsMessage').style.display = 'block';
+        return;
+      }
+
+      // Clear previous questions
+      const questionsContainer = document.getElementById('questionsContainer');
+      questionsContainer.innerHTML = '';
+
+      // Build form with questions
+      questions.forEach(question => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'mb-4 border-bottom pb-3';
+
+        const questionLabel = document.createElement('label');
+        questionLabel.className = 'form-label fw-bold';
+        questionLabel.textContent = question.text;
+        questionDiv.appendChild(questionLabel);
+
+        // Find existing answer for this question
+        let existingAnswer = null;
+        if (existingAnswers) {
+          existingAnswer = existingAnswers.find(a => a.question.id === question.id);
+        }
+
+        // Create input based on question type
+        if (question.question_type === 'text') {
+          const input = document.createElement('textarea');
+          input.className = 'form-control';
+          input.id = `question_${question.id}`;
+          input.rows = 3;
+          if (existingAnswer) {
+            input.value = existingAnswer.text_answer || '';
+          }
+          questionDiv.appendChild(input);
+
+        } else if (question.question_type === 'number') {
+          const input = document.createElement('input');
+          input.type = 'number';
+          input.className = 'form-control';
+          input.id = `question_${question.id}`;
+          if (existingAnswer) {
+            input.value = existingAnswer.number_answer || '';
+          }
+          questionDiv.appendChild(input);
+
+        } else if (question.question_type === 'choice') {
+          if (question.options && question.options.length) {
+            const optionsDiv = document.createElement('div');
+
+            question.options.forEach((option, index) => {
+              const radioDiv = document.createElement('div');
+              radioDiv.className = 'form-check';
+
+              const radio = document.createElement('input');
+              radio.type = 'radio';
+              radio.className = 'form-check-input';
+              radio.name = `question_${question.id}`;
+              radio.id = `question_${question.id}_option_${index}`;
+              radio.value = option;
+
+              if (existingAnswer && existingAnswer.selected_option === option) {
+                radio.checked = true;
+              }
+
+              const label = document.createElement('label');
+              label.className = 'form-check-label';
+              label.htmlFor = `question_${question.id}_option_${index}`;
+              label.textContent = option;
+
+              radioDiv.appendChild(radio);
+              radioDiv.appendChild(label);
+              optionsDiv.appendChild(radioDiv);
+            });
+
+            questionDiv.appendChild(optionsDiv);
+          }
+
+        } else if (question.question_type === 'boolean') {
+          const radioGroup = document.createElement('div');
+
+          const yesDiv = document.createElement('div');
+          yesDiv.className = 'form-check form-check-inline';
+
+          const yesRadio = document.createElement('input');
+          yesRadio.type = 'radio';
+          yesRadio.className = 'form-check-input';
+          yesRadio.name = `question_${question.id}`;
+          yesRadio.id = `question_${question.id}_yes`;
+          yesRadio.value = 'true';
+
+          if (existingAnswer && existingAnswer.boolean_answer === true) {
+            yesRadio.checked = true;
+          }
+
+          const yesLabel = document.createElement('label');
+          yesLabel.className = 'form-check-label';
+          yesLabel.htmlFor = `question_${question.id}_yes`;
+          yesLabel.textContent = 'Yes';
+
+          yesDiv.appendChild(yesRadio);
+          yesDiv.appendChild(yesLabel);
+
+          const noDiv = document.createElement('div');
+          noDiv.className = 'form-check form-check-inline';
+
+          const noRadio = document.createElement('input');
+          noRadio.type = 'radio';
+          noRadio.className = 'form-check-input';
+          noRadio.name = `question_${question.id}`;
+          noRadio.id = `question_${question.id}_no`;
+          noRadio.value = 'false';
+
+          if (existingAnswer && existingAnswer.boolean_answer === false) {
+            noRadio.checked = true;
+          }
+
+          const noLabel = document.createElement('label');
+          noLabel.className = 'form-check-label';
+          noLabel.htmlFor = `question_${question.id}_no`;
+          noLabel.textContent = 'No';
+
+          noDiv.appendChild(noRadio);
+          noDiv.appendChild(noLabel);
+
+          radioGroup.appendChild(yesDiv);
+          radioGroup.appendChild(noDiv);
+          questionDiv.appendChild(radioGroup);
+
+        } else if (question.question_type === 'rating') {
+          const ratingContainer = document.createElement('div');
+          ratingContainer.className = 'd-flex align-items-center';
+
+          for (let i = 1; i <= 5; i++) {
+            const starDiv = document.createElement('div');
+            starDiv.className = 'form-check form-check-inline';
+
+            const starInput = document.createElement('input');
+            starInput.type = 'radio';
+            starInput.className = 'form-check-input';
+            starInput.name = `question_${question.id}`;
+            starInput.id = `question_${question.id}_rating_${i}`;
+            starInput.value = i;
+
+            if (existingAnswer && existingAnswer.number_answer === i) {
+              starInput.checked = true;
+            }
+
+            const starLabel = document.createElement('label');
+            starLabel.className = 'form-check-label';
+            starLabel.htmlFor = `question_${question.id}_rating_${i}`;
+            starLabel.textContent = i;
+
+            starDiv.appendChild(starInput);
+            starDiv.appendChild(starLabel);
+            ratingContainer.appendChild(starDiv);
+          }
+
+          questionDiv.appendChild(ratingContainer);
+        }
+
+        questionsContainer.appendChild(questionDiv);
+      });
+
+      // Show the form
+      document.getElementById('questionsForm').style.display = 'block';
+
+    } catch (error) {
+      console.error('Error loading survey questions:', error);
+      document.getElementById('loadingQuestions').style.display = 'none';
+      document.getElementById('noQuestionsMessage').textContent = 'Error loading questions: ' + error.message;
+      document.getElementById('noQuestionsMessage').style.display = 'block';
+    }
+  }
+
+  async function saveResponse() {
+    const token = localStorage.getItem('authToken');
+    const surveyId = document.getElementById('surveySelect').value;
+    const respondentEmail = document.getElementById('respondentEmail').value;
+
+    if (!surveyId) {
+      alert('Please select a survey');
+      return;
+    }
+
+    // Collect answers
+    const answers = [];
+    const questionsContainer = document.getElementById('questionsContainer');
+
+    // Find all question elements
+    const questionElements = questionsContainer.querySelectorAll('[id^="question_"]');
+    const processedQuestionIds = new Set();
+
+    // Process each question
+    questionElements.forEach(element => {
+      // Extract question ID from element ID
+      let questionId;
+
+      if (element.id.includes('_option_') || element.id.includes('_rating_') ||
+          element.id.includes('_yes') || element.id.includes('_no')) {
+        // For radio buttons, extract the base question ID
+        questionId = element.name.replace('question_', '');
+      } else {
+        questionId = element.id.replace('question_', '');
+      }
+
+      // Skip if we've already processed this question
+      if (processedQuestionIds.has(questionId)) {
+        return;
+      }
+
+      processedQuestionIds.add(questionId);
+
+      // Find all inputs for this question
+      const questionType = element.type === 'textarea' ? 'text' :
+                           element.type === 'number' ? 'number' :
+                           element.type === 'radio' ? (element.name.includes('_rating_') ? 'rating' :
+                                                     (element.value === 'true' || element.value === 'false') ? 'boolean' : 'choice')
+                                                   : 'text';
+
+      const answer = { question: questionId };
+
+      if (questionType === 'text') {
+        answer.text_answer = element.value.trim();
+      } else if (questionType === 'number' || questionType === 'rating') {
+        // For ratings, find the selected radio button
+        if (questionType === 'rating') {
+          const selectedRating = document.querySelector(`input[name="question_${questionId}"]:checked`);
+          answer.number_answer = selectedRating ? parseInt(selectedRating.value) : null;
+        } else {
+          answer.number_answer = element.value ? parseInt(element.value) : null;
+        }
+      } else if (questionType === 'choice') {
+        const selectedOption = document.querySelector(`input[name="question_${questionId}"]:checked`);
+        answer.selected_option = selectedOption ? selectedOption.value : null;
+      } else if (questionType === 'boolean') {
+        const selectedOption = document.querySelector(`input[name="question_${questionId}"]:checked`);
+        answer.boolean_answer = selectedOption ? selectedOption.value === 'true' : null;
+      }
+
+      answers.push(answer);
+    });
+
+    // Prepare data
+    const responseData = {
+      survey: surveyId,
+      answers: answers
+    };
+
+    if (respondentEmail) {
+      responseData.respondent_email = respondentEmail;
+    }
+
+    try {
+      let url = '/api/v1/survey-responses/';
+      let method = 'POST';
+
+      // If editing an existing response
+      if (responseId) {
+        url = `/api/v1/survey-responses/${responseId}/`;
+        method = 'PUT';
+      }
+
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(responseData)
+      });
+
+      if (!response.ok) throw new Error('Failed to save response');
+
+      // Redirect to responses list
+      window.location.href = '/responses/list/';
+
+    } catch (error) {
+      console.error('Error saving response:', error);
+      alert('Failed to save response: ' + error.message);
+    }
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - SurveyHub{% endblock %}
+
+{% block page_title %}Profile{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Custom styles for profile page */
+  @media (max-width: 767.98px) {
+    .profile-card {
+      margin: 0.5rem;
+    }
+  }
+
+  /* Override input styles for iOS */
+  @media (max-width: 575.98px) {
+    input.form-control {
+      font-size: 16px; /* Prevents iOS zoom on focus */
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+    <div class="card shadow-sm profile-card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Account Information</h5>
+      </div>
+      <div class="card-body">
+        <form id="profileForm">
+          <div class="mb-3">
+            <label for="profileUsername" class="form-label">Username</label>
+            <input type="text" class="form-control" id="profileUsername" disabled>
+          </div>
+          <div class="mb-3">
+            <label for="profileEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="profileEmail" required>
+          </div>
+
+          <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-check-circle me-1"></i> Update Profile
+            </button>
+          </div>
+          <div id="profileMsg" class="mt-2 text-center"></div>
+        </form>
+      </div>
+      <div class="card-footer">
+        <button id="logoutBtn" class="btn btn-outline-danger w-100">
+          <i class="bi bi-box-arrow-right me-1"></i> Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Fetch profile on load
+  async function fetchProfile() {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      window.location.href = '/login/';
+      return;
+    }
+    const resp = await fetch('/api/v1/profile/', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      document.getElementById('profileUsername').value = data.username || '';
+      document.getElementById('profileEmail').value = data.email || '';
+    } else {
+      localStorage.removeItem('authToken');
+      window.location.href = '/login/';
+    }
+  }
+  fetchProfile();
+
+  // Update profile
+  document.getElementById('profileForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const token = localStorage.getItem('authToken');
+    const email = document.getElementById('profileEmail').value;
+    const msgDiv = document.getElementById('profileMsg');
+    msgDiv.textContent = '';
+    try {
+      const resp = await fetch('/api/v1/profile/', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ email })
+      });
+      if (!resp.ok) throw new Error('Update failed');
+      msgDiv.textContent = 'Profile updated!';
+      msgDiv.className = 'text-success mt-2';
+    } catch (err) {
+      msgDiv.textContent = err.message;
+      msgDiv.className = 'text-danger mt-2';
+    }
+  });
+
+  // Logout - use the same function as in base template
+  document.getElementById('logoutBtn').addEventListener('click', function() {
+    if (typeof logoutUser === 'function') {
+      logoutUser();
+    } else {
+      // Fallback if the global function isn't available
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        fetch('/api/v1/token/logout/', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ refresh: token })
+        })
+        .finally(() => {
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('refreshToken');
+          window.location.href = '/login/';
+        });
+      } else {
+        window.location.href = '/login/';
+      }
+    }
+  });
+</script>
+{% endblock %}

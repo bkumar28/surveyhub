@@ -1,0 +1,81 @@
+{% extends 'auth/base_auth.html' %}
+{% load static %}
+{% block content %}
+<div class="text-center mb-4">
+  <p class="lead">Sign in to your account to continue</p>
+</div>
+
+<div class="card shadow">
+  <div class="card-body">
+    <div class="m-sm-4">
+      <div class="text-center mb-4">
+        <h2 class="login-logo"><span class="logo-text">Survey</span><span class="logo-text-accent">Hub</span></h2>
+        <h3 class="h4 mt-3 mb-3 fw-normal">Welcome back</h3>
+      </div>
+      <form id="loginForm">
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input class="form-control form-control-lg" type="text" id="username" placeholder="Enter your username" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input class="form-control form-control-lg" type="password" id="password" placeholder="Enter your password" required />
+          <small>
+            <a href="#" class="text-success">Forgot password?</a>
+          </small>
+        </div>
+        <div class="mb-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="rememberMe">
+            <label class="form-check-label text-muted" for="rememberMe">
+              Remember me
+            </label>
+          </div>
+        </div>
+        <div class="d-grid gap-2 mt-4">
+          <button type="submit" class="btn btn-lg btn-primary">Sign in</button>
+        </div>
+        <div id="loginError" class="text-danger mt-3 text-center" style="display:none;"></div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Check if already logged in, redirect to dashboard
+  document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      window.location.href = '/dashboard/';
+    }
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const errorDiv = document.getElementById('loginError');
+    errorDiv.style.display = 'none';
+    try {
+      const response = await fetch('/api/v1/token/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      if (!response.ok) {
+        throw new Error('Invalid credentials');
+      }
+      const data = await response.json();
+      // Store both access and refresh tokens
+      localStorage.setItem('authToken', data.access);
+      localStorage.setItem('refreshToken', data.refresh);
+      window.location.href = '/dashboard/';
+    } catch (err) {
+      errorDiv.textContent = err.message;
+      errorDiv.style.display = 'block';
+    }
+  });
+</script>
+{% endblock %}

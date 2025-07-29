@@ -1,0 +1,270 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}Question Details{% endblock %}
+
+{% block page_actions %}
+<div class="btn-group">
+  <a href="/questions/list/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back to Questions</a>
+  <a href="#" id="editQuestionBtn" class="btn btn-primary"><i class="bi bi-pencil"></i> Edit</a>
+</div>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-3 fw-bold">Question Text</div>
+            <div class="col-md-9" id="questionText">Loading...</div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-3 fw-bold">Question Type</div>
+            <div class="col-md-9" id="questionType">Loading...</div>
+          </div>
+          <div class="row mb-3" id="optionsContainer" style="display:none;">
+            <div class="col-md-3 fw-bold">Options</div>
+            <div class="col-md-9">
+              <ul id="questionOptions" class="list-group">
+                <!-- Options will be loaded here via JavaScript -->
+              </ul>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-3 fw-bold">Survey</div>
+            <div class="col-md-9" id="surveyName">Loading...</div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-3 fw-bold">Created</div>
+            <div class="col-md-9" id="createdAt">Loading...</div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-3 fw-bold">Last Updated</div>
+            <div class="col-md-9" id="updatedAt">Loading...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Response Statistics</h5>
+        </div>
+        <div class="card-body">
+          <div id="noStatsMessage" class="text-center py-4">
+            <p class="text-muted">No response data available for this question yet.</p>
+          </div>
+          <div id="statsContent" style="display:none;">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Response Count</h5>
+                    <h2 id="responseCount">0</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Completion Rate</h5>
+                    <h2 id="completionRate">0%</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3" id="chartContainer">
+              <div class="col-12">
+                <canvas id="responseChart" height="250"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('authToken');
+    let questionId = null;
+
+    // Get question ID from URL
+    const pathParts = window.location.pathname.split('/');
+    if (pathParts.length > 3 && !isNaN(pathParts[3])) {
+      questionId = parseInt(pathParts[3]);
+      loadQuestion(questionId);
+      loadQuestionStats(questionId);
+    } else {
+      window.location.href = '/questions/list/';
+    }
+
+    // Set up edit button
+    document.getElementById('editQuestionBtn').addEventListener('click', function() {
+      if (questionId) {
+        window.location.href = `/questions/form/${questionId}/`;
+      }
+    });
+  });
+
+  async function loadQuestion(id) {
+    const token = localStorage.getItem('authToken');
+    try {
+      const response = await fetch(`/api/v1/questions/${id}/`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to load question');
+
+      const question = await response.json();
+
+      // Populate question details
+      document.getElementById('questionText').textContent = question.text;
+      document.getElementById('questionType').textContent = formatQuestionType(question.question_type);
+      document.getElementById('createdAt').textContent = new Date(question.created_at).toLocaleString();
+      document.getElementById('updatedAt').textContent = new Date(question.updated_at).toLocaleString();
+
+      // Show options if question is choice type
+      if (question.question_type === 'choice' && question.options && question.options.length) {
+        document.getElementById('optionsContainer').style.display = 'flex';
+        const optionsList = document.getElementById('questionOptions');
+        optionsList.innerHTML = '';
+
+        question.options.forEach(option => {
+          const li = document.createElement('li');
+          li.className = 'list-group-item';
+          li.textContent = option;
+          optionsList.appendChild(li);
+        });
+      }
+
+      // Set survey if available
+      document.getElementById('surveyName').textContent = question.survey ? question.survey.title : 'Not assigned to any survey';
+
+    } catch (error) {
+      console.error('Error loading question:', error);
+      alert('Failed to load question: ' + error.message);
+    }
+  }
+
+  async function loadQuestionStats(id) {
+    const token = localStorage.getItem('authToken');
+    try {
+      const response = await fetch(`/api/v1/questions/${id}/stats/`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to load question statistics');
+
+      const stats = await response.json();
+
+      if (stats.response_count > 0) {
+        document.getElementById('noStatsMessage').style.display = 'none';
+        document.getElementById('statsContent').style.display = 'block';
+
+        document.getElementById('responseCount').textContent = stats.response_count;
+        document.getElementById('completionRate').textContent = `${stats.completion_rate}%`;
+
+        // Create chart based on question type
+        const questionType = document.getElementById('questionType').textContent;
+
+        if (questionType === 'Multiple Choice') {
+          createPieChart(stats.option_distribution);
+        } else if (questionType === 'Rating') {
+          createBarChart(stats.rating_distribution);
+        } else if (questionType === 'Yes/No') {
+          createPieChart([
+            { label: 'Yes', count: stats.yes_count || 0 },
+            { label: 'No', count: stats.no_count || 0 }
+          ]);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading question statistics:', error);
+      console.log('Statistics endpoint may not be implemented yet');
+    }
+  }
+
+  function formatQuestionType(type) {
+    const types = {
+      'text': 'Text',
+      'number': 'Number',
+      'choice': 'Multiple Choice',
+      'boolean': 'Yes/No',
+      'rating': 'Rating'
+    };
+    return types[type] || type;
+  }
+
+  function createPieChart(data) {
+    const ctx = document.getElementById('responseChart').getContext('2d');
+
+    const labels = data.map(item => item.label);
+    const counts = data.map(item => item.count);
+
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: counts,
+          backgroundColor: [
+            '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b',
+            '#5a5c69', '#858796', '#6f42c1', '#20c9a6', '#2c9faf'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right'
+          }
+        }
+      }
+    });
+  }
+
+  function createBarChart(data) {
+    const ctx = document.getElementById('responseChart').getContext('2d');
+
+    const labels = data.map(item => item.rating);
+    const counts = data.map(item => item.count);
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Number of responses',
+          data: counts,
+          backgroundColor: '#4e73df'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            precision: 0
+          }
+        }
+      }
+    });
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,298 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}Question Form{% endblock %}
+
+{% block page_actions %}
+<div class="btn-group">
+  <a href="/questions/list/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Back to Questions</a>
+</div>
+{% endblock %}
+
+{% block content %}
+  <h3 class="mb-3"><strong id="formTitle">Add New Question</strong></h3>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <form id="questionForm">
+            <div class="mb-3">
+              <label for="questionText" class="form-label">Question Text</label>
+              <textarea class="form-control" id="questionText" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="questionType" class="form-label">Question Type</label>
+              <select class="form-select" id="questionType" required>
+                <option value="">Select type</option>
+                <option value="text">Text</option>
+                <option value="number">Number</option>
+                <option value="choice">Multiple Choice</option>
+                <option value="boolean">Yes/No</option>
+                <option value="rating">Rating</option>
+              </select>
+            </div>
+            <div class="mb-3" id="choiceOptionsContainer" style="display:none;">
+              <label class="form-label">Options</label>
+              <div id="choiceOptions">
+                <div class="input-group mb-2">
+                  <input type="text" class="form-control" placeholder="Option 1">
+                  <button class="btn btn-outline-danger" type="button"><i class="bi bi-trash"></i></button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-sm btn-outline-secondary" id="addOptionBtn">+ Add Option</button>
+            </div>
+            <div class="mb-3">
+              <label for="surveySelect" class="form-label">Assign to Survey (Optional)</label>
+              <select class="form-select" id="surveySelect">
+                <option value="">None</option>
+                <!-- Surveys will be loaded here via JavaScript -->
+              </select>
+            </div>
+            <div class="text-end">
+              <button type="button" class="btn btn-outline-secondary" id="cancelBtn">Cancel</button>
+              <button type="button" class="btn btn-primary" id="saveQuestionBtn">Save Question</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('authToken');
+    let questionId = null;
+
+    // Check if we're editing an existing question
+    const pathParts = window.location.pathname.split('/');
+    if (pathParts.length > 3 && !isNaN(pathParts[3])) {
+      questionId = parseInt(pathParts[3]);
+      document.getElementById('formTitle').textContent = 'Edit Question';
+      loadQuestion(questionId);
+    }
+
+    // Load surveys for dropdown
+    loadSurveys();
+
+    // Question type change handler to show/hide options
+    document.getElementById('questionType').addEventListener('change', function() {
+      const choiceOptions = document.getElementById('choiceOptionsContainer');
+      choiceOptions.style.display = this.value === 'choice' ? 'block' : 'none';
+    });
+
+    // Add option button
+    document.getElementById('addOptionBtn').addEventListener('click', function() {
+      const optionsContainer = document.getElementById('choiceOptions');
+      const optionIndex = optionsContainer.children.length + 1;
+
+      const optionGroup = document.createElement('div');
+      optionGroup.className = 'input-group mb-2';
+      optionGroup.innerHTML = `
+        <input type="text" class="form-control" placeholder="Option ${optionIndex}">
+        <button class="btn btn-outline-danger" type="button"><i class="bi bi-trash"></i></button>
+      `;
+
+      optionsContainer.appendChild(optionGroup);
+
+      // Add delete handler
+      optionGroup.querySelector('button').addEventListener('click', function() {
+        optionsContainer.removeChild(optionGroup);
+      });
+    });
+
+    // Cancel button handler
+    document.getElementById('cancelBtn').addEventListener('click', function() {
+      window.location.href = '/questions/list/';
+    });
+
+    // Save question handler
+    document.getElementById('saveQuestionBtn').addEventListener('click', function() {
+      const questionText = document.getElementById('questionText').value;
+      const questionType = document.getElementById('questionType').value;
+      const surveyId = document.getElementById('surveySelect').value;
+
+      if (!questionText || !questionType) {
+        alert('Please fill all required fields');
+        return;
+      }
+
+      let options = [];
+      if (questionType === 'choice') {
+        const optionInputs = document.querySelectorAll('#choiceOptions input');
+        optionInputs.forEach(input => {
+          if (input.value.trim()) {
+            options.push(input.value.trim());
+          }
+        });
+
+        if (options.length < 2) {
+          alert('Multiple choice questions need at least 2 options');
+          return;
+        }
+      }
+
+      if (questionId) {
+        updateQuestion(questionId, questionText, questionType, options, surveyId);
+      } else {
+        createQuestion(questionText, questionType, options, surveyId);
+      }
+    });
+  });
+
+  async function loadSurveys() {
+    const token = localStorage.getItem('authToken');
+    try {
+      const response = await fetch('/api/v1/surveys/', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to load surveys');
+
+      const surveys = await response.json();
+      const surveySelect = document.getElementById('surveySelect');
+
+      surveys.forEach(survey => {
+        const option = document.createElement('option');
+        option.value = survey.id;
+        option.textContent = survey.title;
+        surveySelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error('Error loading surveys:', error);
+    }
+  }
+
+  async function loadQuestion(id) {
+    const token = localStorage.getItem('authToken');
+    try {
+      const response = await fetch(`/api/v1/questions/${id}/`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to load question');
+
+      const question = await response.json();
+
+      // Populate form fields
+      document.getElementById('questionText').value = question.text;
+      document.getElementById('questionType').value = question.question_type;
+
+      // Show options container if question is choice type
+      if (question.question_type === 'choice') {
+        document.getElementById('choiceOptionsContainer').style.display = 'block';
+
+        // Clear default option
+        document.getElementById('choiceOptions').innerHTML = '';
+
+        // Add options
+        if (question.options && question.options.length) {
+          question.options.forEach((option, index) => {
+            const optionGroup = document.createElement('div');
+            optionGroup.className = 'input-group mb-2';
+            optionGroup.innerHTML = `
+              <input type="text" class="form-control" value="${option}" placeholder="Option ${index + 1}">
+              <button class="btn btn-outline-danger" type="button"><i class="bi bi-trash"></i></button>
+            `;
+
+            document.getElementById('choiceOptions').appendChild(optionGroup);
+
+            // Add delete handler
+            optionGroup.querySelector('button').addEventListener('click', function() {
+              document.getElementById('choiceOptions').removeChild(optionGroup);
+            });
+          });
+        }
+      }
+
+      // Set survey if available
+      if (question.survey) {
+        document.getElementById('surveySelect').value = question.survey.id;
+      }
+
+    } catch (error) {
+      console.error('Error loading question:', error);
+      alert('Failed to load question: ' + error.message);
+    }
+  }
+
+  async function createQuestion(text, type, options, surveyId) {
+    const token = localStorage.getItem('authToken');
+
+    const questionData = {
+      text: text,
+      question_type: type
+    };
+
+    if (options.length > 0) {
+      questionData.options = options;
+    }
+
+    if (surveyId) {
+      questionData.survey = surveyId;
+    }
+
+    try {
+      const response = await fetch('/api/v1/questions/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(questionData)
+      });
+
+      if (!response.ok) throw new Error('Failed to create question');
+
+      window.location.href = '/questions/list/';
+
+    } catch (error) {
+      console.error('Error creating question:', error);
+      alert('Failed to create question: ' + error.message);
+    }
+  }
+
+  async function updateQuestion(id, text, type, options, surveyId) {
+    const token = localStorage.getItem('authToken');
+
+    const questionData = {
+      text: text,
+      question_type: type
+    };
+
+    if (options.length > 0) {
+      questionData.options = options;
+    }
+
+    if (surveyId) {
+      questionData.survey = surveyId;
+    }
+
+    try {
+      const response = await fetch(`/api/v1/questions/${id}/`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(questionData)
+      });
+
+      if (!response.ok) throw new Error('Failed to update question');
+
+      window.location.href = '/questions/list/';
+
+    } catch (error) {
+      console.error('Error updating question:', error);
+      alert('Failed to update question: ' + error.message);
+    }
+  }
+</script>
+{% endblock %}

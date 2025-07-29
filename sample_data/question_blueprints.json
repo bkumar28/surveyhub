@@ -1,0 +1,54 @@
+[
+  {
+    "model": "blueprints.questionblueprint",
+    "pk": "550e8400-e29b-41d4-a716-446655440010",
+    "fields": {
+      "title": "Overall Satisfaction Rating",
+      "field_type": "R",
+      "category": "satisfaction",
+      "blueprint_data": {
+        "field_type": "R",
+        "scale_min": 1,
+        "scale_max": 5,
+        "scale_labels": {"1": "Very Poor", "2": "Poor", "3": "Average", "4": "Good", "5": "Excellent"},
+        "is_required": true,
+        "help_text": "Please rate your overall satisfaction"
+      },
+      "usage_count": 10
+    }
+  },
+  {
+    "model": "blueprints.questionblueprint",
+    "pk": "550e8400-e29b-41d4-a716-446655440011",
+    "fields": {
+      "title": "Net Promoter Score",
+      "field_type": "S",
+      "category": "nps",
+      "blueprint_data": {
+        "field_type": "S",
+        "scale_min": 0,
+        "scale_max": 10,
+        "scale_labels": {"0": "Not likely", "10": "Extremely likely"},
+        "is_required": true,
+        "help_text": "How likely are you to recommend us to a friend?"
+      },
+      "usage_count": 8
+    }
+  },
+  {
+    "model": "blueprints.questionblueprint",
+    "pk": "550e8400-e29b-41d4-a716-446655440012",
+    "fields": {
+      "title": "Contact Information",
+      "field_type": "E",
+      "category": "contact",
+      "blueprint_data": {
+        "field_type": "E",
+        "is_required": false,
+        "placeholder_text": "your.email@example.com",
+        "help_text": "Optional: Leave your email for follow-up"
+      },
+      "usage_count": 5
+    }
+  }
+]

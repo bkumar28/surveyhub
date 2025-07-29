@@ -1,0 +1,66 @@
+version: '3.9'
+services:
+  backend:
+    build:
+      context: ./backend
+    command: sh /app/docker_entrypoint.sh
+    volumes:
+      - ./backend/src:/app/src
+      - ./backend/pyproject.toml:/app/pyproject.toml
+      - ./backend/poetry.lock:/app/poetry.lock
+      - ./backend/scripts/${START_SCRIPT:-start-dev.sh}:/app/docker_entrypoint.sh
+      - ./sample_data:/app/sample_data
+      - static_volume:/vol/web/static
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db
+      - redis
+
+  frontend:
+    build:
+      context: ./frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    command: npm start
+
+  nginx:
+    build: .
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - frontend
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - static_volume:/vol/web/static
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: ${DB_NAME:-db_test}
+      POSTGRES_USER: ${DB_USER:-db_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-db_user}
+
+volumes:
+  postgres_data:
+  static_volume:
+
+networks:
+  default:
+    name: surveyhub-network

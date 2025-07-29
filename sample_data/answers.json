@@ -1,0 +1,752 @@
+[
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440001",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440001",
+      "question": "550e8400-e29b-41d4-a716-446655440003",
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:05:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440002",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440002",
+      "question": "550e8400-e29b-41d4-a716-446655440004",
+      "text_answer": "Excellent Updated",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:06:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440003",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440003",
+      "question": "550e8400-e29b-41d4-a716-446655440005",
+      "text_answer": "Good Updated",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:07:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440004",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440004",
+      "question": "550e8400-e29b-41d4-a716-446655440006",
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:08:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440005",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440005",
+      "question": "550e8400-e29b-41d4-a716-446655440003",
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:09:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440006",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440006",
+      "question": "550e8400-e29b-41d4-a716-446655440008",
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:10:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440007",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440007",
+      "question": "550e8400-e29b-41d4-a716-446655440009",
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:11:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440008",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440008",
+      "question": "550e8400-e29b-41d4-a716-446655440010",
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:12:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440009",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440009",
+      "question": "550e8400-e29b-41d4-a716-446655440011",
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:13:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440010",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440010",
+      "question": "550e8400-e29b-41d4-a716-446655440012",
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:14:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440011",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440011",
+      "question": "550e8400-e29b-41d4-a716-446655440003",
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:15:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440012",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440012",
+      "question": "550e8400-e29b-41d4-a716-446655440004",
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:16:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440013",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440013",
+      "question": "550e8400-e29b-41d4-a716-446655440005",
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:17:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440014",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440014",
+      "question": "550e8400-e29b-41d4-a716-446655440006",
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:18:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440015",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440015",
+      "question": "550e8400-e29b-41d4-a716-446655440007",
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:19:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440016",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440016",
+      "question": "550e8400-e29b-41d4-a716-446655440008",
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:20:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440017",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440017",
+      "question": "550e8400-e29b-41d4-a716-446655440009",
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:21:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440018",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440018",
+      "question": "550e8400-e29b-41d4-a716-446655440010",
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:22:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440019",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440019",
+      "question": "550e8400-e29b-41d4-a716-446655440011",
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:23:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440020",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440020",
+      "question": "550e8400-e29b-41d4-a716-446655440012",
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:24:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440021",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440021",
+      "question": "550e8400-e29b-41d4-a716-446655440003",
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:25:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440022",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440022",
+      "question": "550e8400-e29b-41d4-a716-446655440004",
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:26:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440023",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440023",
+      "question": "550e8400-e29b-41d4-a716-446655440005",
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:27:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440024",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440024",
+      "question": "550e8400-e29b-41d4-a716-446655440006",
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:28:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440025",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440025",
+      "question": "550e8400-e29b-41d4-a716-446655440007",
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:29:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440026",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440026",
+      "question": "550e8400-e29b-41d4-a716-446655440008",
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:30:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440027",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440027",
+      "question": "550e8400-e29b-41d4-a716-446655440009",
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:31:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440028",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440028",
+      "question": "550e8400-e29b-41d4-a716-446655440010",
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:32:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440029",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440029",
+      "question": "550e8400-e29b-41d4-a716-446655440011",
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:33:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440030",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440030",
+      "question": "550e8400-e29b-41d4-a716-446655440012",
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:34:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440031",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440031",
+      "question": "550e8400-e29b-41d4-a716-446655440003",
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:35:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440032",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440032",
+      "question": "550e8400-e29b-41d4-a716-446655440004",
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:36:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440033",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440033",
+      "question": "550e8400-e29b-41d4-a716-446655440005",
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:37:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440034",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440034",
+      "question": "550e8400-e29b-41d4-a716-446655440006",
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:38:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440035",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440035",
+      "question": "550e8400-e29b-41d4-a716-446655440007",
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:39:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440036",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440036",
+      "question": "550e8400-e29b-41d4-a716-446655440008",
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:40:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440037",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440037",
+      "question": "550e8400-e29b-41d4-a716-446655440009",
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:41:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440038",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440038",
+      "question": "550e8400-e29b-41d4-a716-446655440010",
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:42:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440039",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440039",
+      "question": "550e8400-e29b-41d4-a716-446655440011",
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:43:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440040",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440040",
+      "question": "550e8400-e29b-41d4-a716-446655440012",
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:44:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440041",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440041",
+      "question": "550e8400-e29b-41d4-a716-446655440003",
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:45:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440042",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440042",
+      "question": "550e8400-e29b-41d4-a716-446655440004",
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:46:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440043",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440043",
+      "question": "550e8400-e29b-41d4-a716-446655440005",
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:47:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440044",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440044",
+      "question": "550e8400-e29b-41d4-a716-446655440006",
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:48:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440045",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440045",
+      "question": "550e8400-e29b-41d4-a716-446655440007",
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:49:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440046",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440046",
+      "question": "550e8400-e29b-41d4-a716-446655440008",
+      "text_answer": "Excellent",
+      "number_answer": 5,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:50:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440047",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440047",
+      "question": "550e8400-e29b-41d4-a716-446655440009",
+      "text_answer": "Good",
+      "number_answer": 4,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:51:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440048",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440048",
+      "question": "550e8400-e29b-41d4-a716-446655440010",
+      "text_answer": "Average",
+      "number_answer": 3,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:52:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440049",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440049",
+      "question": "550e8400-e29b-41d4-a716-446655440011",
+      "text_answer": "Poor",
+      "number_answer": 2,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:53:00Z"
+    }
+  },
+  {
+    "model": "surveys.answer",
+    "pk": "550e8400-e29b-41d4-a716-446655440050",
+    "fields": {
+      "response": "550e8400-e29b-41d4-a716-446655440050",
+      "question": "550e8400-e29b-41d4-a716-446655440012",
+      "text_answer": "Very Poor",
+      "number_answer": 1,
+      "date_answer": null,
+      "datetime_answer": null,
+      "file_answer": null,
+      "json_answer": "{}",
+      "created_at": "2025-07-11T10:54:00Z"
+    }
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "model": "blueprints.blueprintcategory",
+    "pk": "550e8400-e29b-41d4-a716-446655440020",
+    "fields": {
+      "name": "Customer Feedback",
+      "description": "Templates for collecting customer feedback and satisfaction surveys",
+      "icon": "feedback",
+      "order": 1
+    }
+  },
+  {
+    "model": "blueprints.blueprintcategory",
+    "pk": "550e8400-e29b-41d4-a716-446655440021",
+    "fields": {
+      "name": "Employee Surveys",
+      "description": "Templates for internal employee surveys and feedback collection",
+      "icon": "employee",
+      "order": 2
+    }
+  },
+  {
+    "model": "blueprints.blueprintcategory",
+    "pk": "550e8400-e29b-41d4-a716-446655440022",
+    "fields": {
+      "name": "Market Research",
+      "description": "Templates for market research and consumer behavior analysis",
+      "icon": "research",
+      "order": 3
+    }
+  },
+  {
+    "model": "blueprints.blueprintcategory",
+    "pk": "550e8400-e29b-41d4-a716-446655440023",
+    "fields": {
+      "name": "Event Feedback",
+      "description": "Templates for collecting feedback from events and conferences",
+      "icon": "event",
+      "order": 4
+    }
+  },
+  {
+    "model": "blueprints.blueprintcategory",
+    "pk": "550e8400-e29b-41d4-a716-446655440024",
+    "fields": {
+      "name": "Product Feedback",
+      "description": "Templates for collecting feedback on products and services",
+      "icon": "product",
+      "order": 5
+    }
+  }
+]
