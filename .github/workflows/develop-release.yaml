@@ -171,7 +171,9 @@ jobs:
           echo "Running pre-deployment checks..."
           if [ "$MOCK_DEPLOYMENT" != "true" ]; then
             # Check if migrations are up to date
-            poetry run python src/manage.py makemigrations --check --dry-run --noinput
+            working-directory: backend
+            run: |
+              poetry run python src/manage.py makemigrations --check --dry-run --noinput
 
             echo "Pre-deployment checks passed"
           else
@@ -186,18 +188,24 @@ jobs:
           echo "Starting deployment of version ${{ steps.tag.outputs.version }}"
 
           # Collect static files
-          poetry run python src/manage.py collectstatic --noinput --clear
+          working-directory: backend
+          run: |
+            poetry run python src/manage.py collectstatic --noinput --clear
 
           if [ "$MOCK_DEPLOYMENT" != "true" ]; then
             # Apply database migrations
-            poetry run python src/manage.py migrate --noinput
+            working-directory: backend
+            run: |
+              poetry run python src/manage.py migrate --noinput
           else
             echo "[MOCK MODE] Skipping database migration"
           fi
 
           # Create deployment package
           mkdir -p build/surveyhub-app
-          cp -r src/ build/surveyhub-app/
+          working-directory: backend
+          run: |
+            cp -r src/ ../build/surveyhub-app/
           cp -r staticfiles/ build/surveyhub-app/ 2>/dev/null || echo "No staticfiles directory"
           cp pyproject.toml build/surveyhub-app/
           cp poetry.lock build/surveyhub-app/

@@ -15,6 +15,10 @@ on:
       environment:
         required: true
         type: string
+      working-directory:
+        required: false
+        type: string
+        default: backend
 
 jobs:
   check-migrations:
@@ -79,9 +83,11 @@ jobs:
         run: poetry run python -m django --version
 
       - name: Run makemigrations check
+        working-directory: ${{ inputs.working-directory }}
         run: |
-          poetry run python backend/src/manage.py makemigrations --check --dry-run --noinput
+          poetry run python src/manage.py makemigrations --check --dry-run --noinput
 
       - name: Test migrations can be applied
+        working-directory: ${{ inputs.working-directory }}
         run: |
-          poetry run python backend/src/manage.py migrate --noinput
+          poetry run python src/manage.py migrate --noinput

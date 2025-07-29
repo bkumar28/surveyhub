@@ -38,7 +38,9 @@ jobs:
         uses: pre-commit/action@v3.0.1
 
       - name: Run Ruff Linter (Python Only)
+        working-directory: backend
         run: poetry run ruff check . --output-format=github
 
       - name: Run Ruff Formatter Check (Python Only)
+        working-directory: backend
         run: poetry run ruff format --check .

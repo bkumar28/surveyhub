@@ -15,6 +15,10 @@ on:
       environment:
         required: true
         type: string
+      working-directory:
+        required: false
+        type: string
+        default: backend
 
 defaults:
   run:
@@ -86,18 +90,20 @@ jobs:
           poetry run pip install keyring pytest-xdist pytest-rerunfailures
 
       - name: Apply migrations
+        working-directory: ${{ inputs.working-directory }}
         run: |
-          poetry run python backend/src/manage.py migrate
+          poetry run python src/manage.py migrate
 
       - name: Run Unit Tests with Coverage
+        working-directory: ${{ inputs.working-directory }}
         run: |
           echo "Running tests using DB: $DB_NAME at $DB_HOST"
           poetry run pytest \
-            --cov=backend \
-            --cov-config=backend/.coveragerc \
+            --cov=. \
+            --cov-config=.coveragerc \
             --cov-branch \
             --cov-report=xml:coverage.xml \
-            backend \
+            . \
             --dist loadgroup \
             --numprocesses auto \
             -v \
@@ -107,6 +113,7 @@ jobs:
             | tee /tmp/pytest.log
 
       - name: Debug coverage.xml existence
+        working-directory: ${{ inputs.working-directory }}
         run: |
           echo "Listing workspace directory:"
           ls -la
@@ -114,6 +121,7 @@ jobs:
           head -n 20 coverage.xml || echo "coverage.xml not found"
 
       - name: Validate coverage report
+        working-directory: ${{ inputs.working-directory }}
         run: |
           if [ ! -f coverage.xml ]; then
             echo "ERROR: coverage.xml not found!"
@@ -142,7 +150,7 @@ jobs:
         if: always()
         uses: codecov/codecov-action@v4
         with:
-          file: ./coverage.xml
+          file: ${{ inputs.working-directory }}/coverage.xml
           flags: unittests
           name: codecov-coverage-report
           fail_ci_if_error: true

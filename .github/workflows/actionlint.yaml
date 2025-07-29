@@ -34,6 +34,7 @@ jobs:
 
       - name: Check workflow files
         shell: bash
+        working-directory: backend
         run: |
           ${{ steps.get_actionlint.outputs.executable }} \
             -color \
