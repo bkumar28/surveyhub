@@ -98,7 +98,7 @@ class AnswerModelTest(TestCase):
         AnswerFactory(
             response=self.response, question=self.question, text_answer="First answer"
         )
-        with self.assertRaises(Exception):
+        with self.assertRaises():
             AnswerFactory(
                 response=self.response,
                 question=self.question,

@@ -1,0 +1,134 @@
+[tool.poetry]
+name = "surveyhub-project"
+version = "0.1.0"
+description = "SurveyHub Django REST + React project with pre-commit hooks"
+authors = ["Bharat Kumar <kumar.bhart28@gmail.com>"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.12,<4.0"
+
+[tool.poetry.group.dev.dependencies]
+# Pre-commit and code quality tools
+pre-commit = ">=3.7.0"
+black = "25.1.0"
+isort = ">=5.13"
+ruff = "0.12.1"
+mypy = ">=1.8.0"
+bandit = ">=1.7.5"
+# Testing tools (for root level testing if needed)
+pytest = ">=7.4.0"
+coverage = ">=7.5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# Black configuration
+[tool.black]
+line-length = 88
+target-version = ['py312']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | migrations
+  | node_modules
+)/
+'''
+
+# isort configuration
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+skip = ["migrations", "node_modules"]
+known_django = "django"
+known_first_party = ["backend", "users", "core"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "DJANGO", "FIRSTPARTY", "LOCALFOLDER"]
+
+# Ruff configuration (shared between root and backend)
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+exclude = [
+    ".venv",
+    "migrations",
+    "settings",
+    "node_modules",
+    "frontend/build",
+    "frontend/dist"
+]
+
+[tool.ruff.lint]
+extend-select = ["F", "E", "W", "I", "UP", "N", "B", "A", "C4", "DJ"]
+ignore = [
+    "E501",  # Line too long (handled by black)
+    "E402",  # Module level import not at top of file
+    "F403",  # 'from module import *' used
+    "F405",  # Name may be undefined due to star imports
+    "DJ01",  # Avoid using null=True on string-based fields
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"settings/*.py" = ["F401", "F403", "F405"]
+"*/migrations/*.py" = ["ALL"]
+
+# mypy configuration
+[tool.mypy]
+python_version = "3.12"
+check_untyped_defs = true
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+exclude = [
+    "migrations/",
+    "venv/",
+    ".venv/",
+    "node_modules/",
+    "frontend/",
+]
+
+# Bandit configuration
+[tool.bandit]
+exclude_dirs = [
+    "*/migrations/",
+    "*/tests/",
+    "*/test_*.py",
+    "frontend/",
+    "node_modules/"
+]
+skips = ["B101", "B601"]  # Skip assert_used and shell_injection for tests
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["backend"]
+omit = [
+    "*/migrations/*",
+    "*/venv/*",
+    "*/tests/*",
+    "*/test_*.py",
+    "manage.py",
+    "*/settings/*",
+    "frontend/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]

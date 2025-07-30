@@ -112,7 +112,7 @@ class SurveyResponse(models.Model):
         "surveys.Survey", on_delete=models.CASCADE, related_name="responses"
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    session_key = models.CharField(max_length=40, null=True, blank=True)
+    session_key = models.CharField(max_length=40, blank=True)
     user_token = models.UUIDField(default=uuid.uuid4, editable=False)
 
     # Response metadata

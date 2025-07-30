@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       environment: testing
-      BACKEND_WORKING_DIR: backend 
+      BACKEND_WORKING_DIR: backend
       CONTAINER_INIT_SCRIPT: ${{ vars.CONTAINER_INIT_SCRIPT_TESTING }}
       PYTHON_VERSION: ${{ vars.PYTHON_VERSION_TESTING }}
       DEBUG: ${{ vars.DEBUG_TESTING }}

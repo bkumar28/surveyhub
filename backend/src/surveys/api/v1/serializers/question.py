@@ -27,11 +27,11 @@ class QuestionSerializer(serializers.ModelSerializer):
                 logger.info(f"Getting survey from URL parameter: {survey_pk}")
                 survey = Survey.objects.get(pk=survey_pk)
                 validated_data["survey"] = survey
-            except Survey.DoesNotExist:
+            except Survey.DoesNotExist as err:
                 logger.error(f"Survey with ID {survey_pk} does not exist")
                 raise serializers.ValidationError(
                     {"survey": f"Survey with ID {survey_pk} does not exist"}
-                )
+                ) from err
 
         return super().create(validated_data)
 

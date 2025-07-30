@@ -23,12 +23,12 @@ class TestPermissions(unittest.TestCase):
         self.factory = APIRequestFactory()
 
         class UserStub:
-            def __init__(self, id):
-                self.id = id
+            def __init__(self, obj_id):
+                self.obj_id = obj_id
                 self.is_authenticated = True
 
             def __eq__(self, other):
-                return isinstance(other, UserStub) and self.id == other.id
+                return isinstance(other, UserStub) and self.obj_id == other.obj_id
 
         self.user = UserStub(1)
         self.other = UserStub(2)

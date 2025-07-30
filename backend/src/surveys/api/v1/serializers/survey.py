@@ -54,10 +54,10 @@ class SurveyResponseSerializer(serializers.ModelSerializer):
             survey_pk = self.context.get("view").kwargs.get("survey_pk")
             try:
                 validated_data["survey"] = Survey.objects.get(pk=survey_pk)
-            except Survey.DoesNotExist:
+            except Survey.DoesNotExist as err:
                 raise serializers.ValidationError(
                     {"survey": f"Survey with ID {survey_pk} does not exist"}
-                )
+                ) from err
 
         # Set user if authenticated, otherwise leave as None for anonymous
         if request and request.user.is_authenticated:
@@ -120,21 +120,21 @@ class SurveyReportSerializer(serializers.ModelSerializer):
             .order_by("-total")[:1]
         )
 
-        data = dict(
-            total_submission=answers.values("uuid").distinct().count(),
-            anonymous_user=answers.filter(invitation_id__isnull=True)
+        data = {
+            "total_submission": answers.values("uuid").distinct().count(),
+            "anonymous_user": answers.filter(invitation_id__isnull=True)
             .values("uuid")
             .distinct()
             .count(),
-            invited_user=answers.filter(invitation_id__isnull=False)
+            "invited_user": answers.filter(invitation_id__isnull=False)
             .values("uuid")
             .distinct()
             .count(),
-            total_answer=answers.filter(~Q(ans="")).count(),
-            total_unanswer=answers.filter(ans="").count(),
-            popular_answer={"total": 0, "question": ""},
-            unpopular_answer={"total": 0, "question": ""},
-        )
+            "total_answer": answers.filter(~Q(ans="")).count(),
+            "total_unanswer": answers.filter(ans="").count(),
+            "popular_answer": {"total": 0, "question": ""},
+            "unpopular_answer": {"total": 0, "question": ""},
+        }
 
         if popular_answer:
             data["popular_answer"]["total"] = popular_answer[0]["total"]
