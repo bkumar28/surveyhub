@@ -168,11 +168,11 @@ jobs:
       - name: Pre-deployment checks
         env:
           MOCK_DEPLOYMENT: ${{ needs.setup.outputs.MOCK_DEPLOYMENT }}
+        working-directory: ${{ needs.setup.outputs.BACKEND_WORKING_DIR }}
         run: |
           echo "Running pre-deployment checks..."
           if [ "$MOCK_DEPLOYMENT" != "true" ]; then
             # Check if migrations are up to date
-            working-directory: backend
             run: |
               poetry run python src/manage.py makemigrations --check --dry-run --noinput
 
@@ -183,30 +183,25 @@ jobs:
 
       - name: Deploy application
         id: deploy
+        working-directory: ${{ needs.setup.outputs.BACKEND_WORKING_DIR }}
         env:
           MOCK_DEPLOYMENT: ${{ needs.setup.outputs.MOCK_DEPLOYMENT }}
         run: |
           echo "Starting deployment of version ${{ steps.tag.outputs.version }}"
 
           # Collect static files
-          working-directory: ${{ needs.setup.outputs.BACKEND_WORKING_DIR  }}
-          run: |
-            poetry run python src/manage.py collectstatic --noinput --clear
+          poetry run python src/manage.py collectstatic --noinput --clear
 
           if [ "$MOCK_DEPLOYMENT" != "true" ]; then
             # Apply database migrations
-            working-directory: ${{ needs.setup.outputs.BACKEND_WORKING_DIR  }}
-            run: |
-              poetry run python src/manage.py migrate --noinput
+            poetry run python src/manage.py migrate --noinput
           else
             echo "[MOCK MODE] Skipping database migration"
           fi
 
           # Create deployment package
           mkdir -p build/surveyhub-app
-          working-directory: ${{ needs.setup.outputs.BACKEND_WORKING_DIR  }}
-          run: |
-            cp -r src/ ../build/surveyhub-app/
+          cp -r src/ ../build/surveyhub-app/
           cp -r staticfiles/ build/surveyhub-app/ 2>/dev/null || echo "No staticfiles directory"
           cp pyproject.toml build/surveyhub-app/
           cp poetry.lock build/surveyhub-app/
