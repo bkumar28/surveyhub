@@ -62,6 +62,7 @@ jobs:
           python-version: ${{ inputs.python-version }}
           poetry-groups: '--with=dev'
           cache-key-suffix: '-backend-tests'
+          working-directory: ${{ inputs.working-directory }}
 
       - name: Validate Required Secrets
         run: |

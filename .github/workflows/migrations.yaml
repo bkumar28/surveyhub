@@ -55,6 +55,7 @@ jobs:
         with:
           python-version: ${{ inputs.python-version }}
           poetry-groups: '--with=dev'
+          working-directory: ${{ inputs.working-directory }}
 
       - name: Setup Variables from CI Action
         uses: ./.github/actions/setup-ci-env
