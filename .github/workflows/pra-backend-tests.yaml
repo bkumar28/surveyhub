@@ -105,12 +105,8 @@ jobs:
             --cov-branch \
             --cov-report=xml:coverage.xml \
             . \
-            --dist loadgroup \
-            --numprocesses auto \
             -v \
             --tb=long \
-            --reruns 3 \
-            --reruns-delay 2 \
             | tee /tmp/pytest.log
 
       - name: Debug coverage.xml existence
