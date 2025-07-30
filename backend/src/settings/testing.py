@@ -4,10 +4,7 @@ import sys
 from .base import *
 
 if "pytest" in sys.modules or "test" in sys.argv[0]:
-    try:
-        REST_FRAMEWORK
-    except NameError:
-        REST_FRAMEWORK = {}
+    REST_FRAMEWORK = globals().get("REST_FRAMEWORK", {})
     REST_FRAMEWORK["DEFAULT_THROTTLE_CLASSES"] = []
     REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {}
 
