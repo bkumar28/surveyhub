@@ -1,0 +1,154 @@
+name: Backend Unit Tests
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        required: true
+        type: string
+      debug:
+        required: true
+        type: string
+      container-init-script:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: string
+      working-directory:
+        required: false
+        type: string
+        default: backend
+
+defaults:
+  run:
+    shell: bash -eo pipefail {0}
+
+jobs:
+  backend-tests:
+    name: Backend Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: db_test
+          POSTGRES_USER: db_user
+          POSTGRES_PASSWORD: db_pass
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.sha }}
+
+      - name: Setup System Dependencies
+        uses: ./.github/actions/setup-system-deps
+        with:
+          packages: 'build-essential libpq-dev'
+
+      - name: Setup Python & Poetry
+        uses: ./.github/actions/setup-python-poetry
+        with:
+          python-version: ${{ inputs.python-version }}
+          poetry-groups: '--with=dev'
+          cache-key-suffix: '-backend-tests'
+          working-directory: ${{ inputs.working-directory }}
+
+      - name: Validate Required Secrets
+        run: |
+          missing_secrets=()
+
+          if [ -z "${{ secrets.CODECOV_TOKEN }}" ]; then
+            missing_secrets+=("CODECOV_TOKEN")
+          fi
+
+          if [ ${#missing_secrets[@]} -gt 0 ]; then
+            echo "Missing required secrets: ${missing_secrets[*]}"
+            echo "Coverage upload will fail without these secrets"
+            exit 1
+          fi
+          echo "All required secrets are present"
+
+      - name: Set CI Variables
+        uses: ./.github/actions/setup-ci-env
+        with:
+          container-init-script: ${{ inputs.container-init-script }}
+          debug: ${{ inputs.debug }}
+          environment: ${{ inputs.environment }}
+
+      - name: Install additional test dependencies
+        run: |
+          poetry run pip install keyring pytest-xdist pytest-rerunfailures
+
+      - name: Apply migrations
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          poetry run python src/manage.py migrate
+
+      - name: Run Unit Tests with Coverage
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          echo "Running tests using DB: $DB_NAME at $DB_HOST"
+          poetry run pytest \
+            --cov=. \
+            --cov-config=.coveragerc \
+            --cov-branch \
+            --cov-report=xml:coverage.xml \
+            . \
+            -v \
+            --tb=long \
+            | tee /tmp/pytest.log
+
+      - name: Debug coverage.xml existence
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          echo "Listing workspace directory:"
+          ls -la
+          echo "Displaying beginning of coverage.xml (if it exists):"
+          head -n 20 coverage.xml || echo "coverage.xml not found"
+
+      - name: Validate coverage report
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          if [ ! -f coverage.xml ]; then
+            echo "ERROR: coverage.xml not found!"
+            echo "Listing current directory contents:"
+            ls -la
+            exit 1
+          fi
+
+          if [ ! -s coverage.xml ]; then
+            echo "ERROR: coverage.xml is empty!"
+            exit 1
+          fi
+
+          # Check if it's valid XML
+          if command -v xmllint >/dev/null 2>&1; then
+            if ! xmllint --noout coverage.xml 2>/dev/null; then
+              echo "ERROR: coverage.xml is not valid XML!"
+              head -n 10 coverage.xml
+              exit 1
+            fi
+          fi
+
+          echo "Coverage report validation passed"
+
+      - name: Upload Coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v4
+        with:
+          file: ${{ inputs.working-directory }}/coverage.xml
+          flags: unittests
+          name: codecov-coverage-report
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}

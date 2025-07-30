@@ -208,7 +208,7 @@ class AnalyticsService:
 
         total_responses = self.survey.responses.count()
 
-        for i, question in enumerate(questions):
+        for _i, question in enumerate(questions):
             answered_count = Answer.objects.filter(question=question).count()
             abandonment_rate = (
                 ((total_responses - answered_count) / total_responses * 100)

@@ -31,24 +31,24 @@ USERS_ONLY=false                           # Default: load all fixtures
 # -----------------------------------------------------------------------------
 # Function: run_in_docker
 # Description:
-#   Executes a Python command inside the Docker 'web' container using Poetry.
+#   Executes a Python command inside the Docker 'backend' container using Poetry.
 # Arguments:
 #   $@ - The manage.py command and its arguments
 # -----------------------------------------------------------------------------
 run_in_docker() {
-  docker compose exec web poetry run python "$@"
+  docker compose exec backend poetry run python "$@"
 }
 
 # -----------------------------------------------------------------------------
 # Function: check_file_exists
 # Description:
-#   Checks if a given file path exists inside the web container.
+#   Checks if a given file path exists inside the backend container.
 # Arguments:
 #   $1 - Full file path to check
 # -----------------------------------------------------------------------------
 check_file_exists() {
   local filepath="$1"
-  if ! docker compose exec web test -f "$filepath"; then
+  if ! docker compose exec backend test -f "$filepath"; then
     echo "Error: File not found at $filepath inside the container"
     exit 1
   fi
@@ -105,7 +105,7 @@ load_data_file() {
 # -----------------------------------------------------------------------------
 # Function: ensure_docker_services
 # Description:
-#   Checks if required services (web, db) are running.
+#   Checks if required services (backend, db) are running.
 #   If not, builds and starts them using Docker Compose.
 # -----------------------------------------------------------------------------
 ensure_docker_services() {
@@ -113,8 +113,8 @@ ensure_docker_services() {
 
   local services_running=true
 
-  # Check if both 'web' and 'db' containers are running
-  for service in web db; do
+  # Check if both 'backend' and 'db' containers are running
+  for service in backend db; do
     if ! docker compose ps --services --filter "status=running" | grep -q "^${service}$"; then
       echo "Service '$service' is not running."
       services_running=false

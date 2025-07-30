@@ -45,15 +45,15 @@ class AnswerListCreateView(ListCreateAPIView):
 
         try:
             obj = queryset.get(**filter_kwargs)
-        except Survey.DoesNotExist:
+        except Survey.DoesNotExist as err:
             raise Http404(
                 message=NOT_FOUND_SURVEY_ERROR.format(self.kwargs["pk"]),
                 error_code=status.HTTP_404_NOT_FOUND,
-            )
+            ) from err
         except Exception as err:
             raise HttpError(
                 message=err.args[0], error_code=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+            ) from err
 
         if obj.status == "D" or obj.start_date > timezone.now():
             raise HttpError(
@@ -169,7 +169,7 @@ class AnswerRetrieveView(RetrieveAPIView):
         except Exception as err:
             raise HttpError(
                 message=err.args[0], error_code=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+            ) from err
 
         if not answers_list_obj:
             raise Http404(

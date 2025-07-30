@@ -1,0 +1,336 @@
+name: Deploy Latest Release
+
+# **What it does**: Runs tests, and (if merged to develop) deploys to testing
+# **Why we have it**: To automate tests and Deployments
+# **Who does it impact**: Everyone who develops on and/or uses Surveyhub
+
+on:
+  push:
+    branches:
+      - "develop"
+
+concurrency:
+  group: "Deploy @ ${{ github.base_ref || github.head_ref || github.ref_name }}"
+  cancel-in-progress: false
+
+defaults:
+  run:
+    # This makes sure we're consistently running in bash, and that we fail if any command in a pipe fails
+    shell: bash -leo pipefail {0}
+
+permissions:
+  id-token: write
+  contents: write
+  deployments: write
+
+jobs:
+  setup:
+    name: Setup Environment
+    runs-on: ubuntu-latest
+    outputs:
+      environment: testing
+      BACKEND_WORKING_DIR: backend
+      CONTAINER_INIT_SCRIPT: ${{ vars.CONTAINER_INIT_SCRIPT_TESTING }}
+      PYTHON_VERSION: ${{ vars.PYTHON_VERSION_TESTING }}
+      DEBUG: ${{ vars.DEBUG_TESTING }}
+      MOCK_DEPLOYMENT: ${{ vars.MOCK_TESTING_DEPLOYMENT }}
+    steps:
+      - name: Confirm values for env
+        run: |
+          echo "Environment: testing"
+          echo "PYTHON_VERSION: ${{ vars.PYTHON_VERSION_TESTING }}"
+          echo "DEBUG: ${{ vars.DEBUG_TESTING }}"
+          echo "MOCK_DEPLOYMENT: ${{ vars.MOCK_TESTING_DEPLOYMENT }}"
+          echo "CONTAINER_INIT_SCRIPT: ${{ vars.CONTAINER_INIT_SCRIPT_TESTING }}"
+
+  mock-deploy-validation:
+    name: Validate Mock Deployment Workflow
+    needs: setup
+    runs-on: ubuntu-latest
+    if: needs.setup.outputs.MOCK_DEPLOYMENT == 'true'
+    steps:
+      - run: echo "Mock deployment path verified. DB operations will be skipped."
+
+  quality-checks:
+    needs: setup
+    name: Quality Checks
+    uses: ./.github/workflows/code-quality.yaml
+    with:
+      python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
+
+  migration-checks:
+    name: Migration Checks
+    needs:
+      - setup
+      - quality-checks
+    uses: ./.github/workflows/migrations.yaml
+    with:
+      python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
+      environment: "testing"
+      debug: ${{ needs.setup.outputs.DEBUG }}
+      container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }}
+
+  backend-tests:
+    name: Backend Tests
+    needs:
+      - setup
+      - migration-checks
+    uses: ./.github/workflows/pra-backend-tests.yaml
+    with:
+      python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
+      debug: ${{ needs.setup.outputs.DEBUG }}
+      environment: "testing"
+      container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }}
+
+    secrets: inherit
+
+  # Deploy with proper error handling and rollback capability
+  deploy-to-testing:
+    name: Deploy to testing and Create Release
+    needs:
+      - setup
+      - backend-tests
+    runs-on: ubuntu-latest
+    environment:
+      name: testing
+      url: https://mock.testing.internal
+    permissions:
+      contents: write
+      deployments: write
+    outputs:
+      deployment_id: ${{ steps.deploy.outputs.deployment_id }}
+      version: ${{ steps.tag.outputs.version }}
+      deployment_success: ${{ steps.deploy.outcome == 'success' }}
+      release_success: ${{ steps.create_release.outcome == 'success' }}
+
+    steps:
+      - name: Start deployment
+        uses: bobheadxi/deployments@v1
+        id: deployment
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: testing
+          desc: Deploying to testing environment
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup System Dependencies
+        uses: ./.github/actions/setup-system-deps
+        with:
+          packages: 'build-essential libpq-dev libcurl4-openssl-dev libldap2-dev libsasl2-dev libxml2-dev libxmlsec1-dev'
+
+      - name: Setup Python & Poetry
+        uses: ./.github/actions/setup-python-poetry
+        with:
+          python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
+          poetry-groups: '--with=dev'
+
+      - name: Setup Environment Variables
+        uses: ./.github/actions/setup-ci-env
+        with:
+          environment: testing
+          container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }}
+          debug: ${{ needs.setup.outputs.DEBUG }}
+
+      - name: Get Django version
+        id: django_version
+        run: |
+          VERSION=$(poetry run python -c "import django; print(django.get_version())" 2>/dev/null || echo "Unknown")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Django version: $VERSION"
+
+      - name: Generate testing release tag
+        id: tag
+        run: |
+          if [ "${{ vars.USE_SEMANTIC_VERSIONING }}" == "true" ]; then
+            LATEST_TAG=$(git tag -l "v*" --sort=-version:refname | head -n1)
+            if [ -z "$LATEST_TAG" ]; then
+              VERSION="v1.0.0-testing"
+            else
+              CLEAN_TAG=${LATEST_TAG#v}
+              CLEAN_TAG=${CLEAN_TAG%-testing}
+              CLEAN_TAG=${CLEAN_TAG%-beta}
+              IFS='.' read -ra VERSION_PARTS <<< "$CLEAN_TAG"
+              PATCH=$(( ${VERSION_PARTS[2]:-0} + 1 ))
+              VERSION="v${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.${PATCH}-testing"
+            fi
+          else
+            VERSION="v$(date +'%Y.%m.%d-%H%M%S')-testing"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Generated version: $VERSION"
+
+      - name: Pre-deployment checks
+        env:
+          MOCK_DEPLOYMENT: ${{ needs.setup.outputs.MOCK_DEPLOYMENT }}
+        working-directory: ${{ needs.setup.outputs.BACKEND_WORKING_DIR }}
+        run: |
+          echo "Running pre-deployment checks..."
+          if [ "$MOCK_DEPLOYMENT" != "true" ]; then
+            # Check if migrations are up to date
+            run: |
+              poetry run python src/manage.py makemigrations --check --dry-run --noinput
+
+            echo "Pre-deployment checks passed"
+          else
+            echo "Skipping DB-related pre-deployment checks due to MOCK_DEPLOYMENT=true"
+          fi
+
+      - name: Deploy application
+        id: deploy
+        working-directory: ${{ needs.setup.outputs.BACKEND_WORKING_DIR }}
+        env:
+          MOCK_DEPLOYMENT: ${{ needs.setup.outputs.MOCK_DEPLOYMENT }}
+        run: |
+          echo "Starting deployment of version ${{ steps.tag.outputs.version }}"
+
+          # Collect static files
+          poetry run python src/manage.py collectstatic --noinput --clear
+
+          if [ "$MOCK_DEPLOYMENT" != "true" ]; then
+            # Apply database migrations
+            poetry run python src/manage.py migrate --noinput
+          else
+            echo "[MOCK MODE] Skipping database migration"
+          fi
+
+          # Create deployment package
+          mkdir -p build/surveyhub-app
+          cp -r src/ ../build/surveyhub-app/
+          cp -r staticfiles/ build/surveyhub-app/ 2>/dev/null || echo "No staticfiles directory"
+          cp pyproject.toml build/surveyhub-app/
+          cp poetry.lock build/surveyhub-app/
+
+          # Create version info
+          echo "${{ steps.tag.outputs.version }}" > build/surveyhub-app/VERSION
+
+          # Create deployment package
+          cd build && tar -czf surveyhub-app-${{ steps.tag.outputs.version }}.tar.gz surveyhub-app/
+
+          echo "deployment_id=${{ steps.deployment.outputs.deployment_id }}" >> $GITHUB_OUTPUT
+          echo "deployment_url=https://mock.testing.internal" >> $GITHUB_OUTPUT
+
+      - name: Archive Deployment Artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: testing-deployment-${{ steps.tag.outputs.version }}
+          path: |
+            build/surveyhub-app-${{ steps.tag.outputs.version }}.tar.gz
+            build/surveyhub-app/
+          retention-days: 30
+
+      - name: Create Git Tag
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Set up authentication
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+
+          # Fetch all remote tags to ensure local tag list is up to date
+          git fetch --tags
+
+          # Check if tag already exists
+          if git tag -l | grep -q "^${{ steps.tag.outputs.version }}$"; then
+            echo "Tag ${{ steps.tag.outputs.version }} already exists, skipping tag creation"
+          else
+            git tag ${{ steps.tag.outputs.version }}
+            git push origin ${{ steps.tag.outputs.version }}
+            echo "Created and pushed tag ${{ steps.tag.outputs.version }}"
+          fi
+
+      - name: Download deployment artifacts for release
+        if: success()
+        uses: actions/download-artifact@v4
+        with:
+          name: testing-deployment-${{ steps.tag.outputs.version }}
+          path: ./artifacts
+
+      - name: Create GitHub Release
+        if: success()
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.version }}
+          name: Testing Release ${{ steps.tag.outputs.version }}
+          prerelease: true
+          draft: false
+          target_commitish: ${{ github.sha }}
+          generate_release_notes: true
+          make_latest: false
+          files: |
+            ./artifacts/surveyhub-app-${{ steps.tag.outputs.version }}.tar.gz
+          body: |
+            **Successfully Deployed to testing Environment**
+
+            **Environment:** testing
+            **Deployment ID:** ${{ steps.deployment.outputs.deployment_id }}
+            **Commit:** ${{ github.sha }}
+            **Django Version:** ${{ steps.django_version.outputs.version }}
+            **Branch:** ${{ github.ref_name }}
+
+            **Deployment Package:** `surveyhub-app-${{ steps.tag.outputs.version }}.tar.gz`
+
+            ---
+
+            **Deployment Details:**
+            - **Environment URL:** https://mock.testing.internal
+            - **Deployment Time:** ${{ github.event.head_commit.timestamp }}
+            - **Committer:** ${{ github.event.head_commit.committer.name }}
+
+            **Changes in this release:**
+            ${{ github.event.head_commit.message }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update deployment status (success)
+        if: success()
+        uses: bobheadxi/deployments@v1
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: testing
+          status: success
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+          env_url: https://mock.testing.internal
+
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: bobheadxi/deployments@v1
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: testing
+          status: failure
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+
+  notify-deployment:
+    name: Notify Deployment Status
+    needs: [setup, deploy-to-testing]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Success
+        if: needs.deploy-to-testing.result == 'success'
+        run: |
+          if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+            curl -X POST -H 'Content-type: application/json' \
+              --data '{"text":"Django app ${{ needs.deploy-to-testing.outputs.version }} successfully deployed to testing and release created! \n Release: https://github.com/${{ github.repository }}/releases/tag/${{ needs.deploy-to-testing.outputs.version }}\n Environment: https://mock.testing.internal"}' \
+              ${{ secrets.SLACK_WEBHOOK_URL }}
+          fi
+
+      - name: Notify Failure
+        if: needs.deploy-to-testing.result == 'failure'
+        run: |
+          if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+            curl -X POST -H 'Content-type: application/json' \
+              --data '{"text":"Failed to deploy Django app to testing from branch ${{ github.ref_name }}\n Workflow: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
+              ${{ secrets.SLACK_WEBHOOK_URL }}
+          fi

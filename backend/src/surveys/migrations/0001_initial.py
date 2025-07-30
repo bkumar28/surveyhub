@@ -289,7 +289,7 @@ class Migration(migrations.Migration):
                         serialize=False,
                     ),
                 ),
-                ("session_key", models.CharField(blank=True, max_length=40, null=True)),
+                ("session_key", models.CharField(blank=True, max_length=40)),
                 ("user_token", models.UUIDField(default=uuid.uuid4, editable=False)),
                 ("ip_address", models.GenericIPAddressField(blank=True, null=True)),
                 ("user_agent", models.TextField(blank=True)),

@@ -55,11 +55,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
         survey_pk = self.kwargs.get("survey_pk")
         try:
             return Survey.objects.get(pk=survey_pk)
-        except Survey.DoesNotExist:
+        except Survey.DoesNotExist as err:
             raise Http404(
                 message=NOT_FOUND_SURVEY_ERROR.format(survey_pk),
                 error_code=status.HTTP_404_NOT_FOUND,
-            )
+            ) from err
 
     def get_queryset(self):
         """
