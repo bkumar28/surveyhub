@@ -25,9 +25,9 @@
 
 set -e
 
-SERVICE_NAME="web"
+SERVICE_NAME="backend"
 DOCKER_APP_DIR="/app/src"
-LOCAL_APP_DIR="src"
+LOCAL_APP_DIR="backend/src"
 COV_REPORT_DIR="htmlcov"
 JUNIT_FILE="junit.xml"
 

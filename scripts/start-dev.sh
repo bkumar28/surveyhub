@@ -1,23 +1,20 @@
-#!/bin/bash
+#!/bin/sh
 
-# Start full stack (backend + frontend + nginx + db)
-
+# Exit immediately if a command exits with a non-zero status.
 set -e
 
-BACKEND_FILE="docker-compose.backend.yml"
-ROOT_FILE="docker-compose.yml"
-ENV_FILE=".env"
+cd /app/src
 
-# Colors
-GREEN="\033[0;32m"
-RED="\033[0;31m"
-NC="\033[0m"
+echo "Waiting for dependent services to be ready..."
+sleep 15  # Sleep for 15 seconds (adjust as needed)
 
-# Check .env exists
-if [ ! -f "$ENV_FILE" ]; then
-  echo -e "${RED}.env file not found. Please create one in the project root.${NC}"
-  exit 1
-fi
+echo "Applying database migrations..."
+poetry install
+poetry run python manage.py makemigrations
+poetry run python manage.py migrate
 
-echo -e "${GREEN} Starting full stack services...${NC}"
-docker-compose -f "$BACKEND_FILE" -f "$ROOT_FILE" --env-file "$ENV_FILE" up --build
+echo "Collecting static files..."
+poetry run python manage.py collectstatic --noinput
+
+echo "Starting Gunicorn server..."
+poetry run gunicorn wsgi:application --bind 0.0.0.0:8000

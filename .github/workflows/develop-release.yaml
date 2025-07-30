@@ -29,6 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       environment: testing
+      BACKEND_WORKING_DIR: backend 
       CONTAINER_INIT_SCRIPT: ${{ vars.CONTAINER_INIT_SCRIPT_TESTING }}
       PYTHON_VERSION: ${{ vars.PYTHON_VERSION_TESTING }}
       DEBUG: ${{ vars.DEBUG_TESTING }}
@@ -188,13 +189,13 @@ jobs:
           echo "Starting deployment of version ${{ steps.tag.outputs.version }}"
 
           # Collect static files
-          working-directory: backend
+          working-directory: ${{ needs.setup.outputs.BACKEND_WORKING_DIR  }}
           run: |
             poetry run python src/manage.py collectstatic --noinput --clear
 
           if [ "$MOCK_DEPLOYMENT" != "true" ]; then
             # Apply database migrations
-            working-directory: backend
+            working-directory: ${{ needs.setup.outputs.BACKEND_WORKING_DIR  }}
             run: |
               poetry run python src/manage.py migrate --noinput
           else
@@ -203,7 +204,7 @@ jobs:
 
           # Create deployment package
           mkdir -p build/surveyhub-app
-          working-directory: backend
+          working-directory: ${{ needs.setup.outputs.BACKEND_WORKING_DIR  }}
           run: |
             cp -r src/ ../build/surveyhub-app/
           cp -r staticfiles/ build/surveyhub-app/ 2>/dev/null || echo "No staticfiles directory"

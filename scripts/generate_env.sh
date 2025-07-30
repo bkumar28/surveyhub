@@ -21,14 +21,17 @@ DEBUG=True
 # or generate a key using `django.core.management.utils.get_random_secret_key()`
 # or use a secure key generator.
 # Note: Do not use this key in production; it's just for local development.
-SECRET_KEY=n1@4!n5wuvx&=nl7n3%@8jvzbsq68j2bkh=7!pnnk=$he1m-%9
+SECRET_KEY=n1@4!n5wuvx&=nl7n3%@8jvzbsq68j2bkh=7!pnnk=he1m-%9
 
-# Django settings module
-DJANGO_SETTINGS_MODULE=settings.development
+# Django settings module and environment
+# This is the settings module to use for local development.
+# In production, you should use a different settings module.
+DJANGO_ENVIRONMENT = development
+CONTAINER_STARTUP_SCRIPT_NAME = start-dev
 
 # Allowed hosts (adjust as needed)
 # For local development, you can use localhost and
-ALLOWED_HOSTS=localhost,127.0.0.1,web
+ALLOWED_HOSTS=localhost,127.0.0.1,backend
 
 # CORS settings
 # Allow all origins for local development
@@ -43,7 +46,8 @@ DB_HOST=db
 DB_PORT=5432
 
 # Redis (inside Docker)
-REDIS_URL=redis://redis:6379/0
+REDIS_HOST = redis
+REDIS_HOST = 6379
 CELERY_BROKER_URL=redis://redis:6379/0
 
 # Email settings

@@ -34,15 +34,15 @@ MANAGE="$WORKDIR/manage.py"      # Full path to manage.py inside the container
 #   $@ - The full manage.py command with arguments
 # ------------------------------
 run_in_docker() {
-  docker compose exec web poetry run python "$@"
+  docker compose exec backend poetry run python "$@"
 }
 
 # ------------------------------
 # Function: ensure_docker_services
 # Description:
-#   Ensures required Docker services ('web' and 'db') are running.
+#   Ensures required Docker services ('backend' and 'db') are running.
 #   If not, it builds and starts the containers.
-#   Waits for the web container to become responsive.
+#   Waits for the backend container to become responsive.
 # ------------------------------
 ensure_docker_services() {
   echo "Checking if Docker services are already running..."
@@ -50,7 +50,7 @@ ensure_docker_services() {
   local services_running=true
 
   # Loop through required services and check if they are running
-  for service in web db; do
+  for service in backend db; do
     if ! docker compose ps --services --filter "status=running" | grep -q "^${service}$"; then
       echo "Service '$service' is not running."
       services_running=false
@@ -77,7 +77,7 @@ ensure_docker_services() {
   local attempt=0
 
   while [ $attempt -lt $max_attempts ]; do
-    if docker compose exec web echo "Container ready" >/dev/null 2>&1; then
+    if docker compose exec backend echo "Container ready" >/dev/null 2>&1; then
       echo "Docker services are ready."
       return 0
     fi
@@ -133,7 +133,7 @@ ARGS="$@"         # All remaining arguments
 ensure_docker_services
 
 # Step 4: Confirm manage.py exists inside the container
-if ! docker compose exec web test -f "$MANAGE"; then
+if ! docker compose exec backend test -f "$MANAGE"; then
   echo "Error: manage.py not found at $MANAGE inside the container."
   exit 1
 fi
