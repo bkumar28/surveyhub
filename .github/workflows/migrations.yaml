@@ -81,6 +81,7 @@ jobs:
           echo "PostgreSQL is ready!"
 
       - name: Verify Django install
+        working-directory: ${{ inputs.working-directory }}
         run: poetry run python -m django --version
 
       - name: Run makemigrations check
