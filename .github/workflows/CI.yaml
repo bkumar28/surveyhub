@@ -104,7 +104,7 @@ jobs:
   check-migrations:
     needs: ci-setup
     name: Check Migrations
-    uses: ./.github/workflows/migrations.yaml
+    uses: ./.github/workflows/check-django-migrations.yaml
     with:
       python-version: ${{ needs.ci-setup.outputs.PYTHON_VERSION }}
       debug: ${{ needs.ci-setup.outputs.DEBUG }}

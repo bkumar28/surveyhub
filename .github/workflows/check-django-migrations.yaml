@@ -1,32 +1,39 @@
-name: Check Migrations
+name: Django Migration Integrity Check
 
+# Triggered via workflow_call from another reusable workflow
 on:
   workflow_call:
     inputs:
       python-version:
+        description: 'Python version to set up the runtime environment.'
         required: true
         type: string
       debug:
+        description: 'Flag to toggle debug mode.'
         required: true
         type: string
       container-init-script:
+        description: 'Path to the script used to initialize container environment.'
         required: true
         type: string
       environment:
+        description: 'Deployment environment (e.g. testing, staging, production).'
         required: true
         type: string
       working-directory:
+        description: 'The root directory for the Django project.'
         required: false
         type: string
         default: backend
 
 jobs:
   check-migrations:
-    name: Django Migration Check
+    name: Validate Django Migrations
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
     services:
+      # PostgreSQL service used for migration testing
       postgres:
         image: postgres:15
         env:
@@ -42,29 +49,29 @@ jobs:
           --health-retries=5
 
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup System Dependencies
+      - name: Install System Packages
         uses: ./.github/actions/setup-system-deps
         with:
           packages: 'libcurl4-openssl-dev libldap2-dev libsasl2-dev libxml2-dev libxmlsec1-dev libpq-dev'
 
-      - name: Setup Python & Poetry
+      - name: Set up Python and Poetry Environment
         uses: ./.github/actions/setup-python-poetry
         with:
           python-version: ${{ inputs.python-version }}
           poetry-groups: '--with=dev'
           working-directory: ${{ inputs.working-directory }}
 
-      - name: Setup Variables from CI Action
+      - name: Load CI Environment Variables
         uses: ./.github/actions/setup-ci-env
         with:
           container-init-script: ${{ inputs.container-init-script }}
           debug: ${{ inputs.debug }}
           environment: ${{ inputs.environment }}
 
-      - name: Wait for PostgreSQL
+      - name: Wait for PostgreSQL Service
         run: |
           timeout=60
           elapsed=0
@@ -80,16 +87,18 @@ jobs:
           done
           echo "PostgreSQL is ready!"
 
-      - name: Verify Django install
+      - name: Confirm Django Installation
         working-directory: ${{ inputs.working-directory }}
         run: poetry run python -m django --version
 
-      - name: Run makemigrations check
+      - name: Check for Uncommitted Migrations
         working-directory: ${{ inputs.working-directory }}
         run: |
           poetry run python src/manage.py makemigrations --check --dry-run --noinput
+        # Ensures no model changes are pending that haven't been committed as migrations
 
-      - name: Test migrations can be applied
+      - name: Verify Migrations Can Be Applied
         working-directory: ${{ inputs.working-directory }}
         run: |
           poetry run python src/manage.py migrate --noinput
+        # Applies all migrations to verify schema compatibility
