@@ -16,6 +16,8 @@ isort = ">=5.13"
 ruff = "0.12.1"
 mypy = ">=1.8.0"
 bandit = ">=1.7.5"
+# YAML linting
+yamllint = ">=1.32.0"
 # Testing tools (for root level testing if needed)
 pytest = ">=7.4.0"
 coverage = ">=7.5.0"

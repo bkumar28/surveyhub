@@ -1,0 +1,124 @@
+# -------------------------
+# GitHub CI Workflow
+# -------------------------
+# Purpose:
+#   - Run CI pipeline on push to 'main' or 'develop'
+#   - Run on pull requests (open, reopen, update, edit)
+#   - Accept environment input when triggered via 'workflow_call'
+#   - Share common outputs like Python version, debug flags, and container scripts
+#   - Reuse reusable workflows for linting, testing, quality checks, etc.
+
+name: CI
+
+on:
+  # Trigger when called from another workflow
+  workflow_call:
+    inputs:
+      environment:
+        description: "Environment to deploy to (development, testing, staging, production)"
+        required: true
+        type: string
+
+  # Trigger on direct push to main or develop branches
+  push:
+    branches:
+      - main
+      - develop
+
+  # Trigger on PR actions: open, reopen, sync (new commits), or edit
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - edited
+
+# Ensure only one workflow runs per branch at a time; cancel in-progress if new commit is pushed
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci-setup:
+    name: CI Setup
+    runs-on: ubuntu-latest
+
+    # Dynamically set the environment: use input if available, otherwise default based on event type
+    environment: ${{ inputs.environment || (github.event_name == 'pull_request' && 'development') || 'testing' }}
+
+    # Export values to be reused by dependent jobs
+    outputs:
+      PYTHON_VERSION: ${{ steps.setup-vars.outputs.PYTHON_VERSION }}
+      DEBUG: ${{ steps.setup-vars.outputs.DEBUG }}
+      CONTAINER_INIT_SCRIPT: ${{ steps.setup-vars.outputs.CONTAINER_INIT_SCRIPT }}
+      ENVIRONMENT: ${{ steps.setup-vars.outputs.ENVIRONMENT }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup variables
+        id: setup-vars
+        env:
+          # Fetched from GitHub environment variables defined per environment
+          ENV_PYTHON_VERSION: ${{ vars.PYTHON_VERSION }}
+          ENV_DEBUG: ${{ vars.DEBUG }}
+          ENV_CONTAINER_INIT_SCRIPT: ${{ vars.CONTAINER_INIT_SCRIPT }}
+        run: |
+          # Determine the environment name
+          if [ "${{ inputs.environment }}" != "" ]; then
+            ENVIRONMENT="${{ inputs.environment }}"
+          elif [ "${{ github.event_name }}" == "pull_request" ]; then
+            ENVIRONMENT="development"
+          else
+            ENVIRONMENT="testing"
+          fi
+
+          # Export the determined environment and other variables as workflow outputs
+          echo "ENVIRONMENT=${ENVIRONMENT}" >> $GITHUB_OUTPUT
+          echo "PYTHON_VERSION=${{ env.ENV_PYTHON_VERSION }}" >> $GITHUB_OUTPUT
+          echo "DEBUG=${{ env.ENV_DEBUG }}" >> $GITHUB_OUTPUT
+          echo "CONTAINER_INIT_SCRIPT=${{ env.ENV_CONTAINER_INIT_SCRIPT }}" >> $GITHUB_OUTPUT
+
+  # Validate GitHub Actions workflows using Actionlint
+  actionlint:
+    needs: ci-setup
+    name: Lint GitHub Actions
+    uses: ./.github/workflows/actionlint.yaml
+
+  # Run linters and formatting tools (e.g., flake8, black, isort)
+  code-quality:
+    needs: ci-setup
+    name: Code Quality Checks
+    uses: ./.github/workflows/code-quality.yaml
+    with:
+      python-version: ${{ needs.ci-setup.outputs.PYTHON_VERSION }}
+
+  # Validate Codecov report presence and thresholds
+  codecov-validation:
+    name: Codecov Validation
+    needs: ci-setup
+    uses: ./.github/workflows/codecov-validation.yaml
+
+  # Check Django model migrations for correctness
+  check-migrations:
+    needs: ci-setup
+    name: Check Migrations
+    uses: ./.github/workflows/check-django-migrations.yaml
+    with:
+      python-version: ${{ needs.ci-setup.outputs.PYTHON_VERSION }}
+      debug: ${{ needs.ci-setup.outputs.DEBUG }}
+      container-init-script: ${{ needs.ci-setup.outputs.CONTAINER_INIT_SCRIPT }}
+      environment: ${{ needs.ci-setup.outputs.ENVIRONMENT }}
+
+  # Run backend unit and integration tests
+  pra-backend:
+    needs: ci-setup
+    name: Backend Tests
+    uses: ./.github/workflows/pra-backend.yaml
+    with:
+      python-version: ${{ needs.ci-setup.outputs.PYTHON_VERSION }}
+      debug: ${{ needs.ci-setup.outputs.DEBUG }}
+      container-init-script: ${{ needs.ci-setup.outputs.CONTAINER_INIT_SCRIPT }}
+      environment: ${{ needs.ci-setup.outputs.ENVIRONMENT }}
+    secrets: inherit # Pass GitHub environment secrets to the job

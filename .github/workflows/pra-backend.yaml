@@ -1,36 +1,44 @@
-name: Backend Unit Tests
+name: Backend Unit Test Workflow
 
+# This workflow is triggered via 'workflow_call' from another workflow.
 on:
   workflow_call:
     inputs:
       python-version:
+        description: "Python version to be used for setting up the environment."
         required: true
         type: string
       debug:
+        description: "Debug mode flag."
         required: true
         type: string
       container-init-script:
+        description: "Startup script path to initialize the container environment."
         required: true
         type: string
       environment:
+        description: "Deployment environment (e.g., testing, staging)."
         required: true
         type: string
       working-directory:
+        description: "Project root directory (default: backend)."
         required: false
         type: string
         default: backend
 
+# Default shell to be used for all run steps
 defaults:
   run:
     shell: bash -eo pipefail {0}
 
 jobs:
-  backend-tests:
-    name: Backend Unit Tests
+  unit-tests:
+    name: Backend Unit Tests with Coverage
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     services:
+      # Spin up PostgreSQL service for testing
       postgres:
         image: postgres:15
         env:
@@ -46,25 +54,25 @@ jobs:
           --health-retries=5
 
     steps:
-      - name: Checkout Code
+      - name: Checkout source code
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref || github.sha }}
 
-      - name: Setup System Dependencies
+      - name: Install system dependencies
         uses: ./.github/actions/setup-system-deps
         with:
-          packages: 'build-essential libpq-dev'
+          packages: "build-essential libpq-dev"
 
-      - name: Setup Python & Poetry
+      - name: Setup Python environment using Poetry
         uses: ./.github/actions/setup-python-poetry
         with:
           python-version: ${{ inputs.python-version }}
-          poetry-groups: '--with=dev'
-          cache-key-suffix: '-backend-tests'
+          poetry-groups: "--with=dev"
+          cache-key-suffix: "-backend-tests"
           working-directory: ${{ inputs.working-directory }}
 
-      - name: Validate Required Secrets
+      - name: Validate required secrets for Codecov
         run: |
           missing_secrets=()
 
@@ -79,23 +87,23 @@ jobs:
           fi
           echo "All required secrets are present"
 
-      - name: Set CI Variables
+      - name: Setup CI-specific environment variables
         uses: ./.github/actions/setup-ci-env
         with:
           container-init-script: ${{ inputs.container-init-script }}
           debug: ${{ inputs.debug }}
           environment: ${{ inputs.environment }}
 
-      - name: Install additional test dependencies
+      - name: Install extra test dependencies
         run: |
           poetry run pip install keyring pytest-xdist pytest-rerunfailures
 
-      - name: Apply migrations
+      - name: Apply Django database migrations
         working-directory: ${{ inputs.working-directory }}
         run: |
           poetry run python src/manage.py migrate
 
-      - name: Run Unit Tests with Coverage
+      - name: Run unit tests and collect coverage
         working-directory: ${{ inputs.working-directory }}
         run: |
           echo "Running tests using DB: $DB_NAME at $DB_HOST"
@@ -109,15 +117,15 @@ jobs:
             --tb=long \
             | tee /tmp/pytest.log
 
-      - name: Debug coverage.xml existence
+      - name: Verify if coverage.xml was generated
         working-directory: ${{ inputs.working-directory }}
         run: |
           echo "Listing workspace directory:"
           ls -la
-          echo "Displaying beginning of coverage.xml (if it exists):"
+          echo "Displaying beginning of coverage.xml (if present):"
           head -n 20 coverage.xml || echo "coverage.xml not found"
 
-      - name: Validate coverage report
+      - name: Validate coverage report integrity
         working-directory: ${{ inputs.working-directory }}
         run: |
           if [ ! -f coverage.xml ]; then
@@ -132,7 +140,7 @@ jobs:
             exit 1
           fi
 
-          # Check if it's valid XML
+          # Check for well-formed XML
           if command -v xmllint >/dev/null 2>&1; then
             if ! xmllint --noout coverage.xml 2>/dev/null; then
               echo "ERROR: coverage.xml is not valid XML!"
@@ -143,8 +151,8 @@ jobs:
 
           echo "Coverage report validation passed"
 
-      - name: Upload Coverage to Codecov
-        if: always()
+      - name: Upload coverage report to Codecov
+        if: always() # Always run even if previous steps fail
         uses: codecov/codecov-action@v4
         with:
           file: ${{ inputs.working-directory }}/coverage.xml

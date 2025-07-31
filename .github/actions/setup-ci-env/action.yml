@@ -1,19 +1,19 @@
-name: 'Set CI Environment Variables'
-description: 'Hardcoded CI env vars for Django app (temporary; replace with secrets later)'
+name: "Set CI Environment Variables"
+description: "Hardcoded CI env vars for Django app (temporary; replace with secrets later)"
 
 inputs:
   debug:
-    description: 'Django debug mode'
+    description: "Django debug mode"
     required: true
   environment:
-    description: 'Environment type (e.g., development, testing, production)'
+    description: "Environment type (e.g., development, testing, production)"
     required: true
   container-init-script:
-    description: 'Container startup script name'
+    description: "Container startup script name"
     required: true
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Export CI environment variables
       shell: bash
