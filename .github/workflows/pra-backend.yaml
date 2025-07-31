@@ -5,23 +5,23 @@ on:
   workflow_call:
     inputs:
       python-version:
-        description: 'Python version to be used for setting up the environment.'
+        description: "Python version to be used for setting up the environment."
         required: true
         type: string
       debug:
-        description: 'Debug mode flag.'
+        description: "Debug mode flag."
         required: true
         type: string
       container-init-script:
-        description: 'Startup script path to initialize the container environment.'
+        description: "Startup script path to initialize the container environment."
         required: true
         type: string
       environment:
-        description: 'Deployment environment (e.g., testing, staging).'
+        description: "Deployment environment (e.g., testing, staging)."
         required: true
         type: string
       working-directory:
-        description: 'Project root directory (default: backend).'
+        description: "Project root directory (default: backend)."
         required: false
         type: string
         default: backend
@@ -62,14 +62,14 @@ jobs:
       - name: Install system dependencies
         uses: ./.github/actions/setup-system-deps
         with:
-          packages: 'build-essential libpq-dev'
+          packages: "build-essential libpq-dev"
 
       - name: Setup Python environment using Poetry
         uses: ./.github/actions/setup-python-poetry
         with:
           python-version: ${{ inputs.python-version }}
-          poetry-groups: '--with=dev'
-          cache-key-suffix: '-backend-tests'
+          poetry-groups: "--with=dev"
+          cache-key-suffix: "-backend-tests"
           working-directory: ${{ inputs.working-directory }}
 
       - name: Validate required secrets for Codecov
@@ -152,7 +152,7 @@ jobs:
           echo "Coverage report validation passed"
 
       - name: Upload coverage report to Codecov
-        if: always()  # Always run even if previous steps fail
+        if: always() # Always run even if previous steps fail
         uses: codecov/codecov-action@v4
         with:
           file: ${{ inputs.working-directory }}/coverage.xml

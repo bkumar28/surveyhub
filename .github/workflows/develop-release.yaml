@@ -21,7 +21,7 @@ on:
     inputs:
       environment:
         required: false
-        description: 'Environment to deploy to (development, testing, staging, production)'
+        description: "Environment to deploy to (development, testing, staging, production)"
         type: string
         default: testing
 
@@ -42,24 +42,23 @@ permissions:
 
 jobs:
   ci:
-  name: CI Setup
-  runs-on: ubuntu-latest
-  outputs:
-    environment: ${{ inputs.environment }}
-    BACKEND_WORKING_DIR: backend
-    CONTAINER_INIT_SCRIPT: ${{ steps.set_env.outputs.CONTAINER_INIT_SCRIPT }}
-    PYTHON_VERSION: ${{ steps.set_env.outputs.PYTHON_VERSION }}
-    DEBUG: ${{ steps.set_env.outputs.DEBUG }}
-    MOCK_DEPLOYMENT: ${{ steps.set_env.outputs.MOCK_DEPLOYMENT }}
-  steps:
-    - name: Set environment-specific variables
-      id: set_env
-      run: |
-        echo "CONTAINER_INIT_SCRIPT=${{ vars.CONTAINER_INIT_SCRIPT}}" >> $GITHUB_OUTPUT
-        echo "PYTHON_VERSION=${{ vars.PYTHON_VERSION }}" >> $GITHUB_OUTPUT
-        echo "DEBUG=${{ vars.DEBUG }}" >> $GITHUB_OUTPUT
-        echo "MOCK_DEPLOYMENT=${{ vars.MOCK_DEPLOYMENT }}" >> $GITHUB_OUTPUT
-
+    name: CI Setup
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ inputs.environment }}
+      BACKEND_WORKING_DIR: backend
+      CONTAINER_INIT_SCRIPT: ${{ steps.set_env.outputs.CONTAINER_INIT_SCRIPT }}
+      PYTHON_VERSION: ${{ steps.set_env.outputs.PYTHON_VERSION }}
+      DEBUG: ${{ steps.set_env.outputs.DEBUG }}
+      MOCK_DEPLOYMENT: ${{ steps.set_env.outputs.MOCK_DEPLOYMENT }}
+    steps:
+      - name: Set environment-specific variables
+        id: set_env
+        run: |
+          echo "CONTAINER_INIT_SCRIPT=${{ vars.CONTAINER_INIT_SCRIPT}}" >> $GITHUB_OUTPUT
+          echo "PYTHON_VERSION=${{ vars.PYTHON_VERSION }}" >> $GITHUB_OUTPUT
+          echo "DEBUG=${{ vars.DEBUG }}" >> $GITHUB_OUTPUT
+          echo "MOCK_DEPLOYMENT=${{ vars.MOCK_DEPLOYMENT }}" >> $GITHUB_OUTPUT
 
   mock-deploy-validation:
     name: Validate Mock Deployment Workflow
@@ -104,13 +103,13 @@ jobs:
       - name: Setup system dependencies
         uses: ./.github/actions/setup-system-deps
         with:
-          packages: 'build-essential libpq-dev libcurl4-openssl-dev libldap2-dev libsasl2-dev libxml2-dev libxmlsec1-dev'
+          packages: "build-essential libpq-dev libcurl4-openssl-dev libldap2-dev libsasl2-dev libxml2-dev libxmlsec1-dev"
 
       - name: Setup Python and Poetry
         uses: ./.github/actions/setup-python-poetry
         with:
           python-version: ${{ needs.ci.outputs.PYTHON_VERSION }}
-          poetry-groups: '--with=dev'
+          poetry-groups: "--with=dev"
 
       - name: Setup environment variables
         uses: ./.github/actions/setup-ci-env
@@ -155,9 +154,7 @@ jobs:
           echo "Running pre-deployment checks..."
           if [ "$MOCK_DEPLOYMENT" != "true" ]; then
             # Validate that there are no pending migrations
-            run: |
-              poetry run python src/manage.py makemigrations --check --dry-run --noinput
-
+            poetry run python src/manage.py makemigrations --check --dry-run --noinput
             echo "Pre-deployment checks passed"
           else
             echo "Skipping DB-related pre-deployment checks due to MOCK_DEPLOYMENT=true"
@@ -292,7 +289,7 @@ jobs:
 
   notify-deployment:
     name: Notify Deployment Status
-    needs: [setup, deploy-to-testing]
+    needs: [ci, deploy-to-testing]
     if: always()
     runs-on: ubuntu-latest
     steps:

@@ -1,11 +1,12 @@
-name: 'Setup System Dependencies'
-description: 'Install system dependencies with caching'
+name: "Setup System Dependencies"
+description: "Install system dependencies with caching"
 inputs:
   packages:
-    description: 'Space-separated list of packages'
+    description: "Space-separated list of packages"
     required: true
+
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Cache APT packages
       uses: actions/cache@v4

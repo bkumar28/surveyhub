@@ -5,23 +5,23 @@ on:
   workflow_call:
     inputs:
       python-version:
-        description: 'Python version to set up the runtime environment.'
+        description: "Python version to set up the runtime environment."
         required: true
         type: string
       debug:
-        description: 'Flag to toggle debug mode.'
+        description: "Flag to toggle debug mode."
         required: true
         type: string
       container-init-script:
-        description: 'Path to the script used to initialize container environment.'
+        description: "Path to the script used to initialize container environment."
         required: true
         type: string
       environment:
-        description: 'Deployment environment (e.g. testing, staging, production).'
+        description: "Deployment environment (e.g. testing, staging, production)."
         required: true
         type: string
       working-directory:
-        description: 'The root directory for the Django project.'
+        description: "The root directory for the Django project."
         required: false
         type: string
         default: backend
@@ -55,13 +55,13 @@ jobs:
       - name: Install System Packages
         uses: ./.github/actions/setup-system-deps
         with:
-          packages: 'libcurl4-openssl-dev libldap2-dev libsasl2-dev libxml2-dev libxmlsec1-dev libpq-dev'
+          packages: "libcurl4-openssl-dev libldap2-dev libsasl2-dev libxml2-dev libxmlsec1-dev libpq-dev"
 
       - name: Set up Python and Poetry Environment
         uses: ./.github/actions/setup-python-poetry
         with:
           python-version: ${{ inputs.python-version }}
-          poetry-groups: '--with=dev'
+          poetry-groups: "--with=dev"
           working-directory: ${{ inputs.working-directory }}
 
       - name: Load CI Environment Variables

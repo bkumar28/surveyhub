@@ -15,7 +15,7 @@ on:
   workflow_call:
     inputs:
       environment:
-        description: 'Environment to deploy to (development, testing, staging, production)'
+        description: "Environment to deploy to (development, testing, staging, production)"
         required: true
         type: string
 
@@ -109,6 +109,7 @@ jobs:
       python-version: ${{ needs.ci-setup.outputs.PYTHON_VERSION }}
       debug: ${{ needs.ci-setup.outputs.DEBUG }}
       container-init-script: ${{ needs.ci-setup.outputs.CONTAINER_INIT_SCRIPT }}
+      environment: ${{ needs.ci-setup.outputs.ENVIRONMENT }}
 
   # Run backend unit and integration tests
   pra-backend:
@@ -119,4 +120,4 @@ jobs:
       python-version: ${{ needs.ci-setup.outputs.PYTHON_VERSION }}
       debug: ${{ needs.ci-setup.outputs.DEBUG }}
       container-init-script: ${{ needs.ci-setup.outputs.CONTAINER_INIT_SCRIPT }}
-    secrets: inherit  # Pass GitHub environment secrets to the job
+    secrets: inherit # Pass GitHub environment secrets to the job
