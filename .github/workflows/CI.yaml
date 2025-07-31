@@ -76,9 +76,9 @@ jobs:
 
           # Export the determined environment and other variables as workflow outputs
           echo "ENVIRONMENT=${ENVIRONMENT}" >> $GITHUB_OUTPUT
-          echo "PYTHON_VERSION=${{ inputs.python-version || env.ENV_PYTHON_VERSION }}" >> $GITHUB_OUTPUT
-          echo "DEBUG=${{ inputs.debug || env.ENV_DEBUG }}" >> $GITHUB_OUTPUT
-          echo "CONTAINER_INIT_SCRIPT=${{ inputs.container-init-script || env.ENV_CONTAINER_INIT_SCRIPT }}" >> $GITHUB_OUTPUT
+          echo "PYTHON_VERSION=${{ env.ENV_PYTHON_VERSION }}" >> $GITHUB_OUTPUT
+          echo "DEBUG=${{ env.ENV_DEBUG }}" >> $GITHUB_OUTPUT
+          echo "CONTAINER_INIT_SCRIPT=${{ env.ENV_CONTAINER_INIT_SCRIPT }}" >> $GITHUB_OUTPUT
 
   # Validate GitHub Actions workflows using Actionlint
   actionlint:
