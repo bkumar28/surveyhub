@@ -43,9 +43,6 @@ jobs:
     name: CI Setup
     runs-on: ubuntu-latest
 
-    # Dynamically set the environment: use input if available, otherwise default based on event type
-    environment: ${{ inputs.environment || (github.event_name == 'pull_request' && 'development') || 'testing' }}
-
     # Export values to be reused by dependent jobs
     outputs:
       PYTHON_VERSION: ${{ steps.setup-vars.outputs.PYTHON_VERSION }}
