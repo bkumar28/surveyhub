@@ -1,21 +1,38 @@
 name: Deploy Latest Release
 
-# **What it does**: Runs tests, and (if merged to develop) deploys to testing
-# **Why we have it**: To automate tests and Deployments
-# **Who does it impact**: Everyone who develops on and/or uses Surveyhub
+# ------------------------------------------------------------------------------
+# What this workflow does:
+# - Runs CI setup and environment configuration
+# - Performs pre-deployment validation
+# - Deploys the latest code to the testing environment
+# - Creates a versioned release archive and GitHub tag
+# - Sends deployment status notifications
+#
+# Why this workflow exists:
+# - To automate testing, deployment, and release processes
+# - To ensure consistency and reduce manual errors during deployments
+#
+# Who it impacts:
+# - All developers and stakeholders working on the Surveyhub application
+# ------------------------------------------------------------------------------
 
 on:
-  push:
-    branches:
-      - "develop"
+  workflow_call:
+    inputs:
+      environment:
+        required: false
+        description: 'Environment to deploy to (development, testing, staging, production)'
+        type: string
+        default: testing
 
 concurrency:
+  # Prevents multiple deployments from running concurrently on the same branch
   group: "Deploy @ ${{ github.base_ref || github.head_ref || github.ref_name }}"
   cancel-in-progress: false
 
 defaults:
   run:
-    # This makes sure we're consistently running in bash, and that we fail if any command in a pipe fails
+    # Ensures consistent bash behavior and stops on any error in a pipeline
     shell: bash -leo pipefail {0}
 
 permissions:
@@ -24,72 +41,37 @@ permissions:
   deployments: write
 
 jobs:
-  setup:
-    name: Setup Environment
-    runs-on: ubuntu-latest
-    outputs:
-      environment: testing
-      BACKEND_WORKING_DIR: backend
-      CONTAINER_INIT_SCRIPT: ${{ vars.CONTAINER_INIT_SCRIPT_TESTING }}
-      PYTHON_VERSION: ${{ vars.PYTHON_VERSION_TESTING }}
-      DEBUG: ${{ vars.DEBUG_TESTING }}
-      MOCK_DEPLOYMENT: ${{ vars.MOCK_TESTING_DEPLOYMENT }}
-    steps:
-      - name: Confirm values for env
-        run: |
-          echo "Environment: testing"
-          echo "PYTHON_VERSION: ${{ vars.PYTHON_VERSION_TESTING }}"
-          echo "DEBUG: ${{ vars.DEBUG_TESTING }}"
-          echo "MOCK_DEPLOYMENT: ${{ vars.MOCK_TESTING_DEPLOYMENT }}"
-          echo "CONTAINER_INIT_SCRIPT: ${{ vars.CONTAINER_INIT_SCRIPT_TESTING }}"
+  ci:
+  name: CI Setup
+  runs-on: ubuntu-latest
+  outputs:
+    environment: ${{ inputs.environment }}
+    BACKEND_WORKING_DIR: backend
+    CONTAINER_INIT_SCRIPT: ${{ steps.set_env.outputs.CONTAINER_INIT_SCRIPT }}
+    PYTHON_VERSION: ${{ steps.set_env.outputs.PYTHON_VERSION }}
+    DEBUG: ${{ steps.set_env.outputs.DEBUG }}
+    MOCK_DEPLOYMENT: ${{ steps.set_env.outputs.MOCK_DEPLOYMENT }}
+  steps:
+    - name: Set environment-specific variables
+      id: set_env
+      run: |
+        echo "CONTAINER_INIT_SCRIPT=${{ vars.CONTAINER_INIT_SCRIPT}}" >> $GITHUB_OUTPUT
+        echo "PYTHON_VERSION=${{ vars.PYTHON_VERSION }}" >> $GITHUB_OUTPUT
+        echo "DEBUG=${{ vars.DEBUG }}" >> $GITHUB_OUTPUT
+        echo "MOCK_DEPLOYMENT=${{ vars.MOCK_DEPLOYMENT }}" >> $GITHUB_OUTPUT
+
 
   mock-deploy-validation:
     name: Validate Mock Deployment Workflow
-    needs: setup
+    needs: ci
     runs-on: ubuntu-latest
-    if: needs.setup.outputs.MOCK_DEPLOYMENT == 'true'
+    if: needs.ci.outputs.MOCK_DEPLOYMENT == 'true'
     steps:
       - run: echo "Mock deployment path verified. DB operations will be skipped."
 
-  quality-checks:
-    needs: setup
-    name: Quality Checks
-    uses: ./.github/workflows/code-quality.yaml
-    with:
-      python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
-
-  migration-checks:
-    name: Migration Checks
-    needs:
-      - setup
-      - quality-checks
-    uses: ./.github/workflows/migrations.yaml
-    with:
-      python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
-      environment: "testing"
-      debug: ${{ needs.setup.outputs.DEBUG }}
-      container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }}
-
-  backend-tests:
-    name: Backend Tests
-    needs:
-      - setup
-      - migration-checks
-    uses: ./.github/workflows/pra-backend-tests.yaml
-    with:
-      python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
-      debug: ${{ needs.setup.outputs.DEBUG }}
-      environment: "testing"
-      container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }}
-
-    secrets: inherit
-
-  # Deploy with proper error handling and rollback capability
   deploy-to-testing:
     name: Deploy to testing and Create Release
-    needs:
-      - setup
-      - backend-tests
+    needs: ci
     runs-on: ubuntu-latest
     environment:
       name: testing
@@ -113,29 +95,29 @@ jobs:
           env: testing
           desc: Deploying to testing environment
 
-      - name: Checkout
+      - name: Checkout develop branch
         uses: actions/checkout@v4
         with:
           ref: develop
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup System Dependencies
+      - name: Setup system dependencies
         uses: ./.github/actions/setup-system-deps
         with:
           packages: 'build-essential libpq-dev libcurl4-openssl-dev libldap2-dev libsasl2-dev libxml2-dev libxmlsec1-dev'
 
-      - name: Setup Python & Poetry
+      - name: Setup Python and Poetry
         uses: ./.github/actions/setup-python-poetry
         with:
-          python-version: ${{ needs.setup.outputs.PYTHON_VERSION }}
+          python-version: ${{ needs.ci.outputs.PYTHON_VERSION }}
           poetry-groups: '--with=dev'
 
-      - name: Setup Environment Variables
+      - name: Setup environment variables
         uses: ./.github/actions/setup-ci-env
         with:
           environment: testing
-          container-init-script: ${{ needs.setup.outputs.CONTAINER_INIT_SCRIPT }}
-          debug: ${{ needs.setup.outputs.DEBUG }}
+          container-init-script: ${{ needs.ci.outputs.CONTAINER_INIT_SCRIPT }}
+          debug: ${{ needs.ci.outputs.DEBUG }}
 
       - name: Get Django version
         id: django_version
@@ -167,12 +149,12 @@ jobs:
 
       - name: Pre-deployment checks
         env:
-          MOCK_DEPLOYMENT: ${{ needs.setup.outputs.MOCK_DEPLOYMENT }}
-        working-directory: ${{ needs.setup.outputs.BACKEND_WORKING_DIR }}
+          MOCK_DEPLOYMENT: ${{ needs.ci.outputs.MOCK_DEPLOYMENT }}
+        working-directory: ${{ needs.ci.outputs.BACKEND_WORKING_DIR }}
         run: |
           echo "Running pre-deployment checks..."
           if [ "$MOCK_DEPLOYMENT" != "true" ]; then
-            # Check if migrations are up to date
+            # Validate that there are no pending migrations
             run: |
               poetry run python src/manage.py makemigrations --check --dry-run --noinput
 
@@ -183,9 +165,9 @@ jobs:
 
       - name: Deploy application
         id: deploy
-        working-directory: ${{ needs.setup.outputs.BACKEND_WORKING_DIR }}
+        working-directory: ${{ needs.ci.outputs.BACKEND_WORKING_DIR }}
         env:
-          MOCK_DEPLOYMENT: ${{ needs.setup.outputs.MOCK_DEPLOYMENT }}
+          MOCK_DEPLOYMENT: ${{ needs.ci.outputs.MOCK_DEPLOYMENT }}
         run: |
           echo "Starting deployment of version ${{ steps.tag.outputs.version }}"
 
@@ -196,26 +178,23 @@ jobs:
             # Apply database migrations
             poetry run python src/manage.py migrate --noinput
           else
-            echo "[MOCK MODE] Skipping database migration"
+            echo "Skipping database migration"
           fi
 
-          # Create deployment package
+          # Build deployment package
           mkdir -p build/surveyhub-app
           cp -r src/ ../build/surveyhub-app/
           cp -r staticfiles/ build/surveyhub-app/ 2>/dev/null || echo "No staticfiles directory"
           cp pyproject.toml build/surveyhub-app/
           cp poetry.lock build/surveyhub-app/
-
-          # Create version info
           echo "${{ steps.tag.outputs.version }}" > build/surveyhub-app/VERSION
 
-          # Create deployment package
           cd build && tar -czf surveyhub-app-${{ steps.tag.outputs.version }}.tar.gz surveyhub-app/
 
           echo "deployment_id=${{ steps.deployment.outputs.deployment_id }}" >> $GITHUB_OUTPUT
           echo "deployment_url=https://mock.testing.internal" >> $GITHUB_OUTPUT
 
-      - name: Archive Deployment Artifacts
+      - name: Archive deployment artifacts
         if: success()
         uses: actions/upload-artifact@v4
         with:
@@ -225,7 +204,7 @@ jobs:
             build/surveyhub-app/
           retention-days: 30
 
-      - name: Create Git Tag
+      - name: Create Git tag
         if: success()
         run: |
           git config user.name "github-actions[bot]"
@@ -253,7 +232,7 @@ jobs:
           name: testing-deployment-${{ steps.tag.outputs.version }}
           path: ./artifacts
 
-      - name: Create GitHub Release
+      - name: Create GitHub release
         if: success()
         id: create_release
         uses: softprops/action-gh-release@v2
@@ -317,7 +296,7 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: Notify Success
+      - name: Notify success
         if: needs.deploy-to-testing.result == 'success'
         run: |
           if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
@@ -326,7 +305,7 @@ jobs:
               ${{ secrets.SLACK_WEBHOOK_URL }}
           fi
 
-      - name: Notify Failure
+      - name: Notify failure
         if: needs.deploy-to-testing.result == 'failure'
         run: |
           if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
