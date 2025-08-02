@@ -35,15 +35,9 @@ COPY . .
 # Create necessary directories
 RUN mkdir -p /app/logs
 
-# Collect static files (will run when container starts)
-# RUN python manage.py collectstatic --noinput
-
 # Copy entrypoint and wait-for-it scripts
-COPY ./scripts/start-dev.sh /start-dev.sh
-RUN chmod +x /start-dev.sh
+COPY ./scripts/start-dev.sh /app/scripts/start-dev.sh
+RUN chmod +x /app/scripts/start-dev.sh
 
 # Expose port
 EXPOSE 8000
-
-# Run entrypoint script
-ENTRYPOINT ["/start-dev.sh"]

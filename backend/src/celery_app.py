@@ -1,11 +1,10 @@
 import os
 
 from celery import Celery
-from celery.schedules import crontab
 from kombu import Exchange, Queue
 
 # Set the default Django settings module
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "src.settings")
 
 # Create Celery app instance
 app = Celery("surveyhub")
@@ -29,20 +28,20 @@ app.conf.task_queues = (
 )
 
 # Periodic task schedule
-app.conf.beat_schedule = {
-    "cleanup-task": {
-        "task": "core.tasks.cleanup_old_data",
-        "schedule": crontab(hour=2, minute=0),
-    },
-    "send-daily-report": {
-        "task": "core.tasks.send_daily_report",
-        "schedule": crontab(hour=8, minute=30, day_of_week=1),
-    },
-    "health-check": {
-        "task": "core.tasks.health_check",
-        "schedule": 300.0,
-    },
-}
+# app.conf.beat_schedule = {
+#     "cleanup-task": {
+#         "task": "core.tasks.cleanup_old_data",
+#         "schedule": crontab(hour=2, minute=0),
+#     },
+#     "send-daily-report": {
+#         "task": "core.tasks.send_daily_report",
+#         "schedule": crontab(hour=8, minute=30, day_of_week=1),
+#     },
+#     "health-check": {
+#         "task": "core.tasks.health_check",
+#         "schedule": 300.0,
+#     },
+# }
 
 # Discover tasks from all registered Django app configs
 app.autodiscover_tasks()
