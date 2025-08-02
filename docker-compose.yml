@@ -85,6 +85,21 @@ services:
     networks:
       - app-network
 
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend:/frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    command: yarn start
+    networks:
+      - app-network
+
   nginx:
     build:
       context: ./nginx

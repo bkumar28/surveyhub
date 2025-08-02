@@ -188,6 +188,33 @@ run_migrations() {
 }
 
 # -------------------------------
+# Step 7: Install Yarn for Frontend
+# -------------------------------
+
+install_yarn() {
+  FRONTEND_DIR="$(dirname "$0")/../frontend"  # Get the absolute path to the frontend directory
+  FRONTEND_DIR="$(realpath "$FRONTEND_DIR")"  # Resolve the absolute path
+
+  if [ -d "$FRONTEND_DIR" ]; then
+    echo "Navigating to frontend directory: $FRONTEND_DIR"
+    cd "$FRONTEND_DIR" || { echo "Failed to navigate to frontend directory. Skipping Yarn installation."; return; }
+
+    echo "Installing Yarn package manager..."
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    sudo apt update
+    sudo apt install yarn -y
+    echo "Yarn installation completed."
+
+    echo "Installing frontend dependencies..."
+    yarn install
+    echo "Frontend dependencies installed."
+  else
+    echo "Frontend directory not found at $FRONTEND_DIR. Skipping Yarn installation."
+  fi
+}
+
+# -------------------------------
 # Main Execution
 # -------------------------------
 
@@ -200,6 +227,7 @@ main() {
   install_poetry
   install_dependencies "$@"
   setup_precommit "$@"
+  install_yarn
   run_migrations
 
   echo "Setup complete!"
