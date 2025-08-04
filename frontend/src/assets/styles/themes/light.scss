@@ -1,0 +1,67 @@
+/* ========================================
+   LIGHT THEME STYLES
+   ======================================== */
+
+/* Body */
+body {
+  background-color: var(--light-background);
+  color: var(--primary-text);
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--navbar-bg);
+  border-bottom: 1px solid var(--border-muted);
+}
+
+/* Card */
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-muted);
+}
+
+/* Footer */
+.footer {
+  background-color: var(--footer-bg);
+  border-top: 1px solid var(--border-muted);
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--border-muted);
+}
+
+/* Buttons */
+.btn {
+  background-color: var(--bs-primary);
+  border: 1px solid var(--bs-primary);
+  color: var(--bs-white);
+}
+
+.btn:hover {
+  background-color: var(--bs-primary-hover);
+  border-color: var(--bs-primary-hover);
+}
+
+/* Links */
+a {
+  color: var(--bs-primary);
+}
+
+a:hover {
+  color: var(--bs-primary-hover);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}

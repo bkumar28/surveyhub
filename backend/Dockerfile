@@ -35,9 +35,5 @@ COPY . .
 # Create necessary directories
 RUN mkdir -p /app/logs
 
-# Copy entrypoint and wait-for-it scripts
-COPY ./scripts/start-dev.sh /app/scripts/start-dev.sh
-RUN chmod +x /app/scripts/start-dev.sh
-
 # Expose port
 EXPOSE 8000

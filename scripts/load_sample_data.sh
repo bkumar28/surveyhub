@@ -20,7 +20,7 @@ set -e  # Exit immediately if a command exits with a non-zero status
 # =============================================================================
 
 WORKDIR="/app/src"                         # Path to Django project in container
-SAMPLEDIR="$WORKDIR/../sample_data"        # Path to local fixture directory
+SAMPLEDIR="$WORKDIR/../.sample_data"        # Path to local fixture directory
 MANAGE="$WORKDIR/manage.py"                # Full path to manage.py inside container
 USERS_ONLY=false                           # Default: load all fixtures
 
