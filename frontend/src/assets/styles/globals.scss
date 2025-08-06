@@ -1,5 +1,5 @@
 // Auto-generate global styles with reset and utilities
-@import 'variables';
+@use './variables' as *;
 
 * {
   margin: 0;

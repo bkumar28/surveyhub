@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
-import authSlice from '../features/auth/authSlice';
-import surveysSlice from '../features/surveys/surveysSlice';
-import dashboardSlice from '../features/dashboard/dashboardSlice';
+import authSlice from '../../features/auth/authSlice';
+import surveysSlice from '../../features/surveys/surveysSlice';
+import dashboardSlice from '../../features/dashboard/dashboardSlice';
 
 export const store = configureStore({
   reducer: {

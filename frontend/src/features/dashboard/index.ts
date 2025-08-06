@@ -1,3 +1,5 @@
 export { StatsCard } from './components';
 export { DashboardPage } from './pages';
-export { default as dashboardSlice, fetchDashboardStats } from './dashboardSlice';
+// Same pattern - export both the slice and reducer
+export { default as dashboardReducer } from './dashboardSlice';
+export { fetchDashboardStats } from './dashboardSlice';

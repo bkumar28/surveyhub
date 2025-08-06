@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../../store';
+import { useAppDispatch, useAppSelector } from '../../../../app/store';
 import { logout } from '../../../../features/auth/authSlice';
 import { Button } from '../../UI/Button';
 import styles from './Header.module.scss';

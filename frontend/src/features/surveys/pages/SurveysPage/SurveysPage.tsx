@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../../store';
+import { useAppDispatch, useAppSelector } from '../../../../app/store';
 import { fetchSurveys } from '../../surveysSlice';
 import { SurveyCard } from '../../components/SurveyCard';
 import { Button } from '../../../../shared/components/UI/Button';

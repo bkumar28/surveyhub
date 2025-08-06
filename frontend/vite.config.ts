@@ -9,6 +9,23 @@ export default defineConfig({
       '@': resolve(__dirname, './src'),
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        // Preload SCSS variables/functions/mixins globally
+        additionalData: `@use "@/assets/styles/variables" as *;`,
+      },
+    },
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'public/index.html'),
+      },
+    },
+    outDir: 'dist',
+  },
+  publicDir: 'public',
   server: {
     port: 3000,
     proxy: {

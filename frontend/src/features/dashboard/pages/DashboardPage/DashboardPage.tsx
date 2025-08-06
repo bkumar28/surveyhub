@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../../store';
+import { useAppDispatch, useAppSelector } from '../../../../app/store';
 import { fetchDashboardStats } from '../../dashboardSlice';
 import { StatsCard } from '../../components/StatsCard';
 import styles from './DashboardPage.module.scss';

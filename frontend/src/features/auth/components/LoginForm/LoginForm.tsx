@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../../../store';
+import { useAppDispatch, useAppSelector } from '../../../../app/store';
 import { login, clearError } from '../../authSlice';
 import { Button } from '../../../../shared/components/UI/Button';
 import { Input } from '../../../../shared/components/UI/Input';

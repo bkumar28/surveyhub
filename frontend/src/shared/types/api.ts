@@ -22,6 +22,19 @@ export interface User {
   lastLogin?: string;
 }
 
+export interface AuthState {
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  loading: boolean;
+  error: string | null;
+}
+
+export interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
 export interface Survey {
   id: string;
   title: string;
@@ -31,4 +44,26 @@ export interface Survey {
   updatedAt: string;
   responseCount: number;
   owner: User;
+}
+
+
+export interface LoginData {
+  user: User;
+  access_token: string;
+}
+
+export interface DashboardStats {
+  totalSurveys: number;
+  activeSurveys: number;
+  totalResponses: number;
+  recentActivity: number;
+  activeUsers: number;
+  completionRate: number;
+  // Add other stats properties as needed
+}
+
+export interface DashboardState {
+  stats: DashboardStats | null;
+  loading: boolean;
+  error: string | null;
 }

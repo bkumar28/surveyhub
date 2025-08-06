@@ -1,15 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { apiClient } from '../../shared/services/apiClient';
-
-interface Survey {
-  id: string;
-  title: string;
-  description: string;
-  status: 'draft' | 'published' | 'closed';
-  createdAt: string;
-  updatedAt: string;
-  responseCount: number;
-}
+import { Survey, ApiResponse, PaginatedResponse } from '../../shared/types/api';
 
 interface SurveysState {
   surveys: Survey[];
@@ -57,7 +48,7 @@ const surveysSlice = createSlice({
       state.error = null;
     },
     setCurrentSurvey: (state, action) => {
-      state.currentSurvey = action.payload;
+      state.currentSurvey = action.payload as Survey;
     },
   },
   extraReducers: (builder) => {
@@ -68,17 +59,26 @@ const surveysSlice = createSlice({
       })
       .addCase(fetchSurveys.fulfilled, (state, action) => {
         state.loading = false;
-        state.surveys = action.payload;
+        // If your API returns paginated response:
+        const payload = action.payload as PaginatedResponse<Survey>;
+        state.surveys = payload.results;
+        // OR if your API returns direct array:
+        // state.surveys = action.payload as Survey[];
       })
       .addCase(fetchSurveys.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
       .addCase(createSurvey.fulfilled, (state, action) => {
-        state.surveys.push(action.payload);
+        const newSurvey = action.payload as ApiResponse<Survey>;
+        state.surveys.push(newSurvey.data);
       });
   },
 });
 
 export const { clearError, setCurrentSurvey } = surveysSlice.actions;
+
+// Export the slice itself for named export
+export { surveysSlice };
+// Keep default export for reducer
 export default surveysSlice.reducer;

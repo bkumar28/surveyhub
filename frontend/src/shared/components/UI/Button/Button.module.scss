@@ -1,5 +1,5 @@
 // Auto-generate complete Button styles
-@import '../../../assets/styles/variables';
+@use '../../../../assets/styles/variables' as *;
 
 .button {
   display: inline-flex;

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store, useAppDispatch, useAppSelector } from './store';
-import { getCurrentUser } from './features/auth/authSlice';
+import { store, useAppDispatch, useAppSelector } from './app/store';
+import { fetchCurrentUser } from './features/auth/authSlice';
 import { AppLayout } from './shared/components/Layout/AppLayout';
 import { AuthLayout } from './shared/components/Layout/AuthLayout';
 import { LoginPage } from './features/auth/pages/LoginPage';
@@ -21,7 +21,7 @@ const AppContent: React.FC = () => {
 
   useEffect(() => {
     if (isAuthenticated && token) {
-      dispatch(getCurrentUser());
+      dispatch(fetchCurrentUser());
     }
   }, [dispatch, isAuthenticated, token]);
 
