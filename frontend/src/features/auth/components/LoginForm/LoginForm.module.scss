@@ -1,0 +1,59 @@
+@import '../../../../assets/styles/variables';
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  width: 100%;
+}
+
+.header {
+  text-align: center;
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  p {
+    color: var(--color-gray-600);
+    font-size: 0.875rem;
+  }
+}
+
+.errorAlert {
+  padding: var(--spacing-sm);
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-md);
+  color: var(--color-error);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.footer {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--color-gray-600);
+}
+
+.link {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+
+  &:hover {
+    color: var(--color-primary-dark);
+  }
+}

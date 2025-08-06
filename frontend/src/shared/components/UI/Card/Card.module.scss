@@ -1,0 +1,20 @@
+@import '../../../assets/styles/variables';
+
+.card {
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-gray-200);
+  transition: all 0.2s ease-in-out;
+}
+
+.shadow {
+  box-shadow: var(--shadow-sm);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.sm { padding: var(--spacing-sm); }
+.md { padding: var(--spacing-md); }
+.lg { padding: var(--spacing-lg); }

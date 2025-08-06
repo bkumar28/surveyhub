@@ -1,0 +1,20 @@
+.layout {
+  min-height: 100vh;
+  background-color: var(--color-gray-50);
+}
+
+.container {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+
+.main {
+  flex: 1;
+  padding: var(--spacing-lg);
+  overflow-y: auto;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.expanded {
+  margin-left: 0;
+}

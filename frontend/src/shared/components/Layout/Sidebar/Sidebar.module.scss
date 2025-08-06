@@ -1,0 +1,59 @@
+@import '../../../assets/styles/variables';
+
+.sidebar {
+  width: 250px;
+  background: white;
+  border-right: 1px solid var(--color-gray-200);
+  height: calc(100vh - 60px);
+  position: sticky;
+  top: 60px;
+  transition: width 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.collapsed {
+  width: 60px;
+}
+
+.nav {
+  padding: var(--spacing-md) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--color-gray-600);
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--color-gray-50);
+    color: var(--color-gray-900);
+  }
+}
+
+.active {
+  background-color: var(--color-primary);
+  color: white;
+
+  &:hover {
+    background-color: var(--color-primary-dark);
+    color: white;
+  }
+}
+
+.icon {
+  font-size: 1.25rem;
+  min-width: 20px;
+  text-align: center;
+}
+
+.label {
+  font-weight: 500;
+}
