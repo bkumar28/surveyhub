@@ -1,7 +1,10 @@
 // Auto-generate complete Button styles
 @use '../../../../assets/styles/variables' as *;
 
+
 .button {
+  background: var(--color-primary);
+  color: white;
   display: inline-flex;
   align-items: center;
   justify-content: center;

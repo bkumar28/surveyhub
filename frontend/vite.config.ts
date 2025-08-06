@@ -3,29 +3,21 @@ import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 
 export default defineConfig({
+  logLevel: 'info',
   plugins: [react()],
+  root: '.',
+  publicDir: 'public',
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
     },
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        // Preload SCSS variables/functions/mixins globally
-        additionalData: `@use "@/assets/styles/variables" as *;`,
-      },
-    },
-  },
   build: {
-    rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'public/index.html'),
-      },
-    },
     outDir: 'dist',
+    rollupOptions: {
+      input: resolve(__dirname, 'index.html'),
+    },
   },
-  publicDir: 'public',
   server: {
     port: 3000,
     proxy: {
