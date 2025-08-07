@@ -29,7 +29,7 @@ docker compose up
 ```bash
 docker compose logs
 docker compose logs -f  # Follow logs
-docker compose logs web  # Logs for a specific service
+docker compose logs backend  # Logs for a specific service
 ```
 
 ### Stop containers

@@ -208,6 +208,7 @@ install_yarn() {
 
     echo "Installing frontend dependencies..."
     yarn install
+    yarn add react-redux
     echo "Frontend dependencies installed."
   else
     echo "Frontend directory not found at $FRONTEND_DIR. Skipping Yarn installation."

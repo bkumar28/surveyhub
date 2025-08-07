@@ -22,11 +22,12 @@ services:
   backend:
     build:
       context: ./backend
-    command: ["/bin/sh", "/app/scripts/start-dev.sh"]
+    command: ["/bin/sh", "-c", "chmod +x /app/.container-scripts/start-backend-container.sh && /app/.container-scripts/start-backend-container.sh"]
     volumes:
-      - ./sample_data:/app/sample_data
+      - ./sample_data:/app/.sample_data
       - static_volume:/vol/web/static
-      - ./scripts/wait-for-it.sh:/app/scripts/wait-for-it.sh
+      - ./scripts/start-backend-container.sh:/app/.container-scripts/start-backend-container.sh
+      - ./scripts/wait-for-it.sh:/app/.container-scripts/wait-for-it.sh
     ports:
       - "8000:8000"
     env_file:
@@ -45,11 +46,11 @@ services:
     command:
       [
         "/bin/sh", "-c",
-        "chmod +x /app/scripts/wait-for-it.sh && /app/scripts/wait-for-it.sh backend:8000 -- poetry run celery -A src.celery_app worker --loglevel=info"
+        "chmod +x /app/.container-scripts/wait-for-it.sh && /app/.container-scripts/wait-for-it.sh backend:8000 -- poetry run celery -A src.celery_app worker --loglevel=info"
       ]
     volumes:
       - ./backend:/app
-      - ./scripts/wait-for-it.sh:/app/scripts/wait-for-it.sh
+      - ./scripts/wait-for-it.sh:/app/.container-scripts/wait-for-it.sh
     env_file:
       - ./backend/.env
     environment:
@@ -68,11 +69,11 @@ services:
     command:
       [
         "/bin/sh", "-c",
-        "chmod +x /app/scripts/wait-for-it.sh && /app/scripts/wait-for-it.sh backend:8000 -- poetry run celery -A src.celery_app beat --loglevel=info"
+        "chmod +x /app/.container-scripts/wait-for-it.sh && /app/.container-scripts/wait-for-it.sh backend:8000 -- poetry run celery -A src.celery_app beat --loglevel=info"
       ]
     volumes:
       - ./backend:/app
-      - ./scripts/wait-for-it.sh:/app/scripts/wait-for-it.sh
+      - ./scripts/wait-for-it.sh:/app/.container-scripts/wait-for-it.sh
     env_file:
       - ./backend/.env
     environment:
@@ -85,20 +86,20 @@ services:
     networks:
       - app-network
 
-  frontend:
-    build:
-      context: ./frontend
-    volumes:
-      - ./frontend:/frontend
-    depends_on:
-      - backend
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=development
-    command: yarn start
-    networks:
-      - app-network
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #   volumes:
+  #     - ./frontend:/frontend
+  #   depends_on:
+  #     - backend
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - NODE_ENV=development
+  #   command: yarn start
+  #   networks:
+  #     - app-network
 
   nginx:
     build:

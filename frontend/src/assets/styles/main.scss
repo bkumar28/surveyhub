@@ -1,0 +1,39 @@
+@use './_variables.scss' as *;
+@use './_theme-light.scss' as *;
+@use './_theme-dark.scss' as *;
+@use './_typography.scss' as *;
+
+// Reset and base styles
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-primary);
+  color: var(--color-text-primary, var(--color-gray-900));
+  background-color: var(--color-background, var(--color-gray-50));
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+  font-weight: 600;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--color-primary-dark);
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}

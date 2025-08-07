@@ -1,0 +1,18 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-gray-100);
+  overflow: hidden; // Prevents scrollbars
+}
+
+.formContainer {
+  background-color: #fff; // pure white, matches AdminKit card
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-2xl) var(--spacing-xl);
+  width: 100%;
+  max-width: 400px;
+  margin: var(--spacing-xl) 0;
+}
