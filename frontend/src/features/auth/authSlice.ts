@@ -20,7 +20,7 @@ export const login = createAsyncThunk(
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       // Explicitly type the response data as LoginData
-      const response = await apiClient.post<LoginData>('/auth/login/', credentials);
+      const response = await apiClient.post<LoginData>('/v1/token/', credentials);
       const { user, access_token } = response.data;
 
       // Store token in localStorage

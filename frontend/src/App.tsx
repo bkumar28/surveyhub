@@ -8,7 +8,7 @@ import { AuthLayout } from './shared/components/Layout/AuthLayout';
 import { LoginPage } from './features/auth/pages/LoginPage';
 import { DashboardPage } from './features/dashboard/pages/DashboardPage';
 import { SurveysPage } from './features/surveys/pages/SurveysPage';
-import './assets/styles/globals.scss';
+import './assets/styles/main.scss';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAppSelector((state) => state.auth);

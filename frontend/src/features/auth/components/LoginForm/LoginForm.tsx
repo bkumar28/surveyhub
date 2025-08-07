@@ -10,6 +10,7 @@ export const LoginForm: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    remember: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -49,8 +50,11 @@ export const LoginForm: React.FC = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
 
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
@@ -68,63 +72,74 @@ export const LoginForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
+    <div className={styles.formContainer}>
       <div className={styles.header}>
+        <span style={{
+          display: 'inline-block',
+          fontWeight: 700,
+          fontSize: '2rem',
+          marginBottom: '1rem',
+          letterSpacing: '0.05em'
+        }}>
+          <span style={{ color: 'var(--color-primary-dark)' }}>Survey</span>
+          <span style={{ color: 'var(--color-accent)', marginLeft: 2 }}>Hub</span>
+        </span>
         <h1>Sign In</h1>
-        <p>Welcome back! Please sign in to your account.</p>
       </div>
-
-      {error && (
-        <div className={styles.errorAlert} role="alert">
-          {error}
+      <form className={styles.form} onSubmit={handleSubmit}>
+        {error && <div className={styles.errorAlert}>{error}</div>}
+        <div className={styles.inputGroup}>
+          <Input
+            label="Email"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            error={errors.email}
+            placeholder="Enter your email"
+            required
+          />
         </div>
-      )}
-
-      <div className={styles.fields}>
-        <Input
-          label="Email"
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          error={errors.email}
-          placeholder="Enter your email"
-          required
-        />
-
-        <Input
-          label="Password"
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          error={errors.password}
-          placeholder="Enter your password"
-          required
-        />
-      </div>
-
-      <Button
-        type="submit"
-        loading={loading}
-        fullWidth
-        size="lg"
-      >
-        Sign In
-      </Button>
-
-      <div className={styles.footer}>
-        <p>
-          Don't have an account?{' '}
-          <button
-            type="button"
-            className={styles.link}
-            onClick={() => navigate('/register')}
-          >
+        <div className={styles.inputGroup}>
+          <Input
+            label="Password"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            error={errors.password}
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        <div className={styles.rememberRow}>
+          <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.95rem', cursor: 'pointer', marginBottom: 0 }}>
+            <input
+              type="checkbox"
+              name="remember"
+              checked={formData.remember}
+              onChange={handleChange}
+              style={{ marginRight: '0.5rem' }}
+            />
+            Remember me
+          </label>
+          <a href="#" className={styles.link}>Forgot password?</a>
+        </div>
+        <Button
+          type="submit"
+          loading={loading}
+          fullWidth
+          size="lg"
+          className={styles.btn}
+        >
+          Sign In
+        </Button>
+        <div className={styles.footer}>
+          <button type="button" onClick={() => navigate('/register')} className={styles.link}>
             Sign up
           </button>
-        </p>
-      </div>
-    </form>
+        </div>
+      </form>
+    </div>
   );
 };
