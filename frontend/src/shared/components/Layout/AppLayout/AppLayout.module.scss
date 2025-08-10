@@ -4,23 +4,187 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #f5f7fb;
-  overflow: hidden;
+  background-color: var(--bg-body);
   position: relative;
-  padding: 1.5rem;
 }
 
+// Main content container
+.contentContainer {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+.mainArea {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  transition: margin-left 0.3s ease;
+  padding-top: var(--header-height);
+  padding-bottom: var(--footer-height);
+  min-height: 100vh;
+
+  &.collapsed {
+    margin-left: var(--sidebar-width-collapsed);
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+}
+
+// Sidebar styles
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--sidebar-bg);
+  box-shadow: var(--shadow-sm);
+  padding: 1rem 0;
+  flex-shrink: 0;
+
+  // Navigation links
+  a {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    padding: 0.75rem 1.5rem;
+    color: var(--text-primary);
+    display: block;
+    transition: all 0.2s ease;
+
+    &:hover, &.active {
+      background-color: var(--bg-hover);
+      color: var(--text-accent);
+      font-weight: var(--font-weight-semibold);
+    }
+  }
+
+  // Navigation sections
+  .navSection {
+    margin-bottom: 1rem;
+
+    .sectionTitle {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      padding: 0.5rem 1.5rem;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+// Main body content
+.mainContent {
+  flex: 1;
+  padding: 1.5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+// Header dropdown
+.headerDropdown {
+  position: relative;
+
+  .dropdownToggle {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: var(--bg-hover);
+    }
+  }
+
+  .dropdownMenu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: var(--bg-white);
+    border-radius: 4px;
+    box-shadow: var(--shadow-md);
+    min-width: 180px;
+    z-index: 1000;
+
+    a {
+      display: block;
+      padding: 0.5rem 1rem;
+      color: var(--text-primary);
+      font-size: var(--font-size-sm);
+
+      &:hover {
+        background-color: var(--bg-hover);
+        color: var(--text-accent);
+      }
+    }
+  }
+}
+
+// Footer
+.footer {
+  padding: 0 2rem;
+  background-color: var(--footer-bg);
+  border-top: var(--bs-border-width) var(--bs-border-style) var(--border-color);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  z-index: 1000;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--footer-height);
+  box-sizing: border-box;
+
+  a {
+    color: var(--text-accent);
+    font-weight: var(--font-weight-medium);
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--text-accent-hover);
+      text-decoration: none;
+    }
+  }
+
+  .footerLinks {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+    padding: 1rem;
+    height: auto;
+
+    .footerLinks {
+      justify-content: center;
+    }
+  }
+}
+
+// Form container styles
 .formContainer {
   width: 100%;
-  max-width: 580px; // Increased width to match LoginForm
+  max-width: 580px;
 
   @media (max-width: 576px) {
     padding: 0 0.5rem;
   }
 }
 
+// Logo styles
 .logo {
   display: flex;
   justify-content: center;
@@ -33,31 +197,16 @@
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #3e4676;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-accent);
   text-align: center;
   margin-bottom: 0.75rem;
 }
 
 .subtitle {
-  font-size: 0.875rem;
-  color: #6c757d;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
   text-align: center;
   margin-bottom: 1.5rem;
-}
-
-// Dark theme adjustments
-body.dark-theme {
-  .layout {
-    background-color: #222e3c;
-  }
-
-  .title {
-    color: #e9ecef;
-  }
-
-  .subtitle {
-    color: #adb5bd;
-  }
 }
