@@ -1,0 +1,52 @@
+@use '../../../../assets/styles/main.scss' as *;
+
+.footer {
+  background-color: var(--footer-bg);
+  border-top: var(--bs-border-width) var(--bs-border-style) var(--border-color);
+  padding: 0 1.5rem;
+  height: var(--footer-height);
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  box-sizing: border-box; // Ensure padding is included in width
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem 1.5rem;
+    text-align: center;
+  }
+}
+
+.copyright {
+  color: var(--bs-secondary-color);
+  font-size: 0.875rem;
+
+  @media (max-width: 768px) {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+.link {
+  color: var(--bs-primary);
+  text-decoration: none;
+  font-size: 0.875rem;
+
+  &:hover {
+    color: var(--bs-primary-hover);
+    text-decoration: underline;
+  }
+}

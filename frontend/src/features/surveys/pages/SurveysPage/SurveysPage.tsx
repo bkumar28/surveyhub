@@ -34,6 +34,9 @@ export const SurveysPage: React.FC = () => {
     return <div className={styles.loading}>Loading surveys...</div>;
   }
 
+  // Safely determine if surveys array exists and has items
+  const hasSurveys = Array.isArray(surveys) && surveys.length > 0;
+
   return (
     <div className={styles.page}>
       <div className={styles.header}>
@@ -52,28 +55,32 @@ export const SurveysPage: React.FC = () => {
         </div>
       )}
 
-      {surveys.length === 0 ? (
-        <div className={styles.empty}>
-          <div className={styles.emptyContent}>
-            <h2>No surveys yet</h2>
-            <p>Create your first survey to get started</p>
-            <Button onClick={handleCreateSurvey}>
-              Create Your First Survey
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <div className={styles.grid}>
-          {surveys.map((survey) => (
-            <SurveyCard
-              key={survey.id}
-              survey={survey}
-              onEdit={handleEditSurvey}
-              onDelete={handleDeleteSurvey}
-              onView={handleViewSurvey}
-            />
-          ))}
-        </div>
+      {!loading && !error && (
+        <>
+          {!hasSurveys ? (
+            <div className={styles.empty}>
+              <div className={styles.emptyContent}>
+                <h2>No surveys yet</h2>
+                <p>Create your first survey to get started</p>
+                <Button onClick={handleCreateSurvey}>
+                  Create Your First Survey
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className={styles.grid}>
+              {surveys.map((survey) => (
+                <SurveyCard
+                  key={survey.id}
+                  survey={survey}
+                  onEdit={handleEditSurvey}
+                  onDelete={handleDeleteSurvey}
+                  onView={handleViewSurvey}
+                />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

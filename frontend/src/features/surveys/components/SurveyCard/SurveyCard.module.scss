@@ -1,5 +1,3 @@
-@use '../../../../assets/styles/variables' as *;
-
 .card {
   display: flex;
   flex-direction: column;
@@ -68,7 +66,7 @@
 }
 
 .surveyCard {
-  background: var(--color-background);
+  background: var(--color-white);
   border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--box-shadow-sm);
 }

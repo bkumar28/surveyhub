@@ -1,39 +1,64 @@
+// Main styles file
 @use './_variables.scss' as *;
-@use './_theme-light.scss' as *;
-@use './_theme-dark.scss' as *;
-@use './_typography.scss' as *;
+@use './_mixins.scss' as *;
 
-// Reset and base styles
-* {
+// Import themes
+@use './theme-light' as *;
+@use './theme-dark' as *;
+
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+
+// Common styles that apply regardless of theme
+html, body {
+  font-family: var(--bs-body-font-family);
+  font-size: var(--bs-body-font-size);
+  font-weight: var(--bs-body-font-weight);
+  line-height: var(--bs-body-line-height);
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  height: 100%;
+  overflow-x: hidden;
+}
+
 body {
-  font-family: var(--font-family-primary);
-  color: var(--color-text-primary, var(--color-gray-900));
-  background-color: var(--color-background, var(--color-gray-50));
-  line-height: 1.5;
+  position: relative;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: var(--color-text-primary);
-  margin-bottom: var(--spacing-md);
-  font-weight: 600;
-}
-
-a {
-  color: var(--color-primary);
-  text-decoration: none;
-
-  &:hover {
-    color: var(--color-primary-dark);
-  }
-}
-
+// Base layout styles
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
+  width: 100%;
+  padding-right: var(--bs-gutter-x, 0.75rem);
+  padding-left: var(--bs-gutter-x, 0.75rem);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+// Common utility classes
+.bg-primary { background-color: var(--bs-primary) !important; }
+.bg-secondary { background-color: var(--bs-secondary) !important; }
+.bg-success { background-color: var(--bs-success) !important; }
+.bg-danger { background-color: var(--bs-danger) !important; }
+.bg-warning { background-color: var(--bs-warning) !important; }
+.bg-info { background-color: var(--bs-info) !important; }
+.bg-light { background-color: var(--bs-light) !important; }
+.bg-dark { background-color: var(--bs-dark) !important; }
+
+.text-primary { color: var(--bs-primary) !important; }
+.text-secondary { color: var(--bs-secondary) !important; }
+.text-success { color: var(--bs-success) !important; }
+.text-danger { color: var(--bs-danger) !important; }
+.text-warning { color: var(--bs-warning) !important; }
+.text-info { color: var(--bs-info) !important; }
+.text-light { color: var(--bs-light) !important; }
+.text-dark { color: var(--bs-dark) !important; }
+
+// Focus styles
+.focus-ring {
+  outline: 0;
+  box-shadow: 0 0 0 var(--bs-focus-ring-width) var(--bs-focus-ring-color);
 }

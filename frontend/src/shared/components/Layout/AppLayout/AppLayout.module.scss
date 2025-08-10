@@ -1,20 +1,63 @@
+@use '../../../../assets/styles/main.scss' as *;
+
 .layout {
   min-height: 100vh;
-  background-color: var(--color-gray-50);
-}
-
-.container {
   display: flex;
-  height: calc(100vh - 60px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f7fb;
+  overflow: hidden;
+  position: relative;
+  padding: 1.5rem;
 }
 
-.main {
-  flex: 1;
-  padding: var(--spacing-lg);
-  overflow-y: auto;
-  transition: margin-left 0.3s ease-in-out;
+.formContainer {
+  width: 100%;
+  max-width: 580px; // Increased width to match LoginForm
+
+  @media (max-width: 576px) {
+    padding: 0 0.5rem;
+  }
 }
 
-.expanded {
-  margin-left: 0;
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+
+  img {
+    height: 40px;
+    width: auto;
+  }
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #3e4676;
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: #6c757d;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+// Dark theme adjustments
+body.dark-theme {
+  .layout {
+    background-color: #222e3c;
+  }
+
+  .title {
+    color: #e9ecef;
+  }
+
+  .subtitle {
+    color: #adb5bd;
+  }
 }

@@ -8,23 +8,33 @@ const initialState: DashboardState = {
   error: null,
 };
 
+// Thunk
 export const fetchDashboardStats = createAsyncThunk(
   'dashboard/fetchStats',
   async (_, { rejectWithValue }) => {
     try {
-      // Explicitly type the response data as DashboardStats
+      // Updated path to match your actual API endpoint
       const response = await apiClient.get<DashboardStats>('/dashboard/stats/');
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch dashboard stats');
+      // Return detailed error message but don't affect auth state
+      return rejectWithValue(
+        error.response?.data?.detail ||
+        `Unable to load dashboard data (${error.response?.status || 'Network error'})`
+      );
     }
   }
 );
 
+// Slice
 const dashboardSlice = createSlice({
   name: 'dashboard',
   initialState,
-  reducers: {},
+  reducers: {
+    clearDashboardErrors: (state) => {
+      state.error = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchDashboardStats.pending, (state) => {
@@ -37,9 +47,11 @@ const dashboardSlice = createSlice({
       })
       .addCase(fetchDashboardStats.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string || 'An unknown error occurred';
+        state.error = action.payload as string || 'Failed to load dashboard stats';
+        // Important: Do NOT modify auth state here
       });
   },
 });
 
+export const { clearDashboardErrors } = dashboardSlice.actions;
 export default dashboardSlice.reducer;

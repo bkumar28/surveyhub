@@ -15,52 +15,43 @@ const initialState: AuthState = {
   error: null,
 };
 
+// Thunks
 export const login = createAsyncThunk(
   'auth/login',
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
-      // Explicitly type the response data as LoginData
-      const response = await apiClient.post<LoginData>('/v1/token/', credentials);
+      const response = await apiClient.post<LoginData>('/token/', credentials);
       const { user, access_token } = response.data;
-
-      // Store token in localStorage
       localStorage.setItem('access_token', access_token);
-
-      return user;
+      // Optionally, persist user in localStorage if you want to restore on reload
+      localStorage.setItem('user', JSON.stringify(user));
+      return { user, access_token };
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Login failed');
+      return rejectWithValue(error.response?.data?.detail || 'Login failed');
     }
   }
 );
 
-export const logout = createAsyncThunk(
-  'auth/logout',
-  async () => {
-    localStorage.removeItem('access_token');
-    return null;
-  }
-);
+export const logout = createAsyncThunk('auth/logout', async () => {
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('user');
+  return true;
+});
 
-export const fetchCurrentUser = createAsyncThunk(
-  'auth/fetchCurrentUser',
-  async (_, { rejectWithValue }) => {
-    try {
-      // Explicitly type the response data as User
-      const response = await apiClient.get<User>('/auth/user/');
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch user data');
-    }
-  }
-);
-
+// Slice
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    // Add the clearError reducer
     clearError: (state) => {
       state.error = null;
+    },
+    restoreAuth: (state) => {
+      const token = localStorage.getItem('access_token');
+      const user = localStorage.getItem('user');
+      state.token = token;
+      state.isAuthenticated = !!token;
+      state.user = user ? JSON.parse(user) : null;
     }
   },
   extraReducers: (builder) => {
@@ -70,42 +61,27 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
+      .addCase(login.fulfilled, (state, action: PayloadAction<{ user: User; access_token: string }>) => {
         state.loading = false;
-        state.user = action.payload;
         state.isAuthenticated = true;
+        state.user = action.payload.user;
+        state.token = action.payload.access_token;
+        state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })
-
       // Logout cases
       .addCase(logout.fulfilled, (state) => {
+        state.isAuthenticated = false;
         state.user = null;
         state.token = null;
-        state.isAuthenticated = false;
-      })
-
-      // Fetch current user cases
-      .addCase(fetchCurrentUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchCurrentUser.fulfilled, (state, action: PayloadAction<User>) => {
-        state.loading = false;
-        state.user = action.payload;
-        state.isAuthenticated = true;
-      })
-      .addCase(fetchCurrentUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-        state.isAuthenticated = false;
       });
   },
 });
 
 // Export the action creators
-export const { clearError } = authSlice.actions;
+export const { clearError, restoreAuth } = authSlice.actions;
 
 export default authSlice.reducer;

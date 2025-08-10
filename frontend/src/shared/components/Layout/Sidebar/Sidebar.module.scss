@@ -1,59 +1,251 @@
-@use '../../../../assets/styles/variables' as *;
+@use '../../../../assets/styles/main.scss' as *;
 
 .sidebar {
-  width: 250px;
-  background: white;
-  border-right: 1px solid var(--color-gray-200);
-  height: calc(100vh - 60px);
-  position: sticky;
-  top: 60px;
-  transition: width 0.3s ease-in-out;
-  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: var(--sidebar-width);
+  background-color: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 1030; // Increased z-index to ensure proper stacking
+  transition: all 0.3s ease-in-out; // Changed to all for smoother transitions
+
+  // Scrollbar styling
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+  }
+
+  &.collapsed {
+    width: var(--sidebar-width-collapsed);
+  }
+
+  @media (max-width: 768px) {
+    transform: translateX(-100%);
+    box-shadow: var(--bs-box-shadow); // Using theme variable instead of hardcoded value
+
+    &.expanded {
+      transform: translateX(0);
+    }
+
+    &.collapsed {
+      width: var(--sidebar-width);
+      transform: translateX(-100%); // Ensure collapsed also hides on mobile
+
+      &.expanded {
+        transform: translateX(0); // But show if expanded class is also present
+      }
+    }
+  }
 }
 
-.collapsed {
-  width: 60px;
+.brand {
+  height: var(--header-height, 56px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between; // Changed to space-between for better alignment
+  padding: 0 1.5rem;
+  background-color: var(--sidebar-bg); // Ensuring consistent background
+
+  &Primary {
+    color: var(--sidebar-brand-color, var(--bs-white)); // Using sidebar-brand-color with fallback
+    font-weight: 600;
+  }
+
+  &Accent {
+    color: var(--bs-primary);
+    font-weight: 700;
+  }
+
+  &Short {
+    display: none;
+    color: var(--sidebar-brand-color, var(--bs-white)); // Consistent color for short brand
+  }
+
+  .sidebar.collapsed & {
+    padding: 0;
+    justify-content: center; // Center when collapsed
+
+    &Primary, &Accent {
+      display: none;
+    }
+
+    &Short {
+      display: block;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+  }
 }
 
 .nav {
-  padding: var(--spacing-md) 0;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
+  padding: 1rem 0;
+  flex: 1; // Added flex: 1 to ensure nav takes available space
 }
 
 .navItem {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
-  color: var(--color-gray-600);
+  padding: 0.75rem 1.5rem;
+  color: var(--sidebar-color);
   text-decoration: none;
-  transition: all 0.2s ease-in-out;
-  white-space: nowrap;
+  transition: all 0.2s ease-in-out; // Slightly increased for smoother transition
+  position: relative; // Added for potential badges or indicators
 
   &:hover {
-    background-color: var(--color-gray-50);
-    color: var(--color-gray-900);
+    background-color: var(--rgba-sidebar-transparent);
+    color: var(--sidebar-color-active);
   }
-}
 
-.active {
-  background-color: var(--color-primary);
-  color: white;
+  &.active {
+    background-color: var(--rgba-primary-transparent);
+    color: var(--sidebar-color-active);
+    border-left: 3px solid var(--bs-primary);
+    padding-left: calc(1.5rem - 3px);
 
-  &:hover {
-    background-color: var(--color-primary-dark);
-    color: white;
+    // Add a subtle glow effect for active items in dark mode
+    body.dark-theme & {
+      box-shadow: inset 0 0 0.5rem var(--rgba-primary-transparent);
+    }
+  }
+
+  .sidebar.collapsed & {
+    justify-content: center;
+    padding: 0.75rem;
+
+    &.active {
+      border-left: none; // Remove left border when collapsed
+      padding-left: 0.75rem; // Reset padding
+      border-left: 3px solid transparent; // Transparent border to maintain layout
+      border-right: 3px solid var(--bs-primary); // Move border to right side
+    }
+  }
+
+  // Hide active indicator at smaller screens
+  @media (max-width: 768px) {
+    &.active {
+      border-left-width: 2px; // Slightly thinner border on mobile
+    }
   }
 }
 
 .icon {
-  font-size: 1.25rem;
-  min-width: 20px;
-  text-align: center;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  flex-shrink: 0; // Prevent icon from shrinking
+
+  .sidebar.collapsed & {
+    margin-right: 0;
+  }
+
+  // Slightly smaller icons on mobile
+  @media (max-width: 576px) {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .label {
-  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.2s ease; // Smooth opacity transition
+
+  .sidebar.collapsed & {
+    opacity: 0;
+    width: 0;
+    margin: 0;
+    display: none;
+  }
+}
+
+// Add a section for sidebar footer if needed
+.sidebarFooter {
+  padding: 1rem 1.5rem;
+  border-top: var(--bs-border-width) var(--bs-border-style) var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .sidebar.collapsed & {
+    padding: 1rem 0.5rem;
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1rem;
+  }
+}
+
+// Add tooltip support for collapsed sidebar items
+.tooltip {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--bs-dark);
+  color: var(--bs-white);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--bs-border-radius-sm);
+  font-size: 0.75rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+  margin-left: 0.5rem;
+  z-index: 1040;
+
+  .sidebar.collapsed .navItem:hover & {
+    opacity: 1;
+  }
+}
+
+// Add a toggle button for the sidebar at the bottom
+.toggleButton {
+  position: absolute;
+  bottom: 1rem;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  background-color: var(--bs-primary);
+  color: var(--bs-white);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--bs-box-shadow-sm);
+  z-index: 1040;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--bs-primary-hover);
+    transform: scale(1.1);
+  }
+
+  @media (max-width: 768px) {
+    display: none; // Hide toggle on mobile as we'll use the hamburger in header
+  }
 }

@@ -1,24 +1,111 @@
-@use './_variables.scss' as *;
+// Dark theme variables
+body.dark-theme {
+  // Font settings remain the same as light theme
 
-.theme-dark {
-  --color-primary: var(--color-primary);
-  --color-primary-dark: var(--color-primary-dark);
-  --color-primary-light: var(--color-primary-light);
+  // Base colors - some remain the same
+  --bs-blue: #3b7ddd;
+  --bs-indigo: #6610f2;
+  --bs-purple: #6f42c1;
+  --bs-pink: #e83e8c;
+  --bs-red: #dc3545;
+  --bs-orange: #fd7e14;
+  --bs-yellow: #fcb92c;
+  --bs-green: #1cbb8c;
+  --bs-teal: #20c997;
+  --bs-cyan: #17a2b8;
+  --bs-white: #fff;
+  --bs-gray: #adb5bd;
+  --bs-gray-dark: #dee2e6;
 
-  --color-gray-50: var(--color-gray-900);
-  --color-gray-100: var(--color-gray-800);
-  --color-gray-200: var(--color-gray-700);
-  --color-gray-300: var(--color-gray-600);
-  --color-gray-400: var(--color-gray-500);
-  --color-gray-500: var(--color-gray-400);
-  --color-gray-600: var(--color-gray-300);
-  --color-gray-700: var(--color-gray-200);
-  --color-gray-800: var(--color-gray-100);
-  --color-gray-900: var(--color-gray-50);
+  // Gray scale - inverted for dark mode
+  --bs-gray-100: #3b4b5b;
+  --bs-gray-200: #3b4b5b;
+  --bs-gray-300: #495057;
+  --bs-gray-400: #6c757d;
+  --bs-gray-500: #adb5bd;
+  --bs-gray-600: #dee2e6;
+  --bs-gray-700: #e9ecef;
+  --bs-gray-800: #f8f9fa;
+  --bs-gray-900: #f8f9fa;
 
-  --font-family-primary: var(--font-family-primary);
-  --spacing-md: var(--spacing-md);
+  // Theme colors - keep the same hue but may adjust brightness
+  --bs-primary: #4e89e8;
+  --bs-secondary: #8c98a4;
+  --bs-success: #28d5a7;
+  --bs-info: #25b5d8;
+  --bs-warning: #fcc44c;
+  --bs-danger: #e05260;
+  --bs-light: #32404e;
+  --bs-dark: #e9ecef;
 
-  background-color: var(--color-gray-900);
-  color: var(--color-gray-100);
+  // RGB colors
+  --bs-primary-rgb: 78, 137, 232;
+  --bs-secondary-rgb: 140, 152, 164;
+  --bs-success-rgb: 40, 213, 167;
+  --bs-info-rgb: 37, 181, 216;
+  --bs-warning-rgb: 252, 196, 76;
+  --bs-danger-rgb: 224, 82, 96;
+  --bs-light-rgb: 50, 64, 78;
+  --bs-dark-rgb: 233, 236, 239;
+
+  // Text & background colors
+  --bs-body-color: #e9ecef;
+  --bs-body-bg: #222e3c;
+  --bs-heading-color: #f8f9fa;
+
+  // Link colors
+  --bs-link-color: #4e89e8;
+  --bs-link-hover-color: #6fa1fa;
+
+  // Form controls
+  --bs-border-color: #3b4b5b;
+
+  // Layout & component colors
+  --content-bg: #222e3c;
+  --navbar-bg: #2b3a4a;
+  --card-bg: #2b3a4a;
+  --footer-bg: #2b3a4a;
+  --border-color: #3b4b5b;
+
+  --sidebar-bg: #1a2332;
+  --sidebar-color: #adb5bd;
+
+  // Button hover colors
+  --bs-primary-hover: #6fa1fa;
+  --bs-success-hover: #4adfb8;
+  --bs-danger-hover: #e67583;
+  --bs-secondary-hover: #a7b0b8;
+  --bs-info-hover: #46c3e0;
+  --bs-warning-hover: #fcd278;
+
+  // Shadow variables
+  --bs-box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2);
+  --bs-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+  --bs-box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.5);
+  --rgba-primary-shadow: rgba(78, 137, 232, 0.25);
+  --rgba-dark-shadow-light: rgba(0, 0, 0, 0.15);
+  --rgba-dark-shadow-medium: rgba(0, 0, 0, 0.25);
+  --rgba-dark-shadow-heavy: rgba(0, 0, 0, 0.35);
+  --rgba-white-transparent-sm: rgba(255, 255, 255, 0.05);
+  --rgba-white-transparent-md: rgba(255, 255, 255, 0.075);
+  --rgba-primary-transparent: rgba(78, 137, 232, 0.15);
+  --rgba-sidebar-transparent: rgba(26, 35, 50, 0.1);
+  --rgba-sidebar-shadow: rgba(26, 35, 50, 0.15);
+
+  // Scrollbar colors
+  --scrollbar-track: #2b3a4a;
+  --scrollbar-thumb: #495057;
+  --scrollbar-thumb-hover: #6c757d;
+
+  // Avatar styling
+  --avatar-bg: var(--bs-primary);
+  --avatar-color: var(--bs-white);
+}
+
+// Fix for Firefox where body.dark-theme may not be applied to scrollbars
+@-moz-document url-prefix() {
+  body.dark-theme * {
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: thin;
+  }
 }

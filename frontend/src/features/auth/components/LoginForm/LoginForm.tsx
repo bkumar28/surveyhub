@@ -1,145 +1,173 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../../app/store';
-import { login, clearError } from '../../authSlice';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { useAppDispatch } from '../../../../app/store';
+import { login } from '../../authSlice';
 import { Button } from '../../../../shared/components/UI/Button';
-import { Input } from '../../../../shared/components/UI/Input';
 import styles from './LoginForm.module.scss';
 
-export const LoginForm: React.FC = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    remember: false,
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+interface LoginFormProps {
+  onSuccess?: () => void;
+}
 
+interface LoginFormData {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+}
+
+export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { loading, error, isAuthenticated } = useAppSelector((state) => state.auth);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/dashboard');
-    }
-  }, [isAuthenticated, navigate]);
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
 
-  useEffect(() => {
-    return () => {
-      dispatch(clearError());
-    };
-  }, [dispatch]);
+  const onSubmit = async (data: LoginFormData) => {
+    setIsLoading(true);
+    setLoginError(null);
 
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
+    try {
+      await dispatch(login({
+        email: data.email,
+        password: data.password,
+        rememberMe: data.rememberMe
+      })).unwrap();
 
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
-    }
-
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (error) {
+      setLoginError(
+        error instanceof Error
+          ? error.message
+          : 'Failed to login. Please try again.'
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    dispatch(login(formData));
+  const togglePasswordVisibility = () => {
+    setShowPassword(prev => !prev);
   };
 
   return (
-    <div className={styles.formContainer}>
-      <div className={styles.header}>
-        <span style={{
-          display: 'inline-block',
-          fontWeight: 700,
-          fontSize: '2rem',
-          marginBottom: '1rem',
-          letterSpacing: '0.05em'
-        }}>
-          <span style={{ color: 'var(--color-primary-dark)' }}>Survey</span>
-          <span style={{ color: 'var(--color-accent)', marginLeft: 2 }}>Hub</span>
-        </span>
-        <h1>Sign In</h1>
+    <div className={styles.formWrapper}>
+      <div className={styles.topText}>
+        <p className={styles.leadText}>Sign in to your account to continue</p>
       </div>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        {error && <div className={styles.errorAlert}>{error}</div>}
-        <div className={styles.inputGroup}>
-          <Input
-            label="Email"
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            error={errors.email}
-            placeholder="Enter your email"
-            required
-          />
+
+      <div className={styles.cardShadow}>
+        <div className={styles.cardBody}>
+          <div className={styles.cardContent}>
+            <div className={styles.formHeader}>
+              <h2 className={styles.logo}>
+                <span className={styles.logoTextPrimary}>Survey</span>
+                <span className={styles.logoTextAccent}>Hub</span>
+              </h2>
+              <h3 className={styles.welcomeText}>Welcome back</h3>
+            </div>
+
+            {loginError && (
+              <div className={styles.authError}>
+                <p>{loginError}</p>
+              </div>
+            )}
+
+            <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+              <div className={styles.formGroup}>
+                <label htmlFor="email" className={styles.formLabel}>
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  className={styles.formControl}
+                  placeholder="Enter your email"
+                  {...register('email', {
+                    required: 'Email is required',
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: 'Invalid email address'
+                    }
+                  })}
+                />
+                {errors.email && (
+                  <div className={styles.invalidFeedback}>{errors.email.message}</div>
+                )}
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="password" className={styles.formLabel}>
+                  Password
+                </label>
+                <div className={styles.passwordWrapper}>
+                  <input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    className={styles.formControl}
+                    placeholder="Enter your password"
+                    {...register('password', {
+                      required: 'Password is required'
+                    })}
+                  />
+                  <button
+                    type="button"
+                    className={styles.passwordToggle}
+                    onClick={togglePasswordVisibility}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                  </button>
+                </div>
+                {errors.password && (
+                  <div className={styles.invalidFeedback}>{errors.password.message}</div>
+                )}
+                <div className={styles.forgotPasswordWrapper}>
+                  <Link to="/forgot-password" className={styles.forgotPassword}>
+                    Forgot password?
+                  </Link>
+                </div>
+              </div>
+
+              <div className={styles.formGroup}>
+                <div className={styles.checkboxWrapper}>
+                  <input
+                    id="rememberMe"
+                    type="checkbox"
+                    className={styles.checkbox}
+                    {...register('rememberMe')}
+                  />
+                  <label htmlFor="rememberMe" className={styles.checkboxLabel}>
+                    Remember me
+                  </label>
+                </div>
+              </div>
+
+              <div className={styles.submitButtonWrapper}>
+                <Button
+                  type="submit"
+                  className={styles.submitButton}
+                  isLoading={isLoading}
+                  disabled={isLoading}
+                >
+                  Sign in
+                </Button>
+              </div>
+            </form>
+
+            <div className={styles.formFooter}>
+              <p>Don't have an account? <Link to="/register">Sign up</Link></p>
+            </div>
+          </div>
         </div>
-        <div className={styles.inputGroup}>
-          <Input
-            label="Password"
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            error={errors.password}
-            placeholder="Enter your password"
-            required
-          />
-        </div>
-        <div className={styles.rememberRow}>
-          <label style={{ display: 'flex', alignItems: 'center', fontSize: '0.95rem', cursor: 'pointer', marginBottom: 0 }}>
-            <input
-              type="checkbox"
-              name="remember"
-              checked={formData.remember}
-              onChange={handleChange}
-              style={{ marginRight: '0.5rem' }}
-            />
-            Remember me
-          </label>
-          <a href="#" className={styles.link}>Forgot password?</a>
-        </div>
-        <Button
-          type="submit"
-          loading={loading}
-          fullWidth
-          size="lg"
-          className={styles.btn}
-        >
-          Sign In
-        </Button>
-        <div className={styles.footer}>
-          <button type="button" onClick={() => navigate('/register')} className={styles.link}>
-            Sign up
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
   );
 };
+
+export default LoginForm;

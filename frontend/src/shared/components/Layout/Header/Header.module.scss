@@ -1,75 +1,285 @@
-@use '../../../../assets/styles/variables' as *;
+@use '../../../../assets/styles/main.scss' as *;
 
 .header {
-  height: 60px;
-  background: white;
-  border-bottom: 1px solid var(--color-gray-200);
+  height: var(--header-height);
+  min-height: var(--header-height);
+  background-color: var(--navbar-bg);
+  border-bottom: var(--bs-border-width) var(--bs-border-style) var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--spacing-md);
-  position: sticky;
+  padding: 0 1.5rem;
+  position: fixed;
   top: 0;
-  z-index: 100;
-  box-shadow: var(--shadow-sm);
+  right: 0;
+  left: var(--sidebar-width);
+  z-index: 1020;
+  transition: left 0.3s ease-in-out;
+  box-sizing: border-box;
+
+  &.collapsed {
+    left: var(--sidebar-width-collapsed);
+  }
+
+  @media (max-width: 768px) {
+    left: 0;
+    padding: 0 1rem;
+  }
 }
 
 .left {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: 1rem;
 }
 
 .menuButton {
   background: none;
   border: none;
   cursor: pointer;
-  padding: var(--spacing-xs);
-  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--bs-border-radius, 0.25rem);
+  transition: all 0.2s ease;
+  color: var(--bs-body-color);
 
   &:hover {
-    background-color: var(--color-gray-100);
+    background-color: var(--bs-gray-100);
+    color: var(--bs-primary);
+  }
+
+  &:focus {
+    outline: none;
   }
 }
 
-.menuIcon {
-  display: block;
-  width: 20px;
-  height: 2px;
-  background: var(--color-gray-600);
-  position: relative;
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--bs-border-radius, 0.25rem);
+  transition: all 0.2s ease;
+  color: var(--bs-body-color);
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background: var(--color-gray-600);
+  &:hover {
+    background-color: var(--bs-gray-100);
+    color: var(--bs-primary);
   }
 
-  &::before { top: -6px; }
-  &::after { top: 6px; }
-}
-
-.logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--color-primary);
+  &:focus {
+    outline: none;
+  }
 }
 
 .right {
   display: flex;
   align-items: center;
+  gap: 1rem;
+  height: 100%;
 }
 
 .userMenu {
+  position: relative;
+  height: 100%;
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+}
+
+.userButton {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--bs-body-color);
+  padding: 0.5rem;
+  border-radius: var(--bs-border-radius, 0.25rem);
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--bs-gray-100);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &.active {
+    background-color: var(--bs-gray-100);
+  }
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--avatar-bg, var(--bs-primary));
+  color: var(--avatar-color, var(--bs-white));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  flex-shrink: 0;
 }
 
 .userName {
   font-weight: 500;
-  color: var(--color-gray-700);
+
+  @media (max-width: 576px) {
+    display: none;
+  }
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  min-width: 200px;
+  background-color: var(--card-bg);
+  border: var(--bs-border-width) var(--bs-border-style) var(--border-color);
+  border-radius: var(--bs-border-radius, 0.25rem);
+  box-shadow: var(--bs-box-shadow);
+  z-index: 1030;
+  display: flex; // Always display as flex
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden; // Hide using visibility instead of display:none
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  pointer-events: none; // Disable pointer events when hidden
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto; // Enable pointer events when visible
+  }
+}
+
+.dropdownDivider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 0.5rem 0;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: var(--bs-body-color);
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: var(--bs-gray-100);
+    color: var(--bs-primary);
+  }
+
+  &:focus {
+    outline: none;
+    background-color: var(--bs-gray-100);
+  }
+
+  &.danger {
+    color: var(--bs-danger);
+
+    &:hover {
+      background-color: var(--bs-danger);
+      color: var(--bs-white);
+    }
+  }
+
+  &:disabled, &.disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: transparent;
+      color: var(--bs-body-color);
+    }
+  }
+
+  // Styling for NavLink when active
+  &.active {
+    background-color: var(--bs-gray-100);
+    color: var(--bs-primary);
+    font-weight: 500;
+  }
+}
+
+.dropdownIcon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+// Overlay to catch clicks outside of dropdown
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1025; // Lower than dropdown but higher than rest
+  display: none;
+
+  &.show {
+    display: block;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 576px) {
+  .header {
+    padding: 0 0.75rem;
+  }
+
+  .dropdown {
+    min-width: 180px; // Slightly smaller on mobile
+    right: -10px; // Adjust position for better mobile view
+  }
+
+  .avatar {
+    width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
+  }
+}
+
+// Dark theme specific adjustments
+body.dark-theme {
+  .dropdown {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
+  }
+
+  .userButton:hover, .menuButton:hover, .iconButton:hover {
+    background-color: var(--bs-gray-100);
+    color: var(--bs-primary);
+  }
+
+  .dropdownItem:hover {
+    background-color: var(--bs-gray-100);
+  }
 }

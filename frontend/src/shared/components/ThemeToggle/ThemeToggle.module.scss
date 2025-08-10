@@ -1,0 +1,25 @@
+@use '../../../assets/styles/main.scss' as *;
+
+.toggleButton {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--bs-border-radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--bs-body-color);
+
+  &:hover {
+    background-color: var(--bs-gray-100);
+    color: var(--bs-primary);
+  }
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
