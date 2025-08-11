@@ -1,0 +1,96 @@
+.progressContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.progress {
+  flex-grow: 1;
+  overflow: hidden;
+  background-color: var(--bs-light);
+  border-radius: var(--bs-border-radius);
+}
+
+.progressBar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--bs-white);
+  text-align: center;
+  white-space: nowrap;
+  transition: width 0.6s ease;
+}
+
+.progressLabel {
+  font-size: 0.75rem;
+  padding: 0 0.5rem;
+}
+
+.progressLabelOutside {
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--bs-dark);
+}
+
+// Size variants
+.progress-sm {
+  height: 0.5rem;
+}
+
+.progress-md {
+  height: 1rem;
+}
+
+.progress-lg {
+  height: 1.5rem;
+}
+
+// Color variants
+.progress-primary {
+  background-color: var(--bs-primary);
+}
+
+.progress-secondary {
+  background-color: var(--bs-secondary);
+}
+
+.progress-success {
+  background-color: var(--bs-success);
+}
+
+.progress-danger {
+  background-color: var(--bs-danger);
+}
+
+.progress-warning {
+  background-color: var(--bs-warning);
+}
+
+.progress-info {
+  background-color: var(--bs-info);
+}
+
+// Striped effect
+.striped {
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 1rem 1rem;
+}
+
+// Animated effect
+.animated {
+  animation: progress-bar-stripes 1s linear infinite;
+}
+
+@keyframes progress-bar-stripes {
+  from { background-position: 1rem 0; }
+  to { background-position: 0 0; }
+}

@@ -5,13 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChartBar,
   faClipboardList,
-  faUsers,
+  faQuestionCircle,
   faChartLine,
-  faCog,
-  faChevronLeft,
-  faChevronRight,
-  faQuestion,
-  faBook
+  faCommentDots,
+  faFileAlt,
+  faBell
 } from '@fortawesome/free-solid-svg-icons';
 
 interface SidebarProps {
@@ -22,9 +20,12 @@ interface SidebarProps {
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: faChartBar },
   { path: '/surveys', label: 'Surveys', icon: faClipboardList },
-  { path: '/users', label: 'Users', icon: faUsers },
+  { path: '/questions', label: 'Questions', icon: faQuestionCircle },
+  { path: '/responses', label: 'Responses', icon: faCommentDots },
+  { path: '/templates', label: 'Templates', icon: faFileAlt },
+  {path: '/notifications', label: 'Notifications', icon: faBell},
   { path: '/analytics', label: 'Analytics', icon: faChartLine },
-  { path: '/settings', label: 'Settings', icon: faCog },
+
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => (
