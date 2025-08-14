@@ -35,24 +35,13 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick, sidebarOpen }) => {
 
   return (
     <header className={styles.header}>
-      <button className={styles.menuToggle} onClick={onMenuClick}>
-        <div className="hamburger align-self-center">
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
+      <button className={styles.menuToggle} onClick={onMenuClick} aria-label="Toggle sidebar">
+        <div className={styles.hamburger}>
+          <span className={styles.hamburgerLine}></span>
+          <span className={styles.hamburgerLine}></span>
+          <span className={styles.hamburgerLine}></span>
         </div>
       </button>
-
-      <div className={styles.headerContent}>
-        <div className={styles.searchContainer}>
-          <input
-            type="text"
-            className={styles.searchInput}
-            placeholder="Search..."
-          />
-          <i className={`fas fa-search ${styles.searchIcon}`}></i>
-        </div>
-      </div>
 
       <div className={styles.headerRight}>
         {/* Notifications dropdown */}
@@ -63,18 +52,32 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick, sidebarOpen }) => {
               setNotificationsOpen(!notificationsOpen);
               setUserDropdownOpen(false);
             }}
+            aria-label="Notifications"
           >
             <i className="fas fa-bell"></i>
+            <span className={styles.notificationBadge}></span>
           </button>
           <div className={`${styles.dropdownMenu} ${notificationsOpen ? styles.show : ''}`}>
+            <div className={styles.dropdownHeader}>
+              <span>Notifications</span>
+            </div>
             <div className={styles.dropdownItem}>
               <span className={styles.icon}><i className="fas fa-envelope"></i></span>
-              <span>New message received</span>
+              <div className={styles.notificationContent}>
+                <span className={styles.notificationTitle}>New message received</span>
+                <span className={styles.notificationTime}>10 minutes ago</span>
+              </div>
             </div>
             <div className={styles.dropdownDivider}></div>
             <div className={styles.dropdownItem}>
               <span className={styles.icon}><i className="fas fa-chart-line"></i></span>
-              <span>Survey results updated</span>
+              <div className={styles.notificationContent}>
+                <span className={styles.notificationTitle}>Survey results updated</span>
+                <span className={styles.notificationTime}>1 hour ago</span>
+              </div>
+            </div>
+            <div className={styles.dropdownFooter}>
+              <Link to="/notifications">View all notifications</Link>
             </div>
           </div>
         </div>
@@ -87,15 +90,19 @@ export const Header: React.FC<HeaderProps> = ({ onMenuClick, sidebarOpen }) => {
               setUserDropdownOpen(!userDropdownOpen);
               setNotificationsOpen(false);
             }}
+            aria-label="User menu"
           >
             <img src="/assets/images/avatars/avatar.svg" alt="User" />
             <div className={styles.userInfo}>
               <span className={styles.userName}>John Doe</span>
               <span className={styles.userRole}>Administrator</span>
             </div>
-            <i className="fas fa-chevron-down"></i>
+            <i className={`fas fa-chevron-down ${styles.dropdownArrow} ${userDropdownOpen ? styles.rotate : ''}`}></i>
           </button>
           <div className={`${styles.dropdownMenu} ${userDropdownOpen ? styles.show : ''}`}>
+            <div className={styles.dropdownHeader}>
+              <span>Account</span>
+            </div>
             <Link to="/profile" className={styles.dropdownItem}>
               <span className={styles.icon}><i className="fas fa-user"></i></span>
               <span>Profile</span>
