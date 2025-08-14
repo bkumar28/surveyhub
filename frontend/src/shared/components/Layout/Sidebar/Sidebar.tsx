@@ -82,7 +82,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => (
 
       <div className={styles.sidebarFooter}>
         <div className={styles.footerInfo}>
-          {isOpen && <span className={styles.version}>v1.0.0</span>}
         </div>
       </div>
     </aside>

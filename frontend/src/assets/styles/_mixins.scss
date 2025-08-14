@@ -27,7 +27,7 @@
   }
 }
 
-// Box shadow levels (AdminKit style)
+// Box shadow levels ( style)
 @mixin box-shadow($level: 1) {
   @if $level == 1 {
     box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.05);
@@ -81,7 +81,7 @@
   white-space: nowrap;
 }
 
-// Card style matching AdminKit
+// Card style matching
 @mixin card {
   background-color: var(--bg-white);
   border-radius: var(--border-radius);
@@ -90,7 +90,7 @@
   margin-bottom: var(--spacer);
 }
 
-// Focus ring - AdminKit style
+// Focus ring - style
 @mixin focus-ring {
   outline: 0;
   box-shadow: 0 0 0 0.25rem var(--focus-ring-color);
@@ -119,7 +119,7 @@
   }
 }
 
-// AdminKit sidebar item style
+// sidebar item style
 @mixin sidebar-item($active: false) {
   display: flex;
   align-items: center;

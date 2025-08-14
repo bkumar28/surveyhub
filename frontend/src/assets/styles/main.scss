@@ -38,7 +38,7 @@ body {
   min-height: 100vh;
 }
 
-// AdminKit layout structure
+// layout structure
 .wrapper {
   width: 100%;
   display: flex;
@@ -69,7 +69,7 @@ body {
   }
 }
 
-// AdminKit sidebar
+// sidebar
 .sidebar {
   width: var(--sidebar-width);
   background: var(--sidebar-bg);
@@ -197,7 +197,7 @@ body {
   }
 }
 
-// AdminKit header
+// header
 .header {
   height: var(--header-height);
   background: var(--header-bg);
@@ -292,7 +292,7 @@ body {
   }
 }
 
-// AdminKit footer
+// footer
 .footer {
   background: var(--footer-bg);
   border-top: 1px solid var(--border-color);
@@ -435,7 +435,7 @@ hr {
   }
 }
 
-// AdminKit specific theme classes
+// specific theme classes
 .btn-primary { @include button-variant('--primary', '--primary-hover'); }
 .btn-secondary { @include button-variant('--secondary', '--secondary-hover'); }
 .btn-success { @include button-variant('--success', '--success-hover'); }
@@ -445,7 +445,7 @@ hr {
 .btn-light { @include button-variant('--light', '--light-hover', var(--dark)); }
 .btn-dark { @include button-variant('--dark', '--dark-hover'); }
 
-// AdminKit specific card styles
+// specific card styles
 .stat-widget {
   @include card;
   padding: 1.25rem;
@@ -512,7 +512,7 @@ hr {
   }
 }
 
-// AdminKit dashboard specific styles
+// dashboard specific styles
 .hamburger {
   cursor: pointer;
   width: 24px;

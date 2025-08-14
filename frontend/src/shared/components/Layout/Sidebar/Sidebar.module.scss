@@ -11,7 +11,7 @@
   z-index: var(--z-index-sidebar);
   display: flex;
   flex-direction: column;
-  transition: width var(--transition-speed) ease-in-out, transform var(--transition-speed) ease-in-out;
+  transition: width 0.3s ease-in-out, transform 0.3s ease-in-out; // Slowed down from default speed to 0.3s
   overflow-y: auto; // Enable scrolling for the entire sidebar
   overflow-x: hidden;
   @include box-shadow(1);
@@ -66,7 +66,6 @@
   justify-content: space-between;
   padding: 0 1.5rem;
   background-color: var(--sidebar-bg);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
   position: relative;
   flex-shrink: 0;
@@ -80,9 +79,10 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  font-size: 1.25rem;
+  font-size: 1.55rem;
   line-height: 1.2;
   white-space: nowrap;
+  transition: opacity 0.3s ease; // Added transition for smoother text fade
 
   @include breakpoint-down('sm') {
     font-size: 1.1rem;
@@ -97,7 +97,6 @@
 .brandAccent {
   color: var(--text-accent, #3b7ddd);
   font-weight: 600;
-  margin-left: 0.2rem;
 }
 
 .brandShort {
@@ -105,6 +104,7 @@
   color: var(--text-accent, #3b7ddd);
   font-weight: 700;
   font-size: 1.5rem;
+  transition: opacity 0.3s ease; // Added transition for smoother text swap
 
   .sidebar.collapsed & {
     display: block;
@@ -122,15 +122,15 @@
 .navItem {
   display: flex;
   align-items: center;
-  padding: 0.825rem 1.5rem;
+  padding: 0.8rem 1.5rem;
   color: rgba(233, 236, 239, 0.5);
   text-decoration: none;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s ease-in-out; // Slowed down transition to match sidebar
   position: relative;
   font-size: 1rem;
   font-weight: 500;
   overflow: hidden;
-  line-height: 1.8;
+  line-height: 1.5;
   letter-spacing: -0.01em;
 
   @include breakpoint-down('md') {
@@ -182,12 +182,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 600;
+  transition: visibility 0.3s, opacity 0.3s; // Added transition for smoother hiding
 
   .sidebar.collapsed & {
     visibility: hidden;
     height: 0;
     padding: 0;
     margin: 0;
+    opacity: 0; // Added opacity for smoother transition
   }
 }
 
@@ -201,6 +203,7 @@
   flex-shrink: 0;
   opacity: 0.75;
   font-size: 1rem;
+  transition: margin 0.3s ease; // Added transition for icon position
 
   @include breakpoint-down('md') {
     width: 20px;
@@ -217,7 +220,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: opacity 0.2s ease, width 0.2s ease;
+  transition: opacity 0.3s ease, width 0.3s ease, visibility 0.3s ease; // Slowed down and added visibility transition
   flex: 1;
   min-width: 0;
 
@@ -231,7 +234,6 @@
 
 .sidebarFooter {
   padding: 0.75rem 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -244,6 +246,7 @@
   position: relative;
   bottom: auto;
   z-index: auto;
+  transition: padding 0.3s ease; // Added transition for padding change
 
   .sidebar.collapsed & {
     padding: 0.75rem 0.5rem;
@@ -259,9 +262,11 @@
   font-size: 0.75rem;
   white-space: nowrap;
   overflow: hidden;
+  transition: opacity 0.3s ease; // Added transition for smooth fade out
 
   .sidebar.collapsed & {
     display: none;
+    opacity: 0; // Added opacity change for smoother transition
   }
 }
 
@@ -281,7 +286,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease; // Slowed down to match sidebar speed
   flex-shrink: 0;
 
   &:hover {
@@ -307,7 +312,7 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease; // Slowed down for smoother tooltip appearance
   white-space: nowrap;
   margin-left: 0.5rem;
   z-index: 1040;
