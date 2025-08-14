@@ -1,126 +1,43 @@
-// Light theme variables
-:root {
-  // Font settings
-  --bs-body-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --bs-body-font-size: 0.875rem;
-  --bs-body-font-weight: 400;
-  --bs-body-line-height: 1.5;
-  --bs-heading-font-weight: 500;
+body:not(.theme-dark) {
+  // Light theme specific overrides
+  .bg-light-subtle {
+    background-color: rgba(248, 249, 250, 0.5);
+  }
 
-  // Base colors
-  --bs-blue: #3b7ddd;
-  --bs-indigo: #6610f2;
-  --bs-purple: #6f42c1;
-  --bs-pink: #e83e8c;
-  --bs-red: #dc3545;
-  --bs-orange: #fd7e14;
-  --bs-yellow: #fcb92c;
-  --bs-green: #1cbb8c;
-  --bs-teal: #20c997;
-  --bs-cyan: #17a2b8;
-  --bs-white: #fff;
-  --bs-gray: #6c757d;
-  --bs-gray-dark: #343a40;
+  .text-light-subtle {
+    color: rgba(52, 58, 64, 0.75);
+  }
 
-  // Gray scale
-  --bs-gray-100: #f8f9fa;
-  --bs-gray-200: #e9ecef;
-  --bs-gray-300: #dee2e6;
-  --bs-gray-400: #ced4da;
-  --bs-gray-500: #adb5bd;
-  --bs-gray-600: #6c757d;
-  --bs-gray-700: #495057;
-  --bs-gray-800: #343a40;
-  --bs-gray-900: #212529;
+  // Special button styles for light mode
+  .btn-subtle {
+    background-color: #e9ecef;
+    color: #495057;
+    border: 1px solid #dee2e6;
 
-  // Theme colors
-  --bs-primary: #3b7ddd;
-  --bs-secondary: #6c757d;
-  --bs-success: #1cbb8c;
-  --bs-info: #17a2b8;
-  --bs-warning: #fcb92c;
-  --bs-danger: #dc3545;
-  --bs-light: #f5f7fb;
-  --bs-dark: #212529;
+    &:hover {
+      background-color: #dee2e6;
+      border-color: #ced4da;
+    }
+  }
 
-  // Theme RGB colors
-  --bs-primary-rgb: 59, 125, 221;
-  --bs-secondary-rgb: 108, 117, 125;
-  --bs-success-rgb: 28, 187, 140;
-  --bs-info-rgb: 23, 162, 184;
-  --bs-warning-rgb: 252, 185, 44;
-  --bs-danger-rgb: 220, 53, 69;
-  --bs-light-rgb: 245, 247, 251;
-  --bs-dark-rgb: 33, 37, 41;
+  // Sidebar customizations for light mode
+  .sidebar-bg-custom {
+    background: linear-gradient(135deg, #222e3c 0%, #1a2332 100%);
+  }
 
-  // Text & background colors
-  --bs-body-color: #495057;
-  --bs-body-bg: #f5f7fb;
-  --bs-heading-color: #212529;
+  // Tables in light mode
+  .table.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
 
-  // Link colors
-  --bs-link-color: #3b7ddd;
-  --bs-link-hover-color: #2f64b1;
-  --bs-link-decoration: none;
-  --bs-link-hover-decoration: underline;
+  // Cards in light mode
+  .card {
+    box-shadow: var(--shadow-card);
 
-  // Form controls
-  --bs-border-width: 1px;
-  --bs-border-style: solid;
-  --bs-border-color: #dee2e6;
-  --bs-border-radius: 0.375rem;
-  --bs-border-radius-sm: 0.25rem;
-  --bs-border-radius-lg: 0.5rem;
-  --bs-focus-ring-width: 0.25rem;
-  --bs-focus-ring-color: rgba(59, 125, 221, 0.25);
-
-  // Layout & component colors
-  --sidebar-bg: #222e3c;
-  --sidebar-color: #a6b5c9;
-  --sidebar-color-active: var(--bs-white);
-  --sidebar-brand-color: var(--bs-white);
-  --content-bg: #f5f7fb;
-  --navbar-bg: #ffffff;
-  --card-bg: #ffffff;
-  --footer-bg: #ffffff;
-  --border-color: #dee2e6;
-
-  // Button hover colors
-  --bs-primary-hover: #326abc;
-  --bs-success-hover: #169c70;
-  --bs-danger-hover: #b02a37;
-  --bs-secondary-hover: #565e64;
-  --bs-info-hover: #117a8b;
-  --bs-warning-hover: #d39e00;
-
-  // Shadow variables
-  --bs-box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  --bs-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  --bs-box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
-  --rgba-primary-shadow: rgba(59, 125, 221, 0.25);
-  --rgba-dark-shadow-light: rgba(0, 0, 0, 0.05);
-  --rgba-dark-shadow-medium: rgba(0, 0, 0, 0.1);
-  --rgba-dark-shadow-heavy: rgba(0, 0, 0, 0.15);
-  --rgba-white-transparent-sm: rgba(255, 255, 255, 0.075);
-  --rgba-white-transparent-md: rgba(255, 255, 255, 0.1);
-  --rgba-primary-transparent: rgba(59, 125, 221, 0.1);
-  --rgba-sidebar-transparent: rgba(34, 46, 60, 0.075);
-  --rgba-sidebar-shadow: rgba(34, 46, 60, 0.05);
-
-  // Scrollbar colors
-  --scrollbar-track: #f1f1f1;
-  --scrollbar-thumb: #c1c1c1;
-  --scrollbar-thumb-hover: #a8a8a8;
-
-  // Avatar styling
-  --avatar-bg: var(--bs-primary);
-  --avatar-color: var(--bs-white);
-
-  // Layout dimensions
-  --sidebar-width: 260px;
-  --sidebar-width-collapsed: 56px;
-  --header-height: 56px;
-  --footer-height: 50px;
-  --bs-gutter-x: 1.5rem;
-  --bs-gutter-y: 0;
+    .card-header {
+      background-color: transparent;
+      padding: 1.25rem 1.25rem 0 1.25rem;
+      border-bottom: none;
+    }
+  }
 }

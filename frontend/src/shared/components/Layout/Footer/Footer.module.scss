@@ -3,69 +3,39 @@
 .footer {
   background-color: var(--footer-bg);
   border-top: 1px solid var(--border-color);
-  padding: 0 2rem;
-  padding-left: calc(var(--sidebar-width) + 2rem);
-  height: var(--footer-height, 60px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-  box-sizing: border-box;
-  width: 100%;
-  z-index: 1020; // Lower than sidebar to avoid overlap issues
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin-left: 0;
-  transition: padding-left 0.3s ease-in-out; // Match sidebar transition timing
-
-  &.collapsed {
-    padding-left: calc(var(--sidebar-width-collapsed) + 2rem);
-  }
-
-  @media (max-width: 768px) {
-    padding: 1rem 2rem;
-    padding-left: 2rem;
-    flex-direction: column;
-    height: auto;
-    text-align: center;
-    z-index: 1010; // Lower on mobile to allow hamburger menu to appear above
-  }
-}
-
-.copyright {
-  color: var(--text-secondary);
+  padding: 1rem 1.5rem;
+  @include flex-between;
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-normal);
-  white-space: nowrap;
+  color: var(--text-secondary);
 
-  @media (max-width: 768px) {
-    margin-bottom: 0.5rem;
+  a {
+    color: var(--text-accent);
+    text-decoration: none;
+    @include transition(color);
+
+    &:hover {
+      color: var(--text-accent-hover);
+      text-decoration: underline;
+    }
   }
-}
 
-.links {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
+  .copyright {
+    flex: 1;
+  }
 
-  @media (max-width: 576px) {
+  .footerLinks {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  @include breakpoint-down('md') {
     flex-direction: column;
     gap: 0.5rem;
-  }
-}
+    text-align: center;
 
-.link {
-  color: var(--text-accent);
-  text-decoration: none;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  transition: color 0.2s ease, text-decoration 0.2s ease;
-  white-space: nowrap;
-
-  &:hover {
-    color: var(--text-accent-hover);
-    text-decoration: underline;
+    .footerLinks {
+      justify-content: center;
+      gap: 1rem;
+    }
   }
 }

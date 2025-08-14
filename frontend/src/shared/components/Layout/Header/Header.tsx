@@ -1,10 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../app/store';
-import { logout } from '../../../../features/auth/authSlice';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Header.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faBell, faUser, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { NavLink } from 'react-router-dom';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -12,89 +8,109 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ onMenuClick, sidebarOpen }) => {
-  const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const userDropdownRef = useRef<HTMLDivElement>(null);
+  const notificationsRef = useRef<HTMLDivElement>(null);
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
-
+  // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setMenuOpen(false);
+      // User dropdown
+      if (userDropdownRef.current && !userDropdownRef.current.contains(event.target as Node)) {
+        setUserDropdownOpen(false);
+      }
+
+      // Notifications dropdown
+      if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) {
+        setNotificationsOpen(false);
       }
     }
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   return (
-    <header className={`${styles.header} ${!sidebarOpen ? styles.collapsed : ''}`}>
-      <div className={styles.left}>
-        <button
-          className={styles.menuButton}
-          onClick={onMenuClick}
-          aria-label={sidebarOpen ? 'Close menu' : 'Open menu'}
-        >
-          <FontAwesomeIcon icon={faBars} size="lg" />
-        </button>
-      </div>
-      <div className={styles.right}>
-        <button className={styles.iconButton} aria-label="Notifications">
-          <FontAwesomeIcon icon={faBell} size="lg" />
-        </button>
-        {user && (
-          <div className={styles.userMenu} ref={menuRef}>
-            <button
-              className={`${styles.userButton} ${menuOpen ? styles.active : ''}`}
-              onClick={() => setMenuOpen((open) => !open)}
-              aria-label="User menu"
-            >
-              <div className={styles.avatar}>
-                {user.firstName ? user.firstName.charAt(0) : 'U'}
-              </div>
-              <span className={styles.userName}>
-                {user.firstName} {user.lastName}
-              </span>
-            </button>
-            {/* Use the show class instead of conditional rendering */}
-            <div className={`${styles.dropdown} ${menuOpen ? styles.show : ''}`}>
-              <NavLink to="/profile" className={styles.dropdownItem}>
-                <span className={styles.dropdownIcon}>
-                  <FontAwesomeIcon icon={faUser} />
-                </span>
-                Profile
-              </NavLink>
-              <NavLink to="/settings" className={styles.dropdownItem}>
-                <span className={styles.dropdownIcon}>
-                  <FontAwesomeIcon icon={faCog} />
-                </span>
-                Settings
-              </NavLink>
-              <div className={styles.dropdownDivider}></div>
-              <button
-                className={`${styles.dropdownItem} ${styles.danger}`}
-                onClick={handleLogout}
-              >
-                <span className={styles.dropdownIcon}>
-                  <FontAwesomeIcon icon={faSignOutAlt} />
-                </span>
-                Logout
-              </button>
-            </div>
+    <header className={styles.header}>
+      <button className={styles.menuToggle} onClick={onMenuClick}>
+        <div className="hamburger align-self-center">
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+        </div>
+      </button>
 
-            {/* Add overlay to catch clicks outside */}
-            {menuOpen && (
-              <div
-                className={`${styles.overlay} ${styles.show}`}
-                onClick={() => setMenuOpen(false)}
-              />
-            )}
+      <div className={styles.headerContent}>
+        <div className={styles.searchContainer}>
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Search..."
+          />
+          <i className={`fas fa-search ${styles.searchIcon}`}></i>
+        </div>
+      </div>
+
+      <div className={styles.headerRight}>
+        {/* Notifications dropdown */}
+        <div className={styles.dropdown} ref={notificationsRef}>
+          <button
+            className={styles.dropdownToggle}
+            onClick={() => {
+              setNotificationsOpen(!notificationsOpen);
+              setUserDropdownOpen(false);
+            }}
+          >
+            <i className="fas fa-bell"></i>
+          </button>
+          <div className={`${styles.dropdownMenu} ${notificationsOpen ? styles.show : ''}`}>
+            <div className={styles.dropdownItem}>
+              <span className={styles.icon}><i className="fas fa-envelope"></i></span>
+              <span>New message received</span>
+            </div>
+            <div className={styles.dropdownDivider}></div>
+            <div className={styles.dropdownItem}>
+              <span className={styles.icon}><i className="fas fa-chart-line"></i></span>
+              <span>Survey results updated</span>
+            </div>
           </div>
-        )}
+        </div>
+
+        {/* User dropdown */}
+        <div className={`${styles.dropdown} ${styles.userDropdown}`} ref={userDropdownRef}>
+          <button
+            className={styles.dropdownToggle}
+            onClick={() => {
+              setUserDropdownOpen(!userDropdownOpen);
+              setNotificationsOpen(false);
+            }}
+          >
+            <img src="/assets/images/avatars/avatar.svg" alt="User" />
+            <div className={styles.userInfo}>
+              <span className={styles.userName}>John Doe</span>
+              <span className={styles.userRole}>Administrator</span>
+            </div>
+            <i className="fas fa-chevron-down"></i>
+          </button>
+          <div className={`${styles.dropdownMenu} ${userDropdownOpen ? styles.show : ''}`}>
+            <Link to="/profile" className={styles.dropdownItem}>
+              <span className={styles.icon}><i className="fas fa-user"></i></span>
+              <span>Profile</span>
+            </Link>
+            <Link to="/settings" className={styles.dropdownItem}>
+              <span className={styles.icon}><i className="fas fa-cog"></i></span>
+              <span>Settings</span>
+            </Link>
+            <div className={styles.dropdownDivider}></div>
+            <Link to="/logout" className={styles.dropdownItem}>
+              <span className={styles.icon}><i className="fas fa-sign-out-alt"></i></span>
+              <span>Sign out</span>
+            </Link>
+          </div>
+        </div>
       </div>
     </header>
   );

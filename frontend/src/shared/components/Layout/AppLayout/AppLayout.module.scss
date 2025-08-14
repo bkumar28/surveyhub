@@ -1,177 +1,64 @@
 @use '../../../../assets/styles/main.scss' as *;
 
-.layout {
-  min-height: 100vh;
+.wrapper {
   display: flex;
-  flex-direction: column;
-  background-color: var(--bg-body);
-  position: relative;
-}
-
-// Main content container
-.contentContainer {
-  display: flex;
-  flex: 1;
   width: 100%;
+  min-height: 100vh;
+  position: relative;
+  background: var(--bg-light);
 }
 
-.mainArea {
+// Main wrapper - takes the remaining width
+.mainWrapper {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  margin-left: var(--sidebar-width);
-  transition: margin-left 0.3s ease;
-  padding-top: var(--header-height);
-  padding-bottom: var(--footer-height);
   min-height: 100vh;
+  min-width: 0; // Prevent flex items from overflowing
+  margin-left: var(--sidebar-width);
+  @include transition(margin-left);
+  position: relative;
 
-  &.collapsed {
+  // When sidebar is collapsed
+  &.sidebarCollapsed {
     margin-left: var(--sidebar-width-collapsed);
   }
 
-  @media (max-width: 768px) {
+  @include breakpoint-down('md') {
     margin-left: 0;
   }
 }
 
-// Sidebar styles
-.sidebar {
-  width: var(--sidebar-width);
-  background-color: var(--sidebar-bg);
-  box-shadow: var(--shadow-sm);
-  padding: 1rem 0;
-  flex-shrink: 0;
-
-  // Navigation links
-  a {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    padding: 0.75rem 1.5rem;
-    color: var(--text-primary);
-    display: block;
-    transition: all 0.2s ease;
-
-    &:hover, &.active {
-      background-color: var(--bg-hover);
-      color: var(--text-accent);
-      font-weight: var(--font-weight-semibold);
-    }
-  }
-
-  // Navigation sections
-  .navSection {
-    margin-bottom: 1rem;
-
-    .sectionTitle {
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-semibold);
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      padding: 0.5rem 1.5rem;
-      letter-spacing: 0.5px;
-    }
-  }
+// Content area - this will be the scrollable container for the entire main content
+.contentWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-light);
+  overflow-y: auto; // Main scroll area for the entire right side
+  position: relative;
 }
 
-// Main body content
-.mainContent {
+// Header will now scroll with the content
+.header {
+  position: relative; // Changed from sticky to relative
+  // Remove top: 0 as it's not needed
+  z-index: var(--z-index-header);
+  flex-shrink: 0;
+}
+
+// Main content container
+.contentContainer {
   flex: 1;
-  padding: 1.5rem 2rem;
+  padding: 24px;
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  width: 100%;
-
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
 }
 
-// Header dropdown
-.headerDropdown {
-  position: relative;
-
-  .dropdownToggle {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 4px;
-
-    &:hover {
-      background-color: var(--bg-hover);
-    }
-  }
-
-  .dropdownMenu {
-    position: absolute;
-    right: 0;
-    top: 100%;
-    background-color: var(--bg-white);
-    border-radius: 4px;
-    box-shadow: var(--shadow-md);
-    min-width: 180px;
-    z-index: 1000;
-
-    a {
-      display: block;
-      padding: 0.5rem 1rem;
-      color: var(--text-primary);
-      font-size: var(--font-size-sm);
-
-      &:hover {
-        background-color: var(--bg-hover);
-        color: var(--text-accent);
-      }
-    }
-  }
-}
-
-// Footer
+// Footer will scroll with content
 .footer {
-  padding: 0 2rem;
-  background-color: var(--footer-bg);
-  border-top: var(--bs-border-width) var(--bs-border-style) var(--border-color);
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  z-index: 1000;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: var(--footer-height);
-  box-sizing: border-box;
-
-  a {
-    color: var(--text-accent);
-    font-weight: var(--font-weight-medium);
-    transition: color 0.2s ease;
-
-    &:hover {
-      color: var(--text-accent-hover);
-      text-decoration: none;
-    }
-  }
-
-  .footerLinks {
-    display: flex;
-    gap: 1.5rem;
-  }
-
-  @media (max-width: 576px) {
-    flex-direction: column;
-    gap: 0.75rem;
-    text-align: center;
-    padding: 1rem;
-    height: auto;
-
-    .footerLinks {
-      justify-content: center;
-    }
-  }
+  flex-shrink: 0;
 }
 
 // Form container styles
@@ -179,7 +66,7 @@
   width: 100%;
   max-width: 580px;
 
-  @media (max-width: 576px) {
+  @include breakpoint-down('sm') {
     padding: 0 0.5rem;
   }
 }
@@ -209,4 +96,10 @@
   color: var(--text-secondary);
   text-align: center;
   margin-bottom: 1.5rem;
+}
+
+@include breakpoint-down('lg') {
+  .contentContainer {
+    padding: 16px;
+  }
 }

@@ -1,48 +1,48 @@
 @use '../../../../assets/styles/main.scss' as *;
 
 .sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--sidebar-bg);
+  height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
-  height: 100%;
-  width: var(--sidebar-width);
-  background-color: var(--sidebar-bg);
+  bottom: 0;
+  z-index: var(--z-index-sidebar);
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  transition: width var(--transition-speed) ease-in-out, transform var(--transition-speed) ease-in-out;
+  overflow-y: auto; // Enable scrolling for the entire sidebar
   overflow-x: hidden;
-  z-index: 1030;
-  transition: width 0.3s ease-in-out;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  padding-bottom: 0;
-  box-sizing: border-box;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  @include box-shadow(1);
+  font-family: var(--font-family-base);
 
-  // Scrollbar styling
+  // Enhanced scrollbar styling with better contrast
   &::-webkit-scrollbar {
     width: 6px;
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.25); // Darkened track for better contrast
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.25); // Brighter thumb for better visibility
     border-radius: 3px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.4); // Even brighter on hover
   }
 
   &.collapsed {
     width: var(--sidebar-width-collapsed);
   }
 
-  @media (max-width: 768px) {
+  // Mobile styles
+  @include breakpoint-down('md') {
     transform: translateX(-100%);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    @include box-shadow(3);
 
     &.expanded {
       transform: translateX(0);
@@ -60,7 +60,7 @@
 }
 
 .brand {
-  height: var(--header-height, 60px);
+  height: var(--brand-height, 60px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -68,43 +68,46 @@
   background-color: var(--sidebar-bg);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
 
-  &Text {
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    font-size: 1.25rem;
-    line-height: 1.2;
+  @include breakpoint-down('md') {
+    padding: 0 1rem;
   }
+}
 
-  &Primary {
-    color: #fff;
-    font-weight: 600;
-  }
+.brandText {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  white-space: nowrap;
 
-  &Accent {
-    color: var(--text-accent, #3b7ddd);
-    font-weight: 600;
+  @include breakpoint-down('sm') {
+    font-size: 1.1rem;
   }
+}
 
-  &Short {
-    display: none;
-    color: var(--text-accent, #3b7ddd);
-    font-weight: 700;
-    font-size: 1.5rem;
-  }
+.brandPrimary {
+  color: #fff;
+  font-weight: 600;
+}
+
+.brandAccent {
+  color: var(--text-accent, #3b7ddd);
+  font-weight: 600;
+  margin-left: 0.2rem;
+}
+
+.brandShort {
+  display: none;
+  color: var(--text-accent, #3b7ddd);
+  font-weight: 700;
+  font-size: 1.5rem;
 
   .sidebar.collapsed & {
-    padding: 0;
-    justify-content: center;
-
-    &Primary, &Accent {
-      display: none;
-    }
-
-    &Short {
-      display: block;
-    }
+    display: block;
   }
 }
 
@@ -113,6 +116,7 @@
   flex-direction: column;
   padding: 1.25rem 0;
   flex: 1;
+  overflow: visible; // Changed from auto to visible to prevent double scrollbars
 }
 
 .navItem {
@@ -129,6 +133,11 @@
   line-height: 1.8;
   letter-spacing: -0.01em;
 
+  @include breakpoint-down('md') {
+    padding: 1rem 1.5rem;
+    font-size: 1.05rem;
+  }
+
   &:hover {
     background-color: rgba(255, 255, 255, 0.05);
     color: rgba(233, 236, 239, 0.75);
@@ -138,16 +147,15 @@
     background-color: rgba(255, 255, 255, 0.07);
     color: #e9ecef;
     font-weight: 500;
-    border-left: 3px solid #3b7ddd !important;
-
+    border-left: 3px solid var(--text-accent, #3b7ddd);
   }
 
   .sidebar.collapsed & {
     justify-content: center;
-    padding: 0.625rem;
+    padding: 0.825rem;
 
     &.active {
-      padding-left: 0.625rem;
+      padding-left: 0.825rem;
     }
   }
 }
@@ -194,6 +202,12 @@
   opacity: 0.75;
   font-size: 1rem;
 
+  @include breakpoint-down('md') {
+    width: 20px;
+    height: 20px;
+    font-size: 1.1rem;
+  }
+
   .sidebar.collapsed & {
     margin-right: 0;
   }
@@ -204,6 +218,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   transition: opacity 0.2s ease, width 0.2s ease;
+  flex: 1;
+  min-width: 0;
 
   .sidebar.collapsed & {
     opacity: 0;
@@ -219,12 +235,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: auto;
   background-color: var(--sidebar-bg);
   min-height: var(--footer-height, 48px);
   box-sizing: border-box;
   width: 100%;
   overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  bottom: auto;
+  z-index: auto;
 
   .sidebar.collapsed & {
     padding: 0.75rem 0.5rem;
@@ -240,6 +259,10 @@
   font-size: 0.75rem;
   white-space: nowrap;
   overflow: hidden;
+
+  .sidebar.collapsed & {
+    display: none;
+  }
 }
 
 .version {
@@ -288,7 +311,7 @@
   white-space: nowrap;
   margin-left: 0.5rem;
   z-index: 1040;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  @include box-shadow(1);
   font-weight: 400;
   max-width: 200px;
   text-overflow: ellipsis;
@@ -297,5 +320,10 @@
   .sidebar.collapsed .navItem:hover & {
     opacity: 1;
     visibility: visible;
+  }
+
+  // Hide tooltips on mobile
+  @include breakpoint-down('md') {
+    display: none;
   }
 }

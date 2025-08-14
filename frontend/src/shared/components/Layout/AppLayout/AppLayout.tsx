@@ -9,16 +9,26 @@ export const AppLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
-    <div className={styles.layout}>
+    <div className={styles.wrapper}>
+      {/* Sidebar - fixed on the left */}
       <Sidebar isOpen={sidebarOpen} />
-      <div className={`${styles.mainArea} ${!sidebarOpen ? styles.collapsed : ''}`}>
+
+      {/* Main content container */}
+      <div className={`${styles.mainWrapper} ${!sidebarOpen ? styles.sidebarCollapsed : ''}`}>
+        {/* Header at the top of main area */}
         <Header
           onMenuClick={() => setSidebarOpen(!sidebarOpen)}
           sidebarOpen={sidebarOpen}
         />
-        <main className={styles.mainContent}>
-          <Outlet />
+
+        {/* Main content that scrolls */}
+        <main className={styles.contentWrapper}>
+          <div className={styles.contentContainer}>
+            <Outlet />
+          </div>
         </main>
+
+        {/* Footer at the bottom of main area */}
         <Footer collapsed={!sidebarOpen} />
       </div>
     </div>
