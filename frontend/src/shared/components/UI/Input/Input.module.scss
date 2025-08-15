@@ -1,0 +1,39 @@
+.formGroup {
+  margin-bottom: $spacing-md;
+
+  &Label {
+    display: block;
+    margin-bottom: $spacing-xs;
+    font-weight: 500;
+    color: var(--bs-body-color);
+  }
+
+  &Input {
+    width: 100%;
+    padding: $spacing-sm $spacing-md;
+    border: var(--bs-border-width) var(--bs-border-style) var(--input-border);
+    border-radius: var(--bs-border-radius);
+    background-color: var(--input-bg);
+    color: var(--bs-body-color);
+    transition: border-color 0.2s ease;
+    font-size: 0.875rem;
+
+    &:focus {
+      outline: none;
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 0.2rem var(--rgba-primary-shadow);
+    }
+  }
+
+  &Error {
+    color: var(--bs-danger);
+    font-size: 0.75rem;
+    margin-top: $spacing-xs;
+  }
+
+  &Hint {
+    color: var(--bs-secondary-color);
+    font-size: 0.75rem;
+    margin-top: $spacing-xs;
+  }
+}

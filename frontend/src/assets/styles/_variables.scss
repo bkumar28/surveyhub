@@ -1,0 +1,109 @@
+:root {
+  // Font
+  --font-family-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-size-base: 0.875rem;
+  --font-size-lg: 1rem;
+  --font-size-sm: 0.75rem;
+  --font-size-xs: 0.625rem;
+  --font-size-h1: 1.875rem;
+  --font-size-h2: 1.5rem;
+  --font-size-h3: 1.25rem;
+  --font-size-h4: 1.125rem;
+  --font-size-h5: 1rem;
+  --font-size-h6: 0.875rem;
+  --line-height-base: 1.5;
+  --line-height-sm: 1.25;
+
+  // Dimensions
+  --sidebar-width: 260px;
+  --sidebar-width-collapsed: 70px;
+  --header-height: 60px;
+  --footer-height: 48px;
+  --sidebar-brand-height: 64px;
+  --spacer: 1rem;
+  --border-radius: 0.25rem;
+  --border-width: 1px;
+
+  // Z-indices
+  --z-index-sidebar: 1040;
+  --z-index-header: 1030;
+  --z-index-dropdown: 1050;
+  --z-index-modal: 1060;
+  --z-index-tooltip: 1070;
+
+  // Transitions
+  --transition-base: all 0.2s ease-in-out;
+  --transition-sidebar: width 0.35s ease-in-out, margin 0.35s ease-in-out, left 0.35s ease-in-out, right 0.35s ease-in-out;
+
+  // Light mode colors
+  --blue: #3b7ddd;
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #e83e8c;
+  --red: #dc3545;
+  --orange: #fd7e14;
+  --yellow: #ffc107;
+  --green: #28a745;
+  --teal: #20c997;
+  --cyan: #17a2b8;
+  --white: #fff;
+  --gray: #6c757d;
+  --gray-dark: #343a40;
+
+  // Theme color variables
+  --primary: #3b7ddd;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --info: #17a2b8;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --light: #f8f9fa;
+  --dark: #343a40;
+
+  // Hover state colors
+  --primary-hover: #2d67bb;
+  --secondary-hover: #5a6268;
+  --success-hover: #218838;
+  --danger-hover: #c82333;
+  --warning-hover: #e0a800;
+  --info-hover: #138496;
+  --light-hover: #e2e6ea;
+  --dark-hover: #23272b;
+
+  // theme colors
+  --bg-body: #f5f7fb;
+  --bg-content: #f5f7fb;
+  --bg-white: #ffffff;
+  --bg-light: #f5f7fb;
+  --bg-lighter: #f9fafb;
+  --bg-subtle: rgba(0, 0, 0, 0.05);
+  --bg-hover: rgba(0, 0, 0, 0.05);
+  --sidebar-bg: #222e3c;
+  --header-bg: #ffffff;
+  --footer-bg: #ffffff;
+  --text-main: #495057;
+  --text-primary: #495057;
+  --text-secondary: #6c757d;
+  --text-muted: #6c757d;
+  --text-heading: #212529;
+  --text-sidebar: rgba(233, 236, 239, 0.5);
+  --text-sidebar-heading: rgba(233, 236, 239, 0.3);
+  --text-sidebar-active: #e9ecef;
+  --text-accent: #3b7ddd;
+  --text-accent-hover: #2d67bb;
+  --border-color: #dee2e6;
+  --border-color-translucent: rgba(0, 0, 0, 0.175);
+
+  // Shadows
+  --shadow-default: 0 0 0.375rem 0.25rem rgba(0, 0, 0, 0.075);
+  --shadow-card: 0 0 0.875rem 0 rgba(33, 37, 41, 0.05);
+  --shadow-navbar: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --shadow-sidebar: 0.5rem 0 1rem rgba(0, 0, 0, 0.15);
+  --shadow-dropdown: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  --focus-ring-color: rgba(59, 125, 221, 0.25);
+}

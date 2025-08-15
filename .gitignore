@@ -23,9 +23,21 @@ local_settings.py
 .env
 .env.*
 
+# ruff cache
+.ruff_cache/
+
 # VS Code / PyCharm
 .vscode/
 .idea/
+
+# Scripts and temporary files
+.container-scripts/
+*.sh
+# celery beat schedule file
+celerybeat-schedule
+
+# sample data
+/.sample_data/
 
 # Virtualenvs
 .venv/

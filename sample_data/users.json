@@ -3,7 +3,7 @@
     "model": "auth.user",
     "pk": 1,
     "fields": {
-      "password": "pbkdf2_sha256$1000000$tTwV2xTxcCeYouPiJak9Xf$Zp2gs6C9EEY7Yv+A4eqx/vC3DWFnOrGNCdtI5vjYWCg=",
+      "password": "pbkdf2_sha256$1000000$RF01sKaVR8fLlpfMiZxh6S$dWvTJZtuHzLCgfqDy+ubdysLnNMKa5FOJ2/CDTDhuCw=",
       "last_login": null,
       "is_superuser": true,
       "username": "admin",
@@ -21,7 +21,7 @@
     "model": "auth.user",
     "pk": 2,
     "fields": {
-      "password": "pbkdf2_sha256$1000000$tTwV2xTxcCeYouPiJak9Xf$Zp2gs6C9EEY7Yv+A4eqx/vC3DWFnOrGNCdtI5vjYWCg=",
+      "password": "pbkdf2_sha256$1000000$RF01sKaVR8fLlpfMiZxh6S$dWvTJZtuHzLCgfqDy+ubdysLnNMKa5FOJ2/CDTDhuCw=",
       "last_login": null,
       "is_superuser": false,
       "username": "testuser",
@@ -39,7 +39,7 @@
     "model": "auth.user",
     "pk": 3,
     "fields": {
-      "password": "pbkdf2_sha256$1000000$tTwV2xTxcCeYouPiJak9Xf$Zp2gs6C9EEY7Yv+A4eqx/vC3DWFnOrGNCdtI5vjYWCg=",
+      "password": "pbkdf2_sha256$1000000$RF01sKaVR8fLlpfMiZxh6S$dWvTJZtuHzLCgfqDy+ubdysLnNMKa5FOJ2/CDTDhuCw=",
       "last_login": null,
       "is_superuser": false,
       "username": "surveycreator",

@@ -1,0 +1,103 @@
+@use '../../../assets/styles/main.scss' as *;
+
+// Common styles for auth pages
+.authPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1.5rem;
+  background-color: #f5f7fb;
+}
+
+.formLoader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  width: 100%;
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(59, 125, 221, 0.3);
+    border-radius: 50%;
+    border-top-color: #3B7DDD;
+    animation: spin 1s ease-in-out infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+.requiredField {
+  &::after {
+    content: "*";
+    color: #dc3545;
+    margin-left: 0.25rem;
+  }
+}
+
+.authError {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+
+  p {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+}
+
+.formDescription {
+  color: #6c757d;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.formFooter {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6c757d;
+
+  a {
+    color: #3B7DDD;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Dark theme adjustments
+body.dark-theme {
+  .authPage {
+    background-color: #222e3c;
+  }
+
+  .formLoader {
+    .spinner {
+      border-color: rgba(59, 125, 221, 0.15);
+      border-top-color: #3B7DDD;
+    }
+  }
+
+  .formDescription {
+    color: #adb5bd;
+  }
+
+  .formFooter {
+    color: #adb5bd;
+  }
+}

@@ -1,0 +1,43 @@
+body:not(.theme-dark) {
+  // Light theme specific overrides
+  .bg-light-subtle {
+    background-color: rgba(248, 249, 250, 0.5);
+  }
+
+  .text-light-subtle {
+    color: rgba(52, 58, 64, 0.75);
+  }
+
+  // Special button styles for light mode
+  .btn-subtle {
+    background-color: #e9ecef;
+    color: #495057;
+    border: 1px solid #dee2e6;
+
+    &:hover {
+      background-color: #dee2e6;
+      border-color: #ced4da;
+    }
+  }
+
+  // Sidebar customizations for light mode
+  .sidebar-bg-custom {
+    background: linear-gradient(135deg, #222e3c 0%, #1a2332 100%);
+  }
+
+  // Tables in light mode
+  .table.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+
+  // Cards in light mode
+  .card {
+    box-shadow: var(--shadow-card);
+
+    .card-header {
+      background-color: transparent;
+      padding: 1.25rem 1.25rem 0 1.25rem;
+      border-bottom: none;
+    }
+  }
+}

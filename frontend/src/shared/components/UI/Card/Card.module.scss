@@ -1,0 +1,40 @@
+@use '../../../../assets/styles/main.scss' as *;
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: var(--card-bg);
+  background-clip: border-box;
+  border: var(--bs-border-width) var(--bs-border-style) var(--border-color);
+  border-radius: var(--bs-border-radius);
+  @include box-shadow(1);
+
+  &__header {
+    padding: 1rem 1.25rem;
+    margin-bottom: 0;
+    background-color: transparent;
+    border-bottom: var(--bs-border-width) var(--bs-border-style) var(--border-color);
+    @include flex(row, space-between, center);
+
+    &-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--bs-heading-color);
+    }
+  }
+
+  &__body {
+    padding: 1.25rem;
+    flex: 1 1 auto;
+  }
+
+  &__footer {
+    padding: 1rem 1.25rem;
+    background-color: transparent;
+    border-top: var(--bs-border-width) var(--bs-border-style) var(--border-color);
+  }
+}

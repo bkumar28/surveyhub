@@ -1,0 +1,105 @@
+@use '../../../../assets/styles/main.scss' as *;
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  background: var(--bg-light);
+}
+
+// Main wrapper - takes the remaining width
+.mainWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 0; // Prevent flex items from overflowing
+  margin-left: var(--sidebar-width);
+  @include transition(margin-left);
+  position: relative;
+
+  // When sidebar is collapsed
+  &.sidebarCollapsed {
+    margin-left: var(--sidebar-width-collapsed);
+  }
+
+  @include breakpoint-down('md') {
+    margin-left: 0;
+  }
+}
+
+// Content area - this will be the scrollable container for the entire main content
+.contentWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-light);
+  overflow-y: auto; // Main scroll area for the entire right side
+  position: relative;
+}
+
+// Header will now scroll with the content
+.header {
+  position: relative; // Changed from sticky to relative
+  // Remove top: 0 as it's not needed
+  z-index: var(--z-index-header);
+  flex-shrink: 0;
+}
+
+// Main content container
+.contentContainer {
+  flex: 1;
+  padding: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// Footer will scroll with content
+.footer {
+  flex-shrink: 0;
+}
+
+// Form container styles
+.formContainer {
+  width: 100%;
+  max-width: 580px;
+
+  @include breakpoint-down('sm') {
+    padding: 0 0.5rem;
+  }
+}
+
+// Logo styles
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+
+  img {
+    height: 40px;
+    width: auto;
+  }
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-accent);
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+
+.subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+@include breakpoint-down('lg') {
+  .contentContainer {
+    padding: 16px;
+  }
+}

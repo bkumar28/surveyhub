@@ -1,0 +1,164 @@
+// Breakpoint mixins
+@mixin breakpoint-up($size) {
+  @if $size == 'sm' {
+    @media (min-width: 576px) { @content; }
+  } @else if $size == 'md' {
+    @media (min-width: 768px) { @content; }
+  } @else if $size == 'lg' {
+    @media (min-width: 992px) { @content; }
+  } @else if $size == 'xl' {
+    @media (min-width: 1200px) { @content; }
+  } @else if $size == 'xxl' {
+    @media (min-width: 1400px) { @content; }
+  }
+}
+
+@mixin breakpoint-down($size) {
+  @if $size == 'xs' {
+    @media (max-width: 575.98px) { @content; }
+  } @else if $size == 'sm' {
+    @media (max-width: 767.98px) { @content; }
+  } @else if $size == 'md' {
+    @media (max-width: 991.98px) { @content; }
+  } @else if $size == 'lg' {
+    @media (max-width: 1199.98px) { @content; }
+  } @else if $size == 'xl' {
+    @media (max-width: 1399.98px) { @content; }
+  }
+}
+
+// Box shadow levels ( style)
+@mixin box-shadow($level: 1) {
+  @if $level == 1 {
+    box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.05);
+  } @else if $level == 2 {
+    box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05), 0 0.25rem 0.5rem rgba(0, 0, 0, 0.06);
+  } @else if $level == 3 {
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05), 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+  } @else if $level == 4 {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08), 0 0.75rem 1.5rem rgba(0, 0, 0, 0.12);
+  } @else if $level == 5 {
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Flexbox helper
+@mixin flex($direction: row, $justify: flex-start, $align: stretch, $wrap: nowrap) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  flex-wrap: $wrap;
+}
+
+// Flexbox shortcuts
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// Transitions
+@mixin transition($property: all, $duration: 0.2s, $timing: ease-in-out) {
+  transition: $property $duration $timing;
+}
+
+// Text truncate
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Card style matching
+@mixin card {
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-card);
+  border: 0;
+  margin-bottom: var(--spacer);
+}
+
+// Focus ring - style
+@mixin focus-ring {
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem var(--focus-ring-color);
+}
+
+// Button variants - CSS variables compatible version
+@mixin button-variant($color-var, $hover-var, $text-color: white) {
+  background-color: var(#{$color-var});
+  border-color: var(#{$color-var});
+  color: $text-color;
+
+  &:hover, &:focus {
+    background-color: var(#{$hover-var});
+    border-color: var(#{$hover-var});
+    color: $text-color;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.25rem var(--focus-ring-color);
+  }
+
+  &:active {
+    background-color: var(#{$hover-var});
+    border-color: var(#{$hover-var});
+    color: $text-color;
+  }
+}
+
+// sidebar item style
+@mixin sidebar-item($active: false) {
+  display: flex;
+  align-items: center;
+  padding: 0.625rem 1.625rem;
+  color: var(--text-sidebar);
+  text-decoration: none;
+  position: relative;
+  font-weight: var(--font-weight-normal);
+
+  @if $active {
+    color: var(--text-sidebar-active);
+    background: rgba(255, 255, 255, 0.05);
+
+    &:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background-color: var(--primary);
+    }
+  } @else {
+    &:hover {
+      color: var(--text-sidebar-active);
+      background: rgba(255, 255, 255, 0.025);
+    }
+  }
+}
+
+// Fixed element that stays in place during scroll
+@mixin fixed-element {
+  position: fixed;
+  z-index: var(--z-index-sidebar);
+}
+
+// Sticky element that follows initial scroll but then stays fixed
+@mixin sticky-element($top: 0) {
+  position: sticky;
+  top: $top;
+  z-index: var(--z-index-header);
+}

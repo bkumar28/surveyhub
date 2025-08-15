@@ -1,0 +1,335 @@
+@use '../../../../assets/styles/main.scss' as *;
+
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--sidebar-bg);
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: var(--z-index-sidebar);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease-in-out, transform 0.3s ease-in-out; // Slowed down from default speed to 0.3s
+  overflow-y: auto; // Enable scrolling for the entire sidebar
+  overflow-x: hidden;
+  @include box-shadow(1);
+  font-family: var(--font-family-base);
+
+  // Enhanced scrollbar styling with better contrast
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.25); // Darkened track for better contrast
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25); // Brighter thumb for better visibility
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4); // Even brighter on hover
+  }
+
+  &.collapsed {
+    width: var(--sidebar-width-collapsed);
+  }
+
+  // Mobile styles
+  @include breakpoint-down('md') {
+    transform: translateX(-100%);
+    @include box-shadow(3);
+
+    &.expanded {
+      transform: translateX(0);
+    }
+
+    &.collapsed {
+      width: var(--sidebar-width);
+      transform: translateX(-100%);
+
+      &.expanded {
+        transform: translateX(0);
+      }
+    }
+  }
+}
+
+.brand {
+  height: var(--brand-height, 60px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  background-color: var(--sidebar-bg);
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+
+  @include breakpoint-down('md') {
+    padding: 0 1rem;
+  }
+}
+
+.brandText {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  font-size: 1.7rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: opacity 0.3s ease; // Added transition for smoother text fade
+
+  @include breakpoint-down('sm') {
+    font-size: 1.1rem;
+  }
+}
+
+.brandPrimary {
+  color: #fff;
+  font-weight: 600;
+}
+
+.brandAccent {
+  color: var(--text-accent, #3b7ddd);
+  font-weight: 600;
+}
+
+.brandShort {
+  display: none;
+  color: var(--text-accent, #3b7ddd);
+  font-weight: 700;
+  font-size: 1.5rem;
+  transition: opacity 0.3s ease; // Added transition for smoother text swap
+
+  .sidebar.collapsed & {
+    display: block;
+  }
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 0;
+  flex: 1;
+  overflow: visible; // Changed from auto to visible to prevent double scrollbars
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  color: rgba(233, 236, 239, 0.5);
+  text-decoration: none;
+  transition: all 0.3s ease-in-out; // Slowed down transition to match sidebar
+  position: relative;
+  font-size: 1rem;
+  font-weight: 500;
+  overflow: hidden;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+
+  @include breakpoint-down('md') {
+    padding: 1rem 1.5rem;
+    font-size: 1.05rem;
+  }
+
+  &:hover {
+        text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: rgba(233, 236, 239, 0.75);
+  }
+
+  &.active {
+    background-color: rgba(255, 255, 255, 0.07);
+    color: #e9ecef;
+    font-weight: 500;
+    border-left: 3px solid var(--text-accent, #3b7ddd);
+  }
+
+  .sidebar.collapsed & {
+    justify-content: center;
+    padding: 0.825rem;
+
+    &.active {
+      padding-left: 0.825rem;
+    }
+  }
+}
+
+.navDivider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin: 1.25rem 1.5rem;
+  opacity: 0.6;
+
+  .sidebar.collapsed & {
+    margin: 1.25rem 0.5rem;
+  }
+}
+
+.navSectionTitle {
+  color: rgba(233, 236, 239, 0.35);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  padding: 0.5rem 1.5rem;
+  letter-spacing: 0.08em;
+  margin-top: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  transition: visibility 0.3s, opacity 0.3s; // Added transition for smoother hiding
+
+  .sidebar.collapsed & {
+    visibility: hidden;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    opacity: 0; // Added opacity for smoother transition
+  }
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+  opacity: 0.75;
+  font-size: 1rem;
+  transition: margin 0.3s ease; // Added transition for icon position
+
+  @include breakpoint-down('md') {
+    width: 20px;
+    height: 20px;
+    font-size: 1.1rem;
+  }
+
+  .sidebar.collapsed & {
+    margin-right: 0;
+  }
+}
+
+.label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.3s ease, width 0.3s ease, visibility 0.3s ease; // Slowed down and added visibility transition
+  flex: 1;
+  min-width: 0;
+
+  .sidebar.collapsed & {
+    opacity: 0;
+    width: 0;
+    margin: 0;
+    visibility: hidden;
+  }
+}
+
+.sidebarFooter {
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--sidebar-bg);
+  min-height: var(--footer-height, 48px);
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  bottom: auto;
+  z-index: auto;
+  transition: padding 0.3s ease; // Added transition for padding change
+
+  .sidebar.collapsed & {
+    padding: 0.75rem 0.5rem;
+    justify-content: center;
+  }
+}
+
+.footerInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(233, 236, 239, 0.5);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.3s ease; // Added transition for smooth fade out
+
+  .sidebar.collapsed & {
+    display: none;
+    opacity: 0; // Added opacity change for smoother transition
+  }
+}
+
+.version {
+  font-weight: 400;
+}
+
+.footerToggle {
+  background: none;
+  border: none;
+  color: rgba(233, 236, 239, 0.5);
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.3s ease; // Slowed down to match sidebar speed
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #e9ecef;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.tooltip {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #2c3e50;
+  color: #fff;
+  padding: 0.375rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease; // Slowed down for smoother tooltip appearance
+  white-space: nowrap;
+  margin-left: 0.5rem;
+  z-index: 1040;
+  @include box-shadow(1);
+  font-weight: 400;
+  max-width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+  .sidebar.collapsed .navItem:hover & {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  // Hide tooltips on mobile
+  @include breakpoint-down('md') {
+    display: none;
+  }
+}

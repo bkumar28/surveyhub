@@ -1,0 +1,202 @@
+@use '../../../../assets/styles/main.scss' as *;
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--bg-light);
+}
+
+// Left content section
+.contentSection {
+  flex: 1;
+  background-color: var(--primary);
+  color: white;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  // Hide on mobile
+  @include breakpoint-down('md') {
+    display: none;
+  }
+}
+
+.brandWrapper {
+  margin-bottom: 2.5rem;
+}
+
+.brand {
+  font-size: 2rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.brandPrimary {
+  color: white;
+}
+
+.brandAccent {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.contentBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  max-width: 520px;
+}
+
+.contentTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.contentDescription {
+  font-size: 1.125rem;
+  margin-bottom: 2.5rem;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.featureIcon {
+  font-size: 1.25rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.featureContent {
+  flex: 1;
+}
+
+.featureTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.featureText {
+  font-size: 0.9375rem;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+.contentFooter {
+  margin-top: 2rem;
+  opacity: 0.7;
+  font-size: 0.875rem;
+}
+
+// Right form section
+.formSection {
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+  background-color: var(--bg-white);
+
+  @include breakpoint-down('lg') {
+    width: 480px;
+    padding: 2rem;
+  }
+
+  @include breakpoint-down('md') {
+    width: 100%;
+    padding: 1.5rem;
+  }
+
+  @include breakpoint-down('sm') {
+    padding: 1.5rem 1rem;
+  }
+}
+
+.mobileBrandWrapper {
+  display: none;
+  margin-bottom: 2rem;
+  text-align: center;
+
+  @include breakpoint-down('md') {
+    display: block;
+  }
+}
+
+.mobileBrand {
+  font-size: 1.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+
+  .brandPrimary {
+    color: var(--text-dark);
+  }
+
+  .brandAccent {
+    color: var(--primary);
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.formContainer {
+  width: 100%;
+  max-width: 380px;
+}
+
+// Responsive adjustments
+@media (max-height: 800px) {
+  .contentSection {
+    padding: 2rem;
+  }
+
+  .contentTitle {
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .contentDescription {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .features {
+    gap: 1.25rem;
+  }
+
+  .featureIcon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.125rem;
+  }
+}

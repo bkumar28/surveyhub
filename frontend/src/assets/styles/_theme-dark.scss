@@ -1,0 +1,124 @@
+body.theme-dark {
+  // Dark Theme
+  --bg-body: #222e3c;
+  --bg-content: #222e3c;
+  --bg-white: #2a3748;
+  --bg-light: #222e3c;
+  --bg-lighter: #2a3748;
+  --bg-subtle: rgba(255, 255, 255, 0.05);
+  --bg-hover: rgba(255, 255, 255, 0.05);
+  --sidebar-bg: #1a2332;
+  --header-bg: #2a3748;
+  --footer-bg: #2a3748;
+  --text-main: #e9ecef;
+  --text-primary: #e9ecef;
+  --text-secondary: #adb5bd;
+  --text-muted: #adb5bd;
+  --text-heading: #e9ecef;
+  --text-sidebar: rgba(233, 236, 239, 0.5);
+  --text-sidebar-heading: rgba(233, 236, 239, 0.3);
+  --text-sidebar-active: #e9ecef;
+  --text-accent: #3b7ddd;
+  --text-accent-hover: #629be9;
+  --border-color: #374558;
+  --border-color-translucent: rgba(255, 255, 255, 0.15);
+
+  // Shadow updates for dark mode
+  --shadow-default: 0 0 0.375rem 0.25rem rgba(0, 0, 0, 0.15);
+  --shadow-card: 0 0 0.875rem 0 rgba(0, 0, 0, 0.15);
+  --shadow-navbar: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
+  --shadow-sidebar: 0.5rem 0 1rem rgba(0, 0, 0, 0.25);
+  --shadow-dropdown: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
+
+  // Bootstrap overrides for dark theme
+  --light: #2a3748;
+  --dark: #e9ecef;
+
+  // Hover state colors
+  --primary-hover: #629be9;
+  --secondary-hover: #7d8790;
+  --success-hover: #2bbe4e;
+  --danger-hover: #e34c5c;
+  --warning-hover: #ffd25f;
+  --info-hover: #1fc8e3;
+  --light-hover: #374558;
+  --dark-hover: #f8f9fa;
+
+  // Component overrides for dark mode
+  .card,
+  .dropdown-menu,
+  .modal-content,
+  .toast,
+  .list-group-item {
+    background-color: var(--bg-white);
+    border-color: var(--border-color);
+    color: var(--text-main);
+  }
+
+  .modal-header,
+  .modal-footer {
+    border-color: var(--border-color);
+  }
+
+  input, select, textarea, .form-control {
+    background-color: var(--bg-white);
+    border-color: var(--border-color);
+    color: var(--text-main);
+
+    &::placeholder {
+      color: var(--text-secondary);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.2rem var(--focus-ring-color);
+    }
+  }
+
+  .dropdown-divider {
+    border-color: var(--border-color);
+  }
+
+  .table {
+    color: var(--text-main);
+
+    th, td {
+      border-color: var(--border-color);
+    }
+
+    thead th {
+      border-bottom-color: var(--border-color);
+    }
+
+    &.table-striped tbody tr:nth-of-type(odd) {
+      background-color: rgba(255, 255, 255, 0.025);
+    }
+
+    &.table-hover tbody tr:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  .nav-tabs {
+    border-color: var(--border-color);
+
+    .nav-link {
+      color: var(--text-secondary);
+
+      &:hover {
+        border-color: transparent;
+        color: var(--text-primary);
+      }
+
+      &.active {
+        background-color: var(--bg-white);
+        border-color: var(--border-color) var(--border-color) var(--bg-white);
+        color: var(--text-primary);
+      }
+    }
+  }
+
+  code, pre {
+    background-color: var(--sidebar-bg);
+    color: var(--text-main);
+  }
+}
