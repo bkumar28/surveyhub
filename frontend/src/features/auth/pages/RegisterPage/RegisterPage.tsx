@@ -13,8 +13,8 @@ export const RegisterPage: React.FC = () => {
 
   return (
     <AuthLayout
-      title="Create an Account"
-      subtitle="Join SurveyHub today and start creating engaging surveys"
+      title="Create Your Account"
+      subtitle="Join SurveyHub today and start creating powerful surveys in minutes"
     >
       <RegisterForm />
     </AuthLayout>

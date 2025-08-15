@@ -2,19 +2,20 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../../../../app/store';
 import { AuthLayout } from '../../../../shared/components/Layout/AuthLayout/AuthLayout';
-import { ForgotPasswordForm } from '../../components/ForgotPasswordForm/ForgotPasswordForm';
+import { ForgotPasswordForm } from '../../components/ForgotPasswordForm';
 
 export const ForgotPasswordPage: React.FC = () => {
   const { isAuthenticated } = useAppSelector(state => state.auth);
 
+  // Redirect to dashboard if already authenticated
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
 
   return (
     <AuthLayout
-      title="Forgot Password"
-      subtitle="Enter your email and we'll send you a link to reset your password"
+      title="Reset Your Password"
+      subtitle="Don't worry, it happens to the best of us. We'll help you get back into your account."
     >
       <ForgotPasswordForm />
     </AuthLayout>

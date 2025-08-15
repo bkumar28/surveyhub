@@ -1,13 +1,12 @@
 import React from 'react';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { useAppSelector } from '../../../../app/store';
 import { AuthLayout } from '../../../../shared/components/Layout/AuthLayout/AuthLayout';
 import { ResetPasswordForm } from '../../components/ResetPasswordForm/ResetPasswordForm';
 
 export const ResetPasswordPage: React.FC = () => {
+  const { token } = useParams<{ token: string }>();
   const { isAuthenticated } = useAppSelector(state => state.auth);
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get('token');
 
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
@@ -19,10 +18,10 @@ export const ResetPasswordPage: React.FC = () => {
 
   return (
     <AuthLayout
-      title="Reset Password"
-      subtitle="Create a new secure password for your account"
+      title="Create New Password"
+      subtitle="Enter a new password for your SurveyHub account"
     >
-      <ResetPasswordForm />
+      <ResetPasswordForm token={token} />
     </AuthLayout>
   );
 };

@@ -1,161 +1,202 @@
 @use '../../../../assets/styles/main.scss' as *;
 
 .layout {
+  display: flex;
   min-height: 100vh;
+  width: 100%;
+  background-color: var(--bg-light);
+}
+
+// Left content section
+.contentSection {
+  flex: 1;
+  background-color: var(--primary);
+  color: white;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  // Hide on mobile
+  @include breakpoint-down('md') {
+    display: none;
+  }
+}
+
+.brandWrapper {
+  margin-bottom: 2.5rem;
+}
+
+.brand {
+  font-size: 2rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.brandPrimary {
+  color: white;
+}
+
+.brandAccent {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.contentBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  max-width: 520px;
+}
+
+.contentTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.contentDescription {
+  font-size: 1.125rem;
+  margin-bottom: 2.5rem;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.featureIcon {
+  font-size: 1.25rem;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--content-bg);
-  overflow: hidden; // Prevents scrollbars
-  position: relative; // For potential background elements
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.featureContent {
+  flex: 1;
+}
+
+.featureTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.featureText {
+  font-size: 0.9375rem;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+.contentFooter {
+  margin-top: 2rem;
+  opacity: 0.7;
+  font-size: 0.875rem;
+}
+
+// Right form section
+.formSection {
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+  background-color: var(--bg-white);
+
+  @include breakpoint-down('lg') {
+    width: 480px;
+    padding: 2rem;
+  }
+
+  @include breakpoint-down('md') {
+    width: 100%;
+    padding: 1.5rem;
+  }
+
+  @include breakpoint-down('sm') {
+    padding: 1.5rem 1rem;
+  }
+}
+
+.mobileBrandWrapper {
+  display: none;
+  margin-bottom: 2rem;
+  text-align: center;
+
+  @include breakpoint-down('md') {
+    display: block;
+  }
+}
+
+.mobileBrand {
+  font-size: 1.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+
+  .brandPrimary {
+    color: var(--text-dark);
+  }
+
+  .brandAccent {
+    color: var(--primary);
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .formContainer {
-  background-color: var(--card-bg);
-  border-radius: var(--bs-border-radius, 0.375rem);
-  box-shadow: var(--bs-box-shadow);
-  padding: 2.5rem 2rem;
   width: 100%;
-  max-width: 420px;
-  margin: 1.5rem;
-  transition: all 0.3s ease;
-
-  @media (max-width: 576px) {
-    padding: 2rem 1.5rem;
-    margin: 1rem;
-  }
+  max-width: 380px;
 }
 
-.logo {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1.5rem;
+// Responsive adjustments
+@media (max-height: 800px) {
+  .contentSection {
+    padding: 2rem;
+  }
 
-  img {
+  .contentTitle {
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .contentDescription {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .features {
+    gap: 1.25rem;
+  }
+
+  .featureIcon {
+    width: 40px;
     height: 40px;
-    width: auto;
-  }
-}
-
-.title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--bs-heading-color);
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.subtitle {
-  font-size: 0.875rem;
-  color: var(--bs-secondary);
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.formGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.formLabel {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--bs-body-color);
-}
-
-.formAction {
-  margin-top: 1.5rem;
-  width: 100%;
-}
-
-.formFooter {
-  display: flex;
-  justify-content: center;
-  margin-top: 1.5rem;
-  font-size: 0.875rem;
-  color: var(--bs-secondary);
-
-  a {
-    color: var(--bs-primary);
-    text-decoration: none;
-    font-weight: 500;
-    margin-left: 0.25rem;
-
-    &:hover {
-      text-decoration: underline;
-      color: var(--bs-primary-hover);
-    }
-  }
-}
-
-.errorMessage {
-  background-color: rgba(var(--bs-danger-rgb), 0.1);
-  color: var(--bs-danger);
-  padding: 0.75rem 1rem;
-  border-radius: var(--bs-border-radius);
-  font-size: 0.875rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.successMessage {
-  background-color: rgba(var(--bs-success-rgb), 0.1);
-  color: var(--bs-success);
-  padding: 0.75rem 1rem;
-  border-radius: var(--bs-border-radius);
-  font-size: 0.875rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-// Optional: Add a background pattern or image
-.backgroundPattern {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(135deg, var(--rgba-primary-transparent) 25%, transparent 25%),
-                    linear-gradient(225deg, var(--rgba-primary-transparent) 25%, transparent 25%),
-                    linear-gradient(45deg, var(--rgba-primary-transparent) 25%, transparent 25%),
-                    linear-gradient(315deg, var(--rgba-primary-transparent) 25%, transparent 25%);
-  background-position: 10px 0, 10px 0, 0 0, 0 0;
-  background-size: 20px 20px;
-  background-repeat: repeat;
-  opacity: 0.3;
-  z-index: 0;
-  pointer-events: none;
-}
-
-// Add container for form content to be above background
-.contentContainer {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 420px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-// Dark mode specific adjustments
-body.dark-theme {
-  .formContainer {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
-  }
-
-  .backgroundPattern {
-    opacity: 0.15; // Reduce opacity for dark theme
+    font-size: 1.125rem;
   }
 }
